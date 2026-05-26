@@ -27,7 +27,7 @@
     "computational social science",
     "responsible AI"
   ],
-  "version": "0.1.0",
+  "version": "0.2.0",
   "related_identifiers": [
     {
       "identifier": "https://github.com/roy-saurabh/csa-lite-master",
@@ -36,5 +36,5 @@
       "scheme": "url"
     }
   ],
-  "notes": "Companion repository for the CSA-Lite manuscript submitted to MDPI Electronics. The pipeline is fully implemented and tested (102/102 tests pass). The real 40–50 case corpus will be added to data/processed/csa_lite_cases.csv prior to final manuscript submission. All outputs are reproducible via 'csalite all'. License: CC-BY-4.0."
+  "notes": "Companion repository for the CSA-Lite manuscript submitted to MDPI Electronics. v0.2.0 includes the complete 45-case public-records corpus in data/processed/csa_lite_cases.csv, scored outputs, and the manuscript draft. All tables and figures are reproducible via 'csalite all --input data/processed/csa_lite_cases.csv --outdir outputs'. Pipeline: 102/102 tests pass. License: CC-BY-4.0."
 }

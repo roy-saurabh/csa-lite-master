@@ -7,7 +7,7 @@ title: >
   CSA-Lite: Context-Sliced AI Assurance Lite — Reproducible
   Public-Records Framework for Deployment-Conditioned Risk
   Analysis of AI Systems
-version: 0.1.0
+version: 0.2.0
 date-released: "2026-05-27"
 doi: "10.5281/zenodo.20403166"
 url: "https://github.com/roy-saurabh/csa-lite-master"
