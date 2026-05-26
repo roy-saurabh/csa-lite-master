@@ -6,8 +6,9 @@ Companion code for the MDPI Electronics paper:
 
 > "Context-Sliced AI Assurance Lite: A Reproducible Public-Records Framework
 > for Deployment-Conditioned Risk Analysis of AI Systems"
-> *Electronics*, MDPI, 2025.
+> *Electronics*, MDPI, 2026.
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20403166.svg)](https://doi.org/10.5281/zenodo.20403166)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://python.org)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
