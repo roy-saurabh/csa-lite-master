@@ -1,0 +1,58 @@
+cff-version: 1.2.0
+message: >
+  If you use this software, dataset, or the CSA-lite methodology,
+  please cite the associated manuscript as given below.
+type: software
+title: >
+  CSA-Lite: Context-Sliced AI Assurance Lite — Reproducible
+  Public-Records Framework for Deployment-Conditioned Risk
+  Analysis of AI Systems
+version: 0.1.0
+date-released: "2026-05-27"
+url: "https://github.com/roy-saurabh/csa-lite-master"
+repository-code: "https://github.com/roy-saurabh/csa-lite-master"
+license: CC-BY-4.0
+abstract: >
+  CSA-lite is a reproducible public-records analysis methodology
+  for structured coding of AI system deployments using publicly
+  documented evidence. It provides a transparent, deployment-
+  conditioned risk profiling method based on eight scored
+  dimensions (decision criticality, autonomy, vulnerability,
+  oversight, recourse, scale, opacity, monitoring) aggregated into
+  a Context Severity Index. It does not produce legal
+  classifications, compliance determinations, conformity
+  assessments, or validated harm predictions. EU AI Act Annex III
+  categories are used solely as an analytical reference frame for
+  grouping documented deployments by use area.
+keywords:
+  - AI assurance
+  - AI governance
+  - EU AI Act
+  - context severity index
+  - risk analysis
+  - public records
+  - reproducibility
+  - deployment analysis
+  - Annex III
+  - structured coding
+  - AIAAIC
+  - transparency
+authors:
+  - family-names: "Saurabh"
+    given-names: "Roy"
+    affiliation: "AffectLog SAS"
+    email: "royz.saurabh@gmail.com"
+
+preferred-citation:
+  type: article
+  title: >
+    Context-Sliced AI Assurance Lite: A Reproducible Public-Records
+    Framework for Deployment-Conditioned Risk Analysis of AI Systems
+  journal: "Electronics"
+  publisher:
+    name: "MDPI"
+  year: 2026
+  authors:
+    - family-names: "Saurabh"
+      given-names: "Roy"
+      affiliation: "AffectLog SAS"

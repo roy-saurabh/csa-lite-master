@@ -1,0 +1,11 @@
+case_id,case_name,country,year_first_reported,initial_source,inclusion_status,exclusion_reason,notes
+# Add candidate cases here during data collection phase.
+# Fields:
+#   case_id: provisional ID (CSA-LITE-NNNN format)
+#   case_name: descriptive name
+#   country: country of deployment
+#   year_first_reported: year first identified in public record
+#   initial_source: URL or reference for initial identification
+#   inclusion_status: candidate | included | excluded
+#   exclusion_reason: if excluded, reason per coding protocol
+#   notes: any additional notes

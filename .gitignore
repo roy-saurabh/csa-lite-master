@@ -1,0 +1,80 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.Python
+env/
+venv/
+.venv/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Distribution / packaging
+.installed.cfg
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.manifest
+*.spec
+
+# Testing
+.pytest_cache/
+.coverage
+coverage.xml
+htmlcov/
+.tox/
+nosetests.xml
+*.log
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# MyPy / type stubs
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Ruff
+.ruff_cache/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# Outputs (generated — not version controlled; READMEs are tracked via negation)
+outputs/figures/*.png
+outputs/figures/*.svg
+outputs/tables/*.csv
+outputs/reports/reproducibility_report.md
+outputs/reports/reproducibility_report.json
+outputs/reports/validation_report.json
+outputs/reports/*.html
+
+# Processed data — generated outputs excluded; curated inputs tracked
+data/processed/scored_cases.csv
+data/processed/scored_cases.jsonl
+# csa_lite_cases.csv and csa_lite_cases.jsonl ARE tracked (curated corpus)
+
+# Interim data (generated — not version controlled)
+data/interim/*.csv
+
+# Secrets / env
+.env
+.env.*
+*.pem
+*.key

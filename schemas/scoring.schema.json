@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://placeholder/csa-lite/schemas/scoring.schema.json",
+  "title": "ScoredCase",
+  "description": "Schema for a CSA-lite scored case record including computed fields.",
+  "allOf": [
+    { "$ref": "case.schema.json" }
+  ],
+  "properties": {
+    "context_severity_index": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "maximum": 16,
+      "description": "Sum of known scores with null treated as 1 (neutral assumption)"
+    },
+    "context_severity_band": {
+      "type": "string",
+      "enum": ["low", "moderate", "high", "severe", "unknown"],
+      "description": "Severity band for context_severity_index. NOT a legal risk class."
+    },
+    "known_dimension_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+    },
+    "missing_dimensions_count": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 8
+    },
+    "evidence_completeness_index": {
+      "type": "number",
+      "minimum": 0.0,
+      "maximum": 1.0,
+      "description": "Weighted average of confidence levels across known dimensions"
+    },
+    "unknown_as_zero_score": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "maximum": 16
+    },
+    "unknown_as_neutral_score": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "maximum": 16
+    },
+    "unknown_as_conservative_score": {
+      "type": ["integer", "null"],
+      "minimum": 0,
+      "maximum": 16
+    },
+    "unknown_as_zero_band": {
+      "type": "string",
+      "enum": ["low", "moderate", "high", "severe", "unknown"]
+    },
+    "unknown_as_neutral_band": {
+      "type": "string",
+      "enum": ["low", "moderate", "high", "severe", "unknown"]
+    },
+    "unknown_as_conservative_band": {
+      "type": "string",
+      "enum": ["low", "moderate", "high", "severe", "unknown"]
+    },
+    "sensitivity_band_change": {
+      "type": "boolean",
+      "description": "True if any of the three sensitivity bands differ"
+    },
+    "high_missingness_flag": {
+      "type": "boolean",
+      "description": "True if missing_dimensions_count >= 3"
+    },
+    "low_source_quality_flag": {
+      "type": "boolean",
+      "description": "True if source_quality_score <= 2"
+    },
+    "review_required_flag": {
+      "type": "boolean",
+      "description": "True if any flag is set or (band is high/severe AND ECI < 0.5)"
+    }
+  }
+}

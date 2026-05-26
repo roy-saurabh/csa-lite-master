@@ -1,0 +1,5 @@
+source_id,case_id,url,title,source_type,access_date,archive_url,language,quality_contribution
+# Add source records here. See schemas/sources.schema.json for field definitions.
+# source_type values: news_article | government_report | court_ruling | academic_paper |
+#                     ngo_report | audit_report | freedom_of_information |
+#                     parliamentary_document | regulatory_filing | company_disclosure | other

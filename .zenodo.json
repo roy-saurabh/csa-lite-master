@@ -1,0 +1,40 @@
+{
+  "upload_type": "software",
+  "title": "CSA-Lite: Context-Sliced AI Assurance Lite — Reproducible Public-Records Framework for Deployment-Conditioned Risk Analysis of AI Systems",
+  "description": "<p>Companion repository for the manuscript submitted to <em>MDPI Electronics</em>:</p><p><strong>\"Context-Sliced AI Assurance Lite: A Reproducible Public-Records Framework for Deployment-Conditioned Risk Analysis of AI Systems\"</strong></p><p>CSA-lite is a reproducible public-records analysis methodology for structured coding of AI system deployments using publicly documented evidence. It provides an eight-dimension scoring framework aggregated into a Context Severity Index (CSI) and maps cases to EU AI Act Annex III use areas as an analytical reference frame.</p><h3>Pipeline</h3><ol><li>Public-record discovery and curation</li><li>Source-quality rating (0–4)</li><li>EU AI Act Annex III area mapping (direct / analogous / comparator)</li><li>CSA-lite structured coding across 8 dimensions</li><li>Schema validation</li><li>CSI scoring and sensitivity analysis (three missing-value strategies)</li><li>Manuscript table and figure generation</li><li>Reproducibility report</li></ol><h3>Key outputs</h3><ul><li>Seven manuscript-ready CSV tables</li><li>Eight matplotlib figures (PNG + SVG)</li><li>Machine-readable validation and reproducibility reports</li></ul><h3>Legal disclaimer</h3><p>CSA-lite does not produce legal classifications, compliance determinations, conformity assessments, or validated harm predictions. EU AI Act Annex III categories are used only as an analytical reference frame for grouping documented deployments by use area. The Context Severity Index is a transparent structured-coding output derived from public-record evidence. It is not a legal risk class. Public records may be incomplete, biased, contested, or outdated.</p><h3>Reproducing manuscript outputs</h3><pre>pip install -e .[dev]\ncealite all --input data/processed/csa_lite_cases.csv --outdir outputs</pre>",
+  "creators": [
+    {
+      "name": "Saurabh, Roy",
+      "affiliation": "AffectLog SAS"
+    }
+  ],
+  "license": "cc-by-4.0",
+  "access_right": "open",
+  "keywords": [
+    "AI assurance",
+    "AI governance",
+    "EU AI Act",
+    "context severity index",
+    "risk analysis",
+    "public records",
+    "reproducibility",
+    "deployment analysis",
+    "Annex III",
+    "structured coding",
+    "AIAAIC",
+    "transparency",
+    "deployment-conditioned risk",
+    "computational social science",
+    "responsible AI"
+  ],
+  "version": "0.1.0",
+  "related_identifiers": [
+    {
+      "identifier": "https://github.com/roy-saurabh/csa-lite-master",
+      "relation": "isSupplementTo",
+      "resource_type": "software",
+      "scheme": "url"
+    }
+  ],
+  "notes": "Companion repository for the CSA-Lite manuscript submitted to MDPI Electronics. The pipeline is fully implemented and tested (102/102 tests pass). The real 40–50 case corpus will be added to data/processed/csa_lite_cases.csv prior to final manuscript submission. All outputs are reproducible via 'csalite all'. License: CC-BY-4.0."
+}

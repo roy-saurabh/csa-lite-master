@@ -1,0 +1,4 @@
+source_id,case_id,url,title,source_type,access_date,archive_url,language,quality_contribution
+SRC-0001-A,CSA-LITE-0001,https://fixture.example.com/source1,Fixture Education Authority Annual Technology Report 2020,government_report,2024-01-10,https://archive.fixture.example.com/source1,en,Primary government document confirming system deployment and scope
+SRC-0002-A,CSA-LITE-0002,https://fixture.example.com/source2,Fixture Welfare System Audit 2019,audit_report,2024-03-01,https://archive.fixture.example.com/source2,en,Government audit confirming automated scoring and absence of oversight
+SRC-0002-B,CSA-LITE-0002,https://fixture.example.com/source3,Court Documents: Fixture Welfare Agency v. Claimants,court_ruling,2024-03-10,,en,Court filing confirming recourse difficulties and scale of deployment

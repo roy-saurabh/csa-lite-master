@@ -1,0 +1,3 @@
+# JSONL format: one JSON object per line.
+# This file will be populated by the scoring pipeline from csa_lite_cases.csv.
+# Run: csalite score --input data/processed/csa_lite_cases.csv --output data/processed/scored_cases.csv --jsonl-output data/processed/scored_cases.jsonl

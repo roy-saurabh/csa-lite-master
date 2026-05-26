@@ -1,0 +1,145 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://placeholder/csa-lite/schemas/case.schema.json",
+  "title": "CSALiteCase",
+  "description": "Schema for a CSA-lite case record. Does not represent legal classifications.",
+  "type": "object",
+  "required": [
+    "case_id",
+    "case_name",
+    "short_label",
+    "year_first_reported",
+    "country",
+    "region",
+    "jurisdiction_type",
+    "source_repository",
+    "primary_sources",
+    "source_quality_score",
+    "source_quality_rationale",
+    "system_type",
+    "deployer",
+    "deployer_type",
+    "deployment_status",
+    "affected_population",
+    "annex_iii_area",
+    "annex_mapping_type",
+    "annex_mapping_confidence",
+    "annex_mapping_rationale"
+  ],
+  "properties": {
+    "case_id": {
+      "type": "string",
+      "pattern": "^CSA-LITE-\\d{4}$",
+      "description": "Unique case identifier"
+    },
+    "case_name": { "type": "string", "minLength": 1 },
+    "short_label": { "type": "string", "minLength": 1 },
+    "year_first_reported": { "type": "integer", "minimum": 1950 },
+    "year_deployed_or_used": { "type": ["integer", "null"], "minimum": 1950 },
+    "country": { "type": "string", "minLength": 1 },
+    "region": { "type": "string", "minLength": 1 },
+    "jurisdiction_type": {
+      "type": "string",
+      "enum": [
+        "eu_member_state", "european_non_eu", "united_kingdom", "united_states",
+        "canada", "latin_america", "africa", "middle_east", "south_asia",
+        "east_asia", "southeast_asia", "oceania", "multi_jurisdiction", "unknown"
+      ]
+    },
+    "source_repository": { "type": "string", "minLength": 1 },
+    "primary_sources": { "type": "string", "minLength": 1 },
+    "secondary_sources": { "type": ["string", "null"] },
+    "source_quality_score": { "type": "integer", "minimum": 0, "maximum": 4 },
+    "source_quality_rationale": { "type": "string", "minLength": 1 },
+    "system_type": {
+      "type": "string",
+      "enum": [
+        "predictive_model", "scoring_system", "ranking_system",
+        "biometric_identification", "biometric_categorisation", "facial_recognition",
+        "risk_assessment", "eligibility_determination", "fraud_detection",
+        "recommender_or_allocation_system", "generative_ai_system",
+        "automated_decision_system", "surveillance_or_monitoring_system",
+        "other", "unknown"
+      ]
+    },
+    "model_or_algorithm_type": { "type": ["string", "null"] },
+    "deployer": { "type": "string", "default": "unknown" },
+    "deployer_type": {
+      "type": "string",
+      "enum": [
+        "public_authority", "private_company", "public_private_partnership",
+        "education_institution", "healthcare_provider", "law_enforcement_agency",
+        "court_or_justice_body", "employer", "platform",
+        "border_or_migration_authority", "welfare_or_social_service_agency",
+        "financial_institution", "unknown"
+      ]
+    },
+    "vendor": { "type": ["string", "null"] },
+    "public_private_partnership": { "type": ["boolean", "null"] },
+    "deployment_status": {
+      "type": "string",
+      "enum": [
+        "deployed", "piloted", "procured", "planned", "withdrawn",
+        "suspended", "litigated", "reported_incident", "unknown"
+      ]
+    },
+    "affected_population": { "type": "string", "minLength": 1 },
+    "estimated_scale": { "type": ["string", "null"] },
+    "scale_basis": { "type": ["string", "null"] },
+    "annex_iii_area": {
+      "type": "string",
+      "enum": [
+        "biometrics", "critical_infrastructure", "education_vocational_training",
+        "employment_worker_management", "essential_services_benefits",
+        "law_enforcement", "migration_asylum_border_control",
+        "justice_democratic_processes", "non_annex_comparator", "unclear"
+      ]
+    },
+    "annex_iii_subcategory": { "type": ["string", "null"] },
+    "annex_mapping_type": {
+      "type": "string",
+      "enum": ["direct", "analogous", "comparator", "unclear"]
+    },
+    "annex_mapping_confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low", "unknown"]
+    },
+    "annex_mapping_rationale": { "type": "string", "minLength": 1 },
+    "eu_scope_note": { "type": ["string", "null"] },
+    "decision_criticality_score": { "type": ["integer", "null"], "minimum": 0, "maximum": 2 },
+    "decision_criticality_rationale": { "type": "string" },
+    "decision_criticality_confidence": {
+      "type": "string", "enum": ["high", "medium", "low", "unknown"]
+    },
+    "autonomy_score": { "type": ["integer", "null"], "minimum": 0, "maximum": 2 },
+    "autonomy_rationale": { "type": "string" },
+    "autonomy_confidence": { "type": "string", "enum": ["high", "medium", "low", "unknown"] },
+    "vulnerability_score": { "type": ["integer", "null"], "minimum": 0, "maximum": 2 },
+    "vulnerability_rationale": { "type": "string" },
+    "vulnerability_confidence": { "type": "string", "enum": ["high", "medium", "low", "unknown"] },
+    "oversight_score": { "type": ["integer", "null"], "minimum": 0, "maximum": 2 },
+    "oversight_rationale": { "type": "string" },
+    "oversight_confidence": { "type": "string", "enum": ["high", "medium", "low", "unknown"] },
+    "recourse_score": { "type": ["integer", "null"], "minimum": 0, "maximum": 2 },
+    "recourse_rationale": { "type": "string" },
+    "recourse_confidence": { "type": "string", "enum": ["high", "medium", "low", "unknown"] },
+    "scale_score": { "type": ["integer", "null"], "minimum": 0, "maximum": 2 },
+    "scale_rationale": { "type": "string" },
+    "scale_confidence": { "type": "string", "enum": ["high", "medium", "low", "unknown"] },
+    "opacity_score": { "type": ["integer", "null"], "minimum": 0, "maximum": 2 },
+    "opacity_rationale": { "type": "string" },
+    "opacity_confidence": { "type": "string", "enum": ["high", "medium", "low", "unknown"] },
+    "monitoring_score": { "type": ["integer", "null"], "minimum": 0, "maximum": 2 },
+    "monitoring_rationale": { "type": "string" },
+    "monitoring_confidence": { "type": "string", "enum": ["high", "medium", "low", "unknown"] },
+    "public_record_excerpt": { "type": ["string", "null"] },
+    "coding_notes": { "type": ["string", "null"] },
+    "ambiguity_flags": { "type": ["string", "null"] },
+    "exclusion_reason": { "type": ["string", "null"] },
+    "last_verified_date": {
+      "type": ["string", "null"],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    }
+  },
+  "additionalProperties": false
+}

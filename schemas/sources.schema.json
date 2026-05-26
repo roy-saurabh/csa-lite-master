@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://placeholder/csa-lite/schemas/sources.schema.json",
+  "title": "SourceRecord",
+  "description": "Schema for entries in the CSA-lite sources manifest.",
+  "type": "object",
+  "required": ["source_id", "case_id", "url", "title", "source_type"],
+  "properties": {
+    "source_id": { "type": "string", "minLength": 1 },
+    "case_id": {
+      "type": "string",
+      "pattern": "^CSA-LITE-\\d{4}$"
+    },
+    "url": {
+      "type": "string",
+      "minLength": 1,
+      "description": "URL or DOI of the source"
+    },
+    "title": { "type": "string", "minLength": 1 },
+    "source_type": {
+      "type": "string",
+      "enum": [
+        "news_article",
+        "government_report",
+        "court_ruling",
+        "academic_paper",
+        "ngo_report",
+        "audit_report",
+        "freedom_of_information",
+        "parliamentary_document",
+        "regulatory_filing",
+        "company_disclosure",
+        "other"
+      ]
+    },
+    "access_date": {
+      "type": ["string", "null"],
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+    },
+    "archive_url": { "type": ["string", "null"] },
+    "language": {
+      "type": "string",
+      "default": "en",
+      "description": "ISO 639-1 two-letter language code"
+    },
+    "quality_contribution": {
+      "type": ["string", "null"],
+      "description": "Brief note on how this source contributes to the quality score"
+    }
+  },
+  "additionalProperties": false
+}
