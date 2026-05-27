@@ -1,0 +1,9 @@
+dimension,n_high,n_medium,n_low,n_unknown,pct_high,pct_medium,pct_low,pct_unknown,mean_confidence_weight,dataset_version
+decision_criticality,36,9,0,0,80.0,20.0,0.0,0.0,0.932,0.2.0
+autonomy,38,7,0,0,84.4,15.6,0.0,0.0,0.9471,0.2.0
+vulnerability,23,22,0,0,51.1,48.9,0.0,0.0,0.8338,0.2.0
+oversight,15,30,0,0,33.3,66.7,0.0,0.0,0.7733,0.2.0
+recourse,18,27,0,0,40.0,60.0,0.0,0.0,0.796,0.2.0
+scale,43,2,0,0,95.6,4.4,0.0,0.0,0.9849,0.2.0
+opacity,31,14,0,0,68.9,31.1,0.0,0.0,0.8942,0.2.0
+monitoring,26,19,0,0,57.8,42.2,0.0,0.0,0.8564,0.2.0

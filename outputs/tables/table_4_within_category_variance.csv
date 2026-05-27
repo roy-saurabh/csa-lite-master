@@ -1,0 +1,9 @@
+annex_iii_area,n_cases,min,q1,median,q3,max,iqr,mean,std,n_low,n_moderate,n_high,n_severe,n_high_or_severe,variance_interpretation,dataset_version
+biometrics,5,9,9.0,12.0,13.0,16,4.0,11.8,2.9496,0,0,2,3,5,Moderate within-category variance,0.2.0
+education_vocational_training,2,10,11.0,12.0,13.0,14,2.0,12.0,2.8284,0,0,1,1,2,Moderate within-category variance,0.2.0
+employment_worker_management,9,9,11.0,13.0,13.0,13,2.0,12.0,1.4142,0,0,3,6,9,Low within-category variance,0.2.0
+essential_services_benefits,11,10,13.5,14.0,15.0,16,1.5,14.0,1.7321,0,0,1,10,11,Moderate within-category variance,0.2.0
+justice_democratic_processes,1,8,8.0,8.0,8.0,8,0.0,8.0,,0,0,1,0,1,Insufficient data,0.2.0
+law_enforcement,7,11,11.0,11.0,13.0,14,2.0,12.0,1.4142,0,0,4,3,7,Low within-category variance,0.2.0
+migration_asylum_border_control,3,11,11.5,12.0,14.0,16,2.5,13.0,2.6458,0,0,1,2,3,Moderate within-category variance,0.2.0
+non_annex_comparator,7,7,7.5,10.0,11.5,12,4.0,9.5714,2.2254,0,2,3,2,5,Moderate within-category variance,0.2.0

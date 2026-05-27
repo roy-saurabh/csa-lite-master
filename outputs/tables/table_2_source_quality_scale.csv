@@ -1,0 +1,6 @@
+Score,Label,Definition
+0,Unusable,"No usable public record; source absent, paywalled, or removed"
+1,Low,"Single low-credibility source; blog, social media, or unverified report"
+2,Medium,"One or more credible secondary sources (journalism, NGO, government summary)"
+3,High,"Primary documentation (official report, court record, regulator finding, or investigation with methodology)"
+4,Very High,"Multiple independent primary sources with full methodology, including regulatory, judicial, or academic peer-reviewed documentation"

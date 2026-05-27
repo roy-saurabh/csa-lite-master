@@ -1,0 +1,9 @@
+dimension,mean_score,median_score,n_score_0,n_score_1,n_score_2,n_missing,missingness_rate,high_score_rate,mean_confidence_weight,dataset_version
+decision_criticality,1.7556,2.0,2,7,36,0,0.0,0.8,0.932,0.2.0
+autonomy,1.5778,2.0,0,19,26,0,0.0,0.5778,0.9471,0.2.0
+vulnerability,1.4222,1.0,2,22,21,0,0.0,0.4667,0.8338,0.2.0
+oversight,1.1111,1.0,4,32,9,0,0.0,0.2,0.7733,0.2.0
+recourse,1.2889,1.0,3,26,16,0,0.0,0.3556,0.796,0.2.0
+scale,1.6222,2.0,1,15,29,0,0.0,0.6444,0.9849,0.2.0
+opacity,1.7333,2.0,0,12,33,0,0.0,0.7333,0.8942,0.2.0
+monitoring,1.5556,2.0,0,20,25,0,0.0,0.5556,0.8564,0.2.0

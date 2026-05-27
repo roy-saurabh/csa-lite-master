@@ -1,0 +1,47 @@
+case_id,case_name,n_errors,n_warnings,validation_status,dataset_version
+__CORPUS__,All 45 cases,0,0,pass,0.2.0
+CSA-LITE-0001,COMPAS Recidivism Risk Scoring Tool,0,0,pass,0.2.0
+CSA-LITE-0002,Australian Robodebt Welfare Debt Recovery,0,0,pass,0.2.0
+CSA-LITE-0003,UK Ofqual A-Level Calculated Grades Algorithm 2020,0,0,pass,0.2.0
+CSA-LITE-0004,Amazon AI CV Screening Tool,0,0,pass,0.2.0
+CSA-LITE-0005,SyRI Netherlands Welfare Fraud Detection,0,0,pass,0.2.0
+CSA-LITE-0006,PredPol Predictive Policing Los Angeles,0,0,pass,0.2.0
+CSA-LITE-0007,IBM Watson for Oncology Treatment Recommendations,0,0,pass,0.2.0
+CSA-LITE-0008,HireVue AI Video Interview Screening,0,0,pass,0.2.0
+CSA-LITE-0009,Allegheny Family Screening Tool Child Welfare,0,0,pass,0.2.0
+CSA-LITE-0010,Durham Constabulary HART Custody Risk Tool,0,0,pass,0.2.0
+CSA-LITE-0011,France Parcoursup University Admission Algorithm,0,0,pass,0.2.0
+CSA-LITE-0012,Netherlands Childcare Benefit Algorithm Toeslagenaffaire,0,0,pass,0.2.0
+CSA-LITE-0013,UK Home Office Visa Streaming Algorithm,0,0,pass,0.2.0
+CSA-LITE-0014,Detroit Police Facial Recognition False Arrest,0,0,pass,0.2.0
+CSA-LITE-0015,Clearview AI Facial Recognition Mass Surveillance,0,0,pass,0.2.0
+CSA-LITE-0016,Arkansas Medicaid Personal Care Algorithm,0,0,pass,0.2.0
+CSA-LITE-0017,Optum Patient Risk Algorithm Racial Bias,0,0,pass,0.2.0
+CSA-LITE-0018,Houston ISD EVAAS Teacher Evaluation AI,0,0,pass,0.2.0
+CSA-LITE-0019,EU iBorderCtrl Automated Border Deception Detection,0,0,pass,0.2.0
+CSA-LITE-0020,Schufa Automated Credit Scoring ECJ Case,0,0,pass,0.2.0
+CSA-LITE-0021,UK DWP Universal Credit Fraud Detection AI,0,0,pass,0.2.0
+CSA-LITE-0022,Meta Facebook Content Amplification Algorithm,0,0,pass,0.2.0
+CSA-LITE-0023,Twitter Algorithmic Image Cropping Racial Bias,0,0,pass,0.2.0
+CSA-LITE-0024,Palantir Gotham Chicago Police Department,0,0,pass,0.2.0
+CSA-LITE-0025,New York City Pre-Trial Risk Assessment Instrument,0,0,pass,0.2.0
+CSA-LITE-0026,HunchLab Predictive Policing Philadelphia,0,0,pass,0.2.0
+CSA-LITE-0027,NHS Babylon GP at Hand AI Triage,0,0,pass,0.2.0
+CSA-LITE-0028,Uber Driver Algorithmic Deactivation,0,0,pass,0.2.0
+CSA-LITE-0029,Idaho Medicaid Personal Care Acuity Algorithm,0,0,pass,0.2.0
+CSA-LITE-0030,Canada IRCC Chinook Immigration Application Tool,0,0,pass,0.2.0
+CSA-LITE-0031,London Metropolitan Police Live Facial Recognition,0,0,pass,0.2.0
+CSA-LITE-0032,TikTok For You Page Recommendation Algorithm,0,0,pass,0.2.0
+CSA-LITE-0033,LinkedIn Job Recommendation Algorithmic Bias,0,0,pass,0.2.0
+CSA-LITE-0034,Epic Sepsis Prediction Model Clinical Deployment,0,0,pass,0.2.0
+CSA-LITE-0035,Austria AMS Employment Profiling Algorithm,0,0,pass,0.2.0
+CSA-LITE-0036,French Judicial Analytics Open Data Justice AI,0,0,pass,0.2.0
+CSA-LITE-0037,SenseTime Xinjiang Ethnic Surveillance System,0,0,pass,0.2.0
+CSA-LITE-0038,New York City Teacher Value-Added Model Publication,0,0,pass,0.2.0
+CSA-LITE-0039,Workday AI Hiring Algorithm Discrimination Lawsuit,0,0,pass,0.2.0
+CSA-LITE-0040,Chicago Police Strategic Subject List,0,0,pass,0.2.0
+CSA-LITE-0041,Pymetrics AI Hiring Games Unilever Partnership,0,0,pass,0.2.0
+CSA-LITE-0042,France CAF Social Benefits Algorithmic Fraud Scoring,0,0,pass,0.2.0
+CSA-LITE-0043,Google Photos Racial Misclassification of Users,0,0,pass,0.2.0
+CSA-LITE-0044,UK DWP Targeted Case Review AI Investigation,0,0,pass,0.2.0
+CSA-LITE-0045,South Wales Police Automated Facial Recognition Bridges Case,0,0,pass,0.2.0

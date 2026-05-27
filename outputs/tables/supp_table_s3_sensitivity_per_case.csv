@@ -1,0 +1,46 @@
+case_id,case_name,csi_zero,csi_neutral_check,csi_conservative,band_zero,band_neutral_check,band_conservative,sensitivity_band_change,dataset_version
+CSA-LITE-0001,COMPAS Recidivism Risk Scoring Tool,14,14,14,severe,severe,severe,False,0.2.0
+CSA-LITE-0002,Australian Robodebt Welfare Debt Recovery,16,16,16,severe,severe,severe,False,0.2.0
+CSA-LITE-0003,UK Ofqual A-Level Calculated Grades Algorithm 2020,14,14,14,severe,severe,severe,False,0.2.0
+CSA-LITE-0004,Amazon AI CV Screening Tool,12,12,12,severe,severe,severe,False,0.2.0
+CSA-LITE-0005,SyRI Netherlands Welfare Fraud Detection,16,16,16,severe,severe,severe,False,0.2.0
+CSA-LITE-0006,PredPol Predictive Policing Los Angeles,12,12,12,severe,severe,severe,False,0.2.0
+CSA-LITE-0007,IBM Watson for Oncology Treatment Recommendations,10,10,10,high,high,high,False,0.2.0
+CSA-LITE-0008,HireVue AI Video Interview Screening,13,13,13,severe,severe,severe,False,0.2.0
+CSA-LITE-0009,Allegheny Family Screening Tool Child Welfare,10,10,10,high,high,high,False,0.2.0
+CSA-LITE-0010,Durham Constabulary HART Custody Risk Tool,11,11,11,high,high,high,False,0.2.0
+CSA-LITE-0011,France Parcoursup University Admission Algorithm,10,10,10,high,high,high,False,0.2.0
+CSA-LITE-0012,Netherlands Childcare Benefit Algorithm Toeslagenaffaire,16,16,16,severe,severe,severe,False,0.2.0
+CSA-LITE-0013,UK Home Office Visa Streaming Algorithm,16,16,16,severe,severe,severe,False,0.2.0
+CSA-LITE-0014,Detroit Police Facial Recognition False Arrest,12,12,12,severe,severe,severe,False,0.2.0
+CSA-LITE-0015,Clearview AI Facial Recognition Mass Surveillance,13,13,13,severe,severe,severe,False,0.2.0
+CSA-LITE-0016,Arkansas Medicaid Personal Care Algorithm,14,14,14,severe,severe,severe,False,0.2.0
+CSA-LITE-0017,Optum Patient Risk Algorithm Racial Bias,14,14,14,severe,severe,severe,False,0.2.0
+CSA-LITE-0018,Houston ISD EVAAS Teacher Evaluation AI,13,13,13,severe,severe,severe,False,0.2.0
+CSA-LITE-0019,EU iBorderCtrl Automated Border Deception Detection,11,11,11,high,high,high,False,0.2.0
+CSA-LITE-0020,Schufa Automated Credit Scoring ECJ Case,13,13,13,severe,severe,severe,False,0.2.0
+CSA-LITE-0021,UK DWP Universal Credit Fraud Detection AI,14,14,14,severe,severe,severe,False,0.2.0
+CSA-LITE-0022,Meta Facebook Content Amplification Algorithm,12,12,12,severe,severe,severe,False,0.2.0
+CSA-LITE-0023,Twitter Algorithmic Image Cropping Racial Bias,7,7,7,moderate,moderate,moderate,False,0.2.0
+CSA-LITE-0024,Palantir Gotham Chicago Police Department,11,11,11,high,high,high,False,0.2.0
+CSA-LITE-0025,New York City Pre-Trial Risk Assessment Instrument,11,11,11,high,high,high,False,0.2.0
+CSA-LITE-0026,HunchLab Predictive Policing Philadelphia,11,11,11,high,high,high,False,0.2.0
+CSA-LITE-0027,NHS Babylon GP at Hand AI Triage,7,7,7,moderate,moderate,moderate,False,0.2.0
+CSA-LITE-0028,Uber Driver Algorithmic Deactivation,13,13,13,severe,severe,severe,False,0.2.0
+CSA-LITE-0029,Idaho Medicaid Personal Care Acuity Algorithm,14,14,14,severe,severe,severe,False,0.2.0
+CSA-LITE-0030,Canada IRCC Chinook Immigration Application Tool,12,12,12,severe,severe,severe,False,0.2.0
+CSA-LITE-0031,London Metropolitan Police Live Facial Recognition,9,9,9,high,high,high,False,0.2.0
+CSA-LITE-0032,TikTok For You Page Recommendation Algorithm,12,12,12,severe,severe,severe,False,0.2.0
+CSA-LITE-0033,LinkedIn Job Recommendation Algorithmic Bias,9,9,9,high,high,high,False,0.2.0
+CSA-LITE-0034,Epic Sepsis Prediction Model Clinical Deployment,11,11,11,high,high,high,False,0.2.0
+CSA-LITE-0035,Austria AMS Employment Profiling Algorithm,11,11,11,high,high,high,False,0.2.0
+CSA-LITE-0036,French Judicial Analytics Open Data Justice AI,8,8,8,high,high,high,False,0.2.0
+CSA-LITE-0037,SenseTime Xinjiang Ethnic Surveillance System,16,16,16,severe,severe,severe,False,0.2.0
+CSA-LITE-0038,New York City Teacher Value-Added Model Publication,11,11,11,high,high,high,False,0.2.0
+CSA-LITE-0039,Workday AI Hiring Algorithm Discrimination Lawsuit,13,13,13,severe,severe,severe,False,0.2.0
+CSA-LITE-0040,Chicago Police Strategic Subject List,14,14,14,severe,severe,severe,False,0.2.0
+CSA-LITE-0041,Pymetrics AI Hiring Games Unilever Partnership,13,13,13,severe,severe,severe,False,0.2.0
+CSA-LITE-0042,France CAF Social Benefits Algorithmic Fraud Scoring,13,13,13,severe,severe,severe,False,0.2.0
+CSA-LITE-0043,Google Photos Racial Misclassification of Users,8,8,8,high,high,high,False,0.2.0
+CSA-LITE-0044,UK DWP Targeted Case Review AI Investigation,14,14,14,severe,severe,severe,False,0.2.0
+CSA-LITE-0045,South Wales Police Automated Facial Recognition Bridges Case,9,9,9,high,high,high,False,0.2.0

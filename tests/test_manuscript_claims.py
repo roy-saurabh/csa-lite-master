@@ -5,9 +5,13 @@ Verifies every numerical claim made in the CSA-lite manuscript
 (CSA_lite_MDPI_Electronics_v0.2.2.md) that can be derived from the
 committed v0.2.0 corpus and pipeline.
 
-32 tests total:
-  TestCorpusProperties    (15 tests) — data file + scoring claims
+32 tests total covering 35 manuscript verification items:
+  TestCorpusProperties    (15 tests) — data file + scoring claims (items 1–14)
   TestPipelineArtifacts   (17 tests) — run-once session fixture + metadata
+    Items 15–35 verified (some items merged as assertions within single tests):
+    - Item 18 (validation_report.md) merged into test_validation_report_json_exists
+    - Items 32–33 (.zenodo.json test count / figure count) merged into test_zenodo_json_version_is_022
+    - Item 35 (license wording) merged into test_zenodo_json_version_is_022
 """
 
 from __future__ import annotations
@@ -225,12 +229,17 @@ class TestPipelineArtifacts:
             assert (tables_dir / t).exists(), f"Missing supplementary table: {t}"
 
     def test_validation_report_json_exists(self, pipeline_outputs):
-        """Reproducibility claim: validation_report.json written by pipeline."""
+        """Reproducibility claim: validation_report.json AND validation_report.md written by pipeline."""
         import json
-        p = pipeline_outputs / "reports" / "validation_report.json"
-        assert p.exists(), "validation_report.json not found"
-        data = json.loads(p.read_text())
+        # Item 19: validation_report.json exists
+        p_json = pipeline_outputs / "reports" / "validation_report.json"
+        assert p_json.exists(), "validation_report.json not found"
+        data = json.loads(p_json.read_text())
         assert data.get("is_valid") is True
+        # Item 18: validation_report.md exists
+        p_md = pipeline_outputs / "reports" / "validation_report.md"
+        assert p_md.exists(), "validation_report.md not found"
+        assert "Validation Report" in p_md.read_text()
 
     def test_reproducibility_report_md_exists(self, pipeline_outputs):
         """Reproducibility claim: reproducibility_report.md written by pipeline."""
@@ -361,11 +370,37 @@ class TestPipelineArtifacts:
         )
 
     def test_zenodo_json_version_is_022(self):
-        """Check 32: .zenodo.json version must be 0.2.2."""
+        """Check 31: .zenodo.json version must be 0.2.2.
+        Check 32: .zenodo.json notes must mention 138 tests.
+        Check 33: .zenodo.json description must mention six manuscript figures (not eight).
+        Check 35: README license wording must match dual-license manuscript claim.
+        """
         import json
         zenodo_path = _REPO_ROOT / ".zenodo.json"
         assert zenodo_path.exists(), ".zenodo.json not found"
         zenodo = json.loads(zenodo_path.read_text())
+
+        # Item 31
         assert zenodo.get("version") == "0.2.2", (
             f".zenodo.json version is '{zenodo.get('version')}', expected '0.2.2'"
+        )
+        # Item 32 — notes must mention 138 tests
+        notes = zenodo.get("notes", "")
+        assert "138" in notes, (
+            f".zenodo.json notes do not mention 138 tests; notes='{notes[:120]}'"
+        )
+        # Item 33 — description must say six manuscript figures, not eight
+        description = zenodo.get("description", "")
+        assert "Six manuscript figures" in description or "six manuscript figures" in description, (
+            "'.zenodo.json description should say 'Six manuscript figures'"
+        )
+        assert "Eight matplotlib figures" not in description, (
+            ".zenodo.json description still says 'Eight matplotlib figures'; update to six"
+        )
+        # Item 35 — README dual-license wording matches manuscript claim
+        readme_text = _README.read_text(encoding="utf-8")
+        assert "MIT" in readme_text, "README must mention MIT license for code"
+        assert "CC BY 4.0" in readme_text, "README must mention CC BY 4.0 for data/docs"
+        assert "generated tables" in readme_text.lower() or "generated figures" in readme_text.lower(), (
+            "README license section must cover generated outputs (CC BY 4.0)"
         )

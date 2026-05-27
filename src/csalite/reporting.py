@@ -290,6 +290,10 @@ def build_reproducibility_report_json(
     return {
         "schema": PROJECT_NAME,
         "version": PROJECT_VERSION,
+        "dataset_version": "0.2.0",
+        "release_version": f"v{PROJECT_VERSION}",
+        "doi": "10.5281/zenodo.20406743",
+        "concept_doi": "10.5281/zenodo.20403165",
         "generated": ts,
         "input_file": str(input_path) if input_path else None,
         "n_cases": n_cases,
@@ -301,6 +305,18 @@ def build_reproducibility_report_json(
         "supplementary_tables": supp_tables_status,
         "figures": figs_status,
         "outdir": str(outdir),
+        "versioning_note": (
+            "The 45-case corpus is fixed as dataset version 0.2.0. "
+            "The v0.2.2 release updates the software pipeline, generated manuscript outputs, "
+            "validation report, case audit report, artifact manifest, documentation, and Zenodo archive "
+            "without changing the 45-case corpus."
+        ),
+        "disclaimer": (
+            "CSA-lite does not produce legal classifications, compliance determinations, "
+            "conformity assessments, or validated harm predictions. EU AI Act Annex III "
+            "categories are used only as an analytical reference frame for grouping "
+            "documented deployments by use area."
+        ),
     }
 
 
@@ -507,7 +523,7 @@ def build_reproducibility_report(
     lines.append("\n## Command\n")
     lines.append(
         f"```\ncsa-lite all --input {input_path} --outdir {outdir}\n```\n\n"
-        "*(Equivalent: `csalite all --input data/processed/csa_lite_cases.csv --outdir outputs`)*"
+        "*(Canonical form: `csalite all --input data/processed/csa_lite_cases.csv --outdir outputs`)*"
     )
 
     lines.append("\n## Python Environment\n")

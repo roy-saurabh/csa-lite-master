@@ -56,13 +56,9 @@ dmypy.json
 .DS_Store
 Thumbs.db
 
-# Outputs (generated — not version controlled; READMEs are tracked via negation)
-outputs/figures/*.png
-outputs/figures/*.svg
-outputs/tables/*.csv
-outputs/reports/reproducibility_report.md
-outputs/reports/reproducibility_report.json
-outputs/reports/validation_report.json
+# Generated outputs ARE version-controlled (Option A: committed to GitHub for public
+# accessibility as required by the manuscript's Data/Code Availability statements).
+# Only HTML reports are excluded.
 outputs/reports/*.html
 
 # Processed data — generated outputs excluded; curated inputs tracked
@@ -82,6 +78,3 @@ data/interim/*.csv
 # Test-side-effect scored_cases written by `all` command during test runs
 tests/fixtures/scored_cases.csv
 tests/fixtures/scored_cases.jsonl
-
-# Manifest is generated — not version controlled
-outputs/reports/manuscript_artifact_manifest.json

@@ -1,0 +1,9 @@
+annex_iii_area,n_cases,n_direct,n_analogous,n_comparator,n_unclear,n_countries,most_common_deployer_type,median_source_quality,median_evidence_completeness,dataset_version
+biometrics,5,5,0,0,0,3,law_enforcement_agency,4.0,0.915,0.2.0
+education_vocational_training,2,2,0,0,0,2,public_authority,3.0,0.8513,0.2.0
+employment_worker_management,9,9,0,0,0,3,employer,3.0,0.8725,0.2.0
+essential_services_benefits,11,10,1,0,0,6,public_authority,4.0,0.915,0.2.0
+justice_democratic_processes,1,0,1,0,0,1,public_authority,2.0,0.745,0.2.0
+law_enforcement,7,7,0,0,0,2,law_enforcement_agency,3.0,0.83,0.2.0
+migration_asylum_border_control,3,3,0,0,0,3,border_or_migration_authority,3.0,0.83,0.2.0
+non_annex_comparator,7,0,0,7,0,3,platform,3.0,0.83,0.2.0
