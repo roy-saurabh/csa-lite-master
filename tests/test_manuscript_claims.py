@@ -293,11 +293,16 @@ class TestPipelineArtifacts:
         )
 
     def test_citation_cff_version_and_doi(self):
-        """CITATION.cff must use version v0.2.1 and DOI 10.5281/zenodo.20404302."""
+        """CITATION.cff must use version v0.2.2 and the concept DOI 10.5281/zenodo.20403165.
+
+        The version-specific DOI for v0.2.2 is assigned by Zenodo when the GitHub
+        release is created. Until then CITATION.cff uses the concept DOI which always
+        resolves to the latest published version.
+        """
         text = _CITATION_CFF.read_text(encoding="utf-8")
-        assert "0.2.1" in text, "CITATION.cff must contain version 0.2.1"
-        assert "10.5281/zenodo.20404302" in text, (
-            "CITATION.cff must contain DOI 10.5281/zenodo.20404302"
+        assert "0.2.2" in text, "CITATION.cff must contain version 0.2.2"
+        assert "10.5281/zenodo.20403165" in text, (
+            "CITATION.cff must contain concept DOI 10.5281/zenodo.20403165"
         )
 
     def test_citation_does_not_claim_publication(self):

@@ -373,7 +373,7 @@ def plot_evidence_confidence_matrix(df: pd.DataFrame, outdir: Path) -> plt.Figur
     cbar.set_label("Evidence Confidence", fontsize=8)
 
     ax.set_title(
-        "Evidence Confidence Matrix by Case and Dimension\n(blue intensity = confidence; grey = missing score)",
+        "Evidence Confidence Matrix by Case and Dimension",
         fontsize=11, fontweight="bold",
     )
     fig.tight_layout()

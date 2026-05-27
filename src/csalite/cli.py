@@ -172,7 +172,7 @@ def analyze(
     input: Path = typer.Option(..., "--input", "-i", help="Scored cases CSV or JSONL"),
     outdir: Path = typer.Option(..., "--outdir", "-d", help="Output directory for tables"),
 ) -> None:
-    """Generate all 7 analysis tables from a scored cases file."""
+    """Generate all 8 analysis tables from a scored cases file."""
     from csalite.analysis import compute_all_tables
     from csalite.io import write_table_csv
 

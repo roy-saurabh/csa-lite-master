@@ -1,6 +1,6 @@
 # CSA-Lite v0.2.1 — Manuscript Artifact Manifest
 
-_Generated: 2026-05-27T08:36:33_ | Dataset version: 0.2.0 | Package version: 0.2.1
+_Generated: 2026-05-27T08:42:12_ | Dataset version: 0.2.0 | Package version: 0.2.1
 
 **Command:** `csalite all --input data/processed/csa_lite_cases.csv --outdir outputs`
 
@@ -33,17 +33,17 @@ _Generated: 2026-05-27T08:36:33_ | Dataset version: 0.2.0 | Package version: 0.2
 | Filename | Format | Exists | SHA256 (prefix) |
 |----------|--------|--------|-----------------|
 | `fig_1_pipeline_architecture.png` | png | ✓ | `3f0f26e791b577b7` |
-| `fig_1_pipeline_architecture.svg` | svg | ✓ | `0e4de48383740dea` |
+| `fig_1_pipeline_architecture.svg` | svg | ✓ | `af27660c22f1e316` |
 | `fig_2_corpus_by_annex_area.png` | png | ✓ | `160fcaeec529fc0b` |
-| `fig_2_corpus_by_annex_area.svg` | svg | ✓ | `3ccea7c84fb70239` |
+| `fig_2_corpus_by_annex_area.svg` | svg | ✓ | `96fc3597edbc6018` |
 | `fig_3_context_severity_by_annex_area.png` | png | ✓ | `1cd41665465015f8` |
-| `fig_3_context_severity_by_annex_area.svg` | svg | ✓ | `991bae21fd443d84` |
+| `fig_3_context_severity_by_annex_area.svg` | svg | ✓ | `1036ff82810738e5` |
 | `fig_4_dimension_heatmap.png` | png | ✓ | `4739dae04abdfe0d` |
-| `fig_4_dimension_heatmap.svg` | svg | ✓ | `e5069d8fe16574d3` |
-| `fig_5_evidence_confidence_matrix.png` | png | ✓ | `f6a9d3159e43125a` |
-| `fig_5_evidence_confidence_matrix.svg` | svg | ✓ | `adead94cb9a6cb39` |
+| `fig_4_dimension_heatmap.svg` | svg | ✓ | `7584c1c6c866811e` |
+| `fig_5_evidence_confidence_matrix.png` | png | ✓ | `e162af37b28e84a7` |
+| `fig_5_evidence_confidence_matrix.svg` | svg | ✓ | `ce3d3decbfcd7b21` |
 | `fig_6_sensitivity_comparison.png` | png | ✓ | `16f4b8758bd56f9b` |
-| `fig_6_sensitivity_comparison.svg` | svg | ✓ | `653ecd9e82790380` |
+| `fig_6_sensitivity_comparison.svg` | svg | ✓ | `e54f0656f4daa556` |
 
 ## Reports
 
