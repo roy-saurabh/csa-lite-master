@@ -163,7 +163,7 @@ The corpus is stored in a JSON-schema-validated structure (see companion reposit
 
 ## **5.2 Validation**
 
-Validation runs an 18-rule check covering required fields, value-range constraints, mapping-rationale presence, evidence-completeness consistency, and source-record well-formedness. Validation produces a structured report enumerating any failures by case and rule. The pipeline refuses to compute scores on a corpus that contains validation failures. The v0.2.0 release passes all 18 validation rules and the full 102-test repository suite.
+Validation runs an 18-rule check covering required fields, value-range constraints, mapping-rationale presence, evidence-completeness consistency, and source-record well-formedness. Validation produces a structured report enumerating any failures by case and rule. The pipeline refuses to compute scores on a corpus that contains validation failures. The v0.2.0 corpus passes all 18 validation rules. The current repository (v0.2.1) passes the full 122-test suite.
 
 ## **5.3 Scoring**
 
@@ -347,7 +347,7 @@ The structured CSA-lite corpus, coding schema, scoring scripts, analysis noteboo
 
 # **Code Availability Statement**
 
-The companion code repository at https://github.com/roy-saurabh/csa-lite-master contains the JSON schema, validation routines, scoring implementation, sensitivity analysis, table-generation scripts, figure-generation scripts, tests (115 passing), and reproducibility instructions. All tables and figures in the manuscript can be regenerated from the committed v0.2.0 dataset using the documented command-line workflow (csalite all \--input data/processed/csa\_lite\_cases.csv \--outdir outputs). The release is licensed under CC BY 4.0.
+The companion code repository at https://github.com/roy-saurabh/csa-lite-master contains the JSON schema, validation routines, scoring implementation, sensitivity analysis, table-generation scripts, figure-generation scripts, supplementary tables (S1–S7), case audit reports, tests (122 passing), and reproducibility instructions. All tables and figures in the manuscript can be regenerated from the committed v0.2.0 dataset using the documented command-line workflow (csalite all \--input data/processed/csa\_lite\_cases.csv \--outdir outputs). The current release (v0.2.1, DOI: https://doi.org/10.5281/zenodo.20404302) is licensed under CC BY 4.0. The analysis dataset is archived as v0.2.0 (DOI: https://doi.org/10.5281/zenodo.20403848); the concept DOI https://doi.org/10.5281/zenodo.20403165 always resolves to the latest version.
 
 # **Funding**
 
@@ -381,4 +381,4 @@ The author thanks the maintainers of the AIAAIC repository and other public AI i
 
 **\[9\]** Raji, I. D.; Smart, A.; White, R. N.; et al. Closing the AI Accountability Gap: Defining an End-to-End Framework for Internal Algorithmic Auditing. FAccT 2020\.
 
-**\[10\]** Saurabh, R. CSA-Lite: Context-Sliced AI Assurance Lite (v0.2.0). Zenodo, 2026\. https://doi.org/10.5281/zenodo.20403848
+**\[10\]** Saurabh, R. CSA-Lite: Context-Sliced AI Assurance Lite (v0.2.1). Zenodo, 2026\. https://doi.org/10.5281/zenodo.20404302 (concept DOI: https://doi.org/10.5281/zenodo.20403165)
