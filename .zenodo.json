@@ -34,7 +34,21 @@
       "relation": "isSupplementTo",
       "resource_type": "software",
       "scheme": "url"
+    },
+    {
+      "identifier": "10.5281/zenodo.20403165",
+      "relation": "isVersionOf",
+      "resource_type": "software",
+      "scheme": "doi",
+      "description": "Zenodo concept DOI (always resolves to the latest version)"
+    },
+    {
+      "identifier": "10.5281/zenodo.20407828",
+      "relation": "isIdenticalTo",
+      "resource_type": "software",
+      "scheme": "doi",
+      "description": "Exact v0.2.2 version DOI used in the MDPI Electronics manuscript"
     }
   ],
-  "notes": "Companion repository for the CSA-Lite manuscript submitted to MDPI Electronics (under review, not yet accepted or published). v0.2.2 corrects Figure 5 title (removes stale '(grey = missing score)' subtitle absent from the v0.2.0 corpus), fixes CLI analyze docstring count (7→8 tables), and bumps version metadata. No case data, scores, or manuscript statistical claims are changed. Dataset version remains 0.2.0 (45 cases). All tables and figures are reproducible via 'csalite all --input data/processed/csa_lite_cases.csv --outdir outputs'. Pipeline: 138 tests pass. License: MIT for code (src/); CC BY 4.0 for dataset, documentation, and generated outputs."
+  "notes": "Companion repository for the CSA-Lite manuscript submitted to MDPI Electronics (under review, not yet accepted or published). v0.2.2 corrects Figure 5 title (removes stale '(grey = missing score)' subtitle absent from the v0.2.0 corpus), fixes CLI analyze docstring count (7→8 tables), and bumps version metadata. No case data, scores, or manuscript statistical claims are changed. Dataset version remains 0.2.0 (45 cases). All tables and figures are reproducible via 'csalite all --input data/processed/csa_lite_cases.csv --outdir outputs'. Pipeline: 138 tests pass. Code MIT; data/docs/generated outputs CC BY 4.0. Zenodo concept DOI: 10.5281/zenodo.20403165. Exact v0.2.2 version DOI used in manuscript: 10.5281/zenodo.20407828. Archive: csa-lite-master-v0.2.2.zip (1,615,655 bytes, MD5 f530b25163e5eb412fdf8f4ec14de062)."
 }

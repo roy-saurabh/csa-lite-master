@@ -292,7 +292,7 @@ def build_reproducibility_report_json(
         "version": PROJECT_VERSION,
         "dataset_version": "0.2.0",
         "release_version": f"v{PROJECT_VERSION}",
-        "doi": "10.5281/zenodo.20406743",
+        "doi": "10.5281/zenodo.20407828",
         "concept_doi": "10.5281/zenodo.20403165",
         "generated": ts,
         "input_file": str(input_path) if input_path else None,
@@ -522,7 +522,7 @@ def build_reproducibility_report(
 
     lines.append("\n## Command\n")
     lines.append(
-        f"```\ncsa-lite all --input {input_path} --outdir {outdir}\n```\n\n"
+        f"```\ncsalite all --input {input_path} --outdir {outdir}\n```\n\n"
         "*(Canonical form: `csalite all --input data/processed/csa_lite_cases.csv --outdir outputs`)*"
     )
 
@@ -722,7 +722,7 @@ def build_artifact_manifest(
             "package_version": PROJECT_VERSION,
             "dataset_version": dataset_version,
             "release_version": f"v{PROJECT_VERSION}",
-            "doi": "10.5281/zenodo.20406743",
+            "doi": "10.5281/zenodo.20407828",
             "concept_doi": "10.5281/zenodo.20403165",
             "generated_at": generated,
         },

@@ -12,7 +12,7 @@ title: >
   Analysis of AI Systems
 version: 0.2.2
 date-released: "2026-05-27"
-doi: "10.5281/zenodo.20406743"
+doi: "10.5281/zenodo.20403165"
 url: "https://github.com/roy-saurabh/csa-lite-master"
 repository-code: "https://github.com/roy-saurabh/csa-lite-master"
 license: MIT
@@ -28,6 +28,8 @@ abstract: >
   assessments, or validated harm predictions. EU AI Act Annex III
   categories are used solely as an analytical reference frame for
   grouping documented deployments by use area.
+  Exact v0.2.2 version DOI used in the MDPI Electronics submission:
+  10.5281/zenodo.20407828.
 keywords:
   - AI assurance
   - AI governance
@@ -47,6 +49,14 @@ authors:
     affiliation: "AffectLog SAS"
     email: "royz.saurabh@gmail.com"
 
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.20403165"
+    description: "Zenodo concept DOI (always resolves to the latest version)"
+  - type: doi
+    value: "10.5281/zenodo.20407828"
+    description: "Exact v0.2.2 version DOI used in the MDPI Electronics manuscript"
+
 # preferred-citation: The companion manuscript is under review at Electronics
 # (MDPI) and has not yet been accepted or published. The preferred citation
 # is the software/repository until the article DOI is assigned.
@@ -58,7 +68,7 @@ preferred-citation:
     Public-Records Framework for Deployment-Conditioned Risk
     Analysis of AI Systems
   version: "0.2.2"
-  doi: "10.5281/zenodo.20406743"
+  doi: "10.5281/zenodo.20403165"
   url: "https://github.com/roy-saurabh/csa-lite-master"
   year: 2026
   authors:

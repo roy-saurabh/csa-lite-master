@@ -1,6 +1,6 @@
 # CSA-Lite v0.2.2 — Manuscript Artifact Manifest
 
-_Generated: 2026-05-27T09:53:33_ | Dataset version: 0.2.0 | Package version: 0.2.2
+_Generated: 2026-05-27T10:39:03_ | Dataset version: 0.2.0 | Package version: 0.2.2
 
 **Command:** `csalite all --input data/processed/csa_lite_cases.csv --outdir outputs`
 
@@ -33,29 +33,29 @@ _Generated: 2026-05-27T09:53:33_ | Dataset version: 0.2.0 | Package version: 0.2
 | Filename | Format | Exists | SHA256 (prefix) |
 |----------|--------|--------|-----------------|
 | `fig_1_pipeline_architecture.png` | png | ✓ | `3f0f26e791b577b7` |
-| `fig_1_pipeline_architecture.svg` | svg | ✓ | `44918ac703215936` |
+| `fig_1_pipeline_architecture.svg` | svg | ✓ | `6da090d3107241ef` |
 | `fig_2_corpus_by_annex_area.png` | png | ✓ | `160fcaeec529fc0b` |
-| `fig_2_corpus_by_annex_area.svg` | svg | ✓ | `d5b35ae55dad875e` |
+| `fig_2_corpus_by_annex_area.svg` | svg | ✓ | `31f10105e95ef084` |
 | `fig_3_context_severity_by_annex_area.png` | png | ✓ | `1cd41665465015f8` |
-| `fig_3_context_severity_by_annex_area.svg` | svg | ✓ | `8465614cf3cdbbc1` |
+| `fig_3_context_severity_by_annex_area.svg` | svg | ✓ | `9b811ea3dbf8003b` |
 | `fig_4_dimension_heatmap.png` | png | ✓ | `4739dae04abdfe0d` |
-| `fig_4_dimension_heatmap.svg` | svg | ✓ | `f386e7ec2232a145` |
+| `fig_4_dimension_heatmap.svg` | svg | ✓ | `7cecd87a3d527101` |
 | `fig_5_evidence_confidence_matrix.png` | png | ✓ | `e162af37b28e84a7` |
-| `fig_5_evidence_confidence_matrix.svg` | svg | ✓ | `d1f992e6f910824f` |
+| `fig_5_evidence_confidence_matrix.svg` | svg | ✓ | `1e3dd663ccbdceea` |
 | `fig_6_sensitivity_comparison.png` | png | ✓ | `16f4b8758bd56f9b` |
-| `fig_6_sensitivity_comparison.svg` | svg | ✓ | `ac70e55947dd43ea` |
+| `fig_6_sensitivity_comparison.svg` | svg | ✓ | `b067459b3f3cc280` |
 
 ## Reports
 
 | Filename | Type | Exists | SHA256 (prefix) |
 |----------|------|--------|-----------------|
-| `validation_report.md` | report | ✓ | `2262c88deea97426` |
-| `validation_report.json` | report | ✓ | `507c3b2e1021b4f6` |
-| `reproducibility_report.md` | report | ✓ | `e809a33777e98b42` |
-| `reproducibility_report.json` | report | ✓ | `5d2aa045c5fcdb04` |
-| `scoring_summary.md` | report | ✓ | `42510bb47986f57b` |
-| `case_audit_report.md` | report | ✓ | `93c600a606ba9213` |
-| `case_audit_report.json` | report | ✓ | `04e8b9c6b6203b13` |
+| `validation_report.md` | report | ✓ | `efd9a0e0046031d6` |
+| `validation_report.json` | report | ✓ | `26d97f0357ccdc7d` |
+| `reproducibility_report.md` | report | ✓ | `c380f79345f33ec7` |
+| `reproducibility_report.json` | report | ✓ | `9ff75885a239b147` |
+| `scoring_summary.md` | report | ✓ | `512980c7d3f8061e` |
+| `case_audit_report.md` | report | ✓ | `39411c71a283d001` |
+| `case_audit_report.json` | report | ✓ | `074abacc2360c0cc` |
 
 ---
 

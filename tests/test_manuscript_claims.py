@@ -302,16 +302,16 @@ class TestPipelineArtifacts:
         )
 
     def test_citation_cff_version_and_doi(self):
-        """CITATION.cff must use version v0.2.2 and the concept DOI 10.5281/zenodo.20403165.
-
-        The version-specific DOI for v0.2.2 is assigned by Zenodo when the GitHub
-        release is created. Until then CITATION.cff uses the concept DOI which always
-        resolves to the latest published version.
+        """CITATION.cff must use version v0.2.2, concept DOI 10.5281/zenodo.20403165,
+        and version DOI 10.5281/zenodo.20407828.
         """
         text = _CITATION_CFF.read_text(encoding="utf-8")
         assert "0.2.2" in text, "CITATION.cff must contain version 0.2.2"
-        assert "10.5281/zenodo.20406743" in text, (
-            "CITATION.cff must contain version-specific DOI 10.5281/zenodo.20406743"
+        assert "10.5281/zenodo.20403165" in text, (
+            "CITATION.cff must contain concept DOI 10.5281/zenodo.20403165"
+        )
+        assert "10.5281/zenodo.20407828" in text, (
+            "CITATION.cff must contain version DOI 10.5281/zenodo.20407828"
         )
 
     def test_citation_does_not_claim_publication(self):
@@ -352,10 +352,14 @@ class TestPipelineArtifacts:
             assert not journal, f".zenodo.json should not have a 'journal' key before acceptance: {journal}"
 
     def test_readme_doi_is_correct(self):
-        """Check 28: README DOI badge must reference 10.5281/zenodo.20406743."""
+        """Check 28: README DOI badge must reference concept DOI 10.5281/zenodo.20403165
+        and version DOI 10.5281/zenodo.20407828."""
         text = _README.read_text(encoding="utf-8")
-        assert "10.5281/zenodo.20406743" in text, (
-            "README must contain the version-specific DOI 10.5281/zenodo.20406743"
+        assert "10.5281/zenodo.20403165" in text, (
+            "README must contain the concept DOI 10.5281/zenodo.20403165"
+        )
+        assert "10.5281/zenodo.20407828" in text, (
+            "README must contain the version DOI 10.5281/zenodo.20407828"
         )
 
     def test_pyproject_version_is_022(self):

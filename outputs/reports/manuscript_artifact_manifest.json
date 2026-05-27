@@ -2,7 +2,7 @@
   "schema": "CSA-Lite",
   "version": "0.2.2",
   "dataset_version": "0.2.0",
-  "generated": "2026-05-27T09:53:33",
+  "generated": "2026-05-27T10:39:03",
   "command": "csalite all --input data/processed/csa_lite_cases.csv --outdir outputs",
   "n_artifacts": 34,
   "artifacts": [
@@ -157,7 +157,7 @@
       "format": "svg",
       "manuscript_label": "Fig 1 Pipeline Architecture",
       "exists": true,
-      "sha256_prefix": "44918ac703215936",
+      "sha256_prefix": "6da090d3107241ef",
       "generated_from": "csalite all --input data/processed/csa_lite_cases.csv --outdir outputs",
       "dataset_version": "0.2.0"
     },
@@ -177,7 +177,7 @@
       "format": "svg",
       "manuscript_label": "Fig 2 Corpus By Annex Area",
       "exists": true,
-      "sha256_prefix": "d5b35ae55dad875e",
+      "sha256_prefix": "31f10105e95ef084",
       "generated_from": "csalite all --input data/processed/csa_lite_cases.csv --outdir outputs",
       "dataset_version": "0.2.0"
     },
@@ -197,7 +197,7 @@
       "format": "svg",
       "manuscript_label": "Fig 3 Context Severity By Annex Area",
       "exists": true,
-      "sha256_prefix": "8465614cf3cdbbc1",
+      "sha256_prefix": "9b811ea3dbf8003b",
       "generated_from": "csalite all --input data/processed/csa_lite_cases.csv --outdir outputs",
       "dataset_version": "0.2.0"
     },
@@ -217,7 +217,7 @@
       "format": "svg",
       "manuscript_label": "Fig 4 Dimension Heatmap",
       "exists": true,
-      "sha256_prefix": "f386e7ec2232a145",
+      "sha256_prefix": "7cecd87a3d527101",
       "generated_from": "csalite all --input data/processed/csa_lite_cases.csv --outdir outputs",
       "dataset_version": "0.2.0"
     },
@@ -237,7 +237,7 @@
       "format": "svg",
       "manuscript_label": "Fig 5 Evidence Confidence Matrix",
       "exists": true,
-      "sha256_prefix": "d1f992e6f910824f",
+      "sha256_prefix": "1e3dd663ccbdceea",
       "generated_from": "csalite all --input data/processed/csa_lite_cases.csv --outdir outputs",
       "dataset_version": "0.2.0"
     },
@@ -257,7 +257,7 @@
       "format": "svg",
       "manuscript_label": "Fig 6 Sensitivity Comparison",
       "exists": true,
-      "sha256_prefix": "ac70e55947dd43ea",
+      "sha256_prefix": "b067459b3f3cc280",
       "generated_from": "csalite all --input data/processed/csa_lite_cases.csv --outdir outputs",
       "dataset_version": "0.2.0"
     },
@@ -265,7 +265,7 @@
       "path": "outputs/reports/validation_report.md",
       "type": "report",
       "exists": true,
-      "sha256_prefix": "2262c88deea97426",
+      "sha256_prefix": "efd9a0e0046031d6",
       "generated_from": "csalite all --input data/processed/csa_lite_cases.csv --outdir outputs",
       "dataset_version": "0.2.0"
     },
@@ -273,7 +273,7 @@
       "path": "outputs/reports/validation_report.json",
       "type": "report",
       "exists": true,
-      "sha256_prefix": "507c3b2e1021b4f6",
+      "sha256_prefix": "26d97f0357ccdc7d",
       "generated_from": "csalite all --input data/processed/csa_lite_cases.csv --outdir outputs",
       "dataset_version": "0.2.0"
     },
@@ -281,7 +281,7 @@
       "path": "outputs/reports/reproducibility_report.md",
       "type": "report",
       "exists": true,
-      "sha256_prefix": "e809a33777e98b42",
+      "sha256_prefix": "c380f79345f33ec7",
       "generated_from": "csalite all --input data/processed/csa_lite_cases.csv --outdir outputs",
       "dataset_version": "0.2.0"
     },
@@ -289,7 +289,7 @@
       "path": "outputs/reports/reproducibility_report.json",
       "type": "report",
       "exists": true,
-      "sha256_prefix": "5d2aa045c5fcdb04",
+      "sha256_prefix": "9ff75885a239b147",
       "generated_from": "csalite all --input data/processed/csa_lite_cases.csv --outdir outputs",
       "dataset_version": "0.2.0"
     },
@@ -297,7 +297,7 @@
       "path": "outputs/reports/scoring_summary.md",
       "type": "report",
       "exists": true,
-      "sha256_prefix": "42510bb47986f57b",
+      "sha256_prefix": "512980c7d3f8061e",
       "generated_from": "csalite all --input data/processed/csa_lite_cases.csv --outdir outputs",
       "dataset_version": "0.2.0"
     },
@@ -305,7 +305,7 @@
       "path": "outputs/reports/case_audit_report.md",
       "type": "report",
       "exists": true,
-      "sha256_prefix": "93c600a606ba9213",
+      "sha256_prefix": "39411c71a283d001",
       "generated_from": "csalite all --input data/processed/csa_lite_cases.csv --outdir outputs",
       "dataset_version": "0.2.0"
     },
@@ -313,7 +313,7 @@
       "path": "outputs/reports/case_audit_report.json",
       "type": "report",
       "exists": true,
-      "sha256_prefix": "04e8b9c6b6203b13",
+      "sha256_prefix": "074abacc2360c0cc",
       "generated_from": "csalite all --input data/processed/csa_lite_cases.csv --outdir outputs",
       "dataset_version": "0.2.0"
     }
@@ -322,8 +322,8 @@
     "package_version": "0.2.2",
     "dataset_version": "0.2.0",
     "release_version": "v0.2.2",
-    "doi": "10.5281/zenodo.20406743",
+    "doi": "10.5281/zenodo.20407828",
     "concept_doi": "10.5281/zenodo.20403165",
-    "generated_at": "2026-05-27T09:53:33"
+    "generated_at": "2026-05-27T10:39:03"
   }
 }

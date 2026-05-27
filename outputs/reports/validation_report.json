@@ -1,7 +1,7 @@
 {
   "schema": "CSA-Lite",
   "version": "0.2.2",
-  "generated": "2026-05-27T09:53:22",
+  "generated": "2026-05-27T10:38:53",
   "input_file": "data/processed/csa_lite_cases.csv",
   "n_cases": 45,
   "is_valid": true,
