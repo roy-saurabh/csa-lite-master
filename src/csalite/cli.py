@@ -294,13 +294,27 @@ def all(
 ) -> None:
     """Run the full CSA-lite pipeline: validate, score, analyze, figures, sensitivity, report.
 
-    Also writes validation_report.json, reproducibility_report.md, and
-    manuscript_artifact_manifest.json to outputs/reports/.
+    Also writes:
+      outputs/reports/validation_report.json
+      outputs/reports/reproducibility_report.md
+      outputs/reports/reproducibility_report.json
+      outputs/reports/case_audit_report.md
+      outputs/reports/case_audit_report.json
+      outputs/reports/manuscript_artifact_manifest.json
+      outputs/reports/manuscript_artifact_manifest.md
+      outputs/tables/supp_table_s1_full_case_corpus.csv
+      outputs/tables/supp_table_s2_scored_cases.csv
+      outputs/tables/supp_table_s3_sensitivity_per_case.csv
+      outputs/tables/supp_table_s4_sources_manifest.csv
+      outputs/tables/supp_table_s5_annex_mapping_rationales.csv
+      outputs/tables/supp_table_s6_validation_summary.csv
+      outputs/tables/supp_table_s7_case_audit_flags.csv
+
     Scored cases are written both to <outdir>/scored_cases.csv and
     to <input_dir>/scored_cases.csv (i.e. data/processed/scored_cases.csv).
     """
     import json as _json
-    from csalite.analysis import compute_all_tables
+    from csalite.analysis import compute_all_tables, compute_all_supplementary_tables
     from csalite.io import write_cases_csv, write_cases_jsonl, write_table_csv
     from csalite.plots import generate_all_figures
     from csalite.reporting import (
@@ -308,11 +322,14 @@ def all(
         build_validation_report_json,
         build_scoring_summary_report,
         build_reproducibility_report,
+        build_reproducibility_report_json,
+        build_case_audit_report,
         build_artifact_manifest,
+        build_artifact_manifest_md,
         write_report,
     )
     from csalite.scoring import score_dataframe
-    from csalite.sensitivity import compute_sensitivity_dataframe, compute_band_change_summary
+    from csalite.sensitivity import compute_sensitivity_dataframe
     from csalite.validation import validate_dataframe
 
     console.print(f"[bold]CSA-Lite Full Pipeline v{__version__}[/bold]")
@@ -327,6 +344,7 @@ def all(
     tables_dir = outdir / "tables"
     figures_dir = outdir / "figures"
     reports_dir = outdir / "reports"
+    reports_dir.mkdir(parents=True, exist_ok=True)
 
     df = _load_df(input)
     n_cases = len(df)
@@ -338,9 +356,7 @@ def all(
     val_md = build_validation_report(val_result, input_path=input, n_cases=n_cases)
     write_report(val_md, reports_dir / "validation_report.md")
 
-    # JSON validation report
     val_json = build_validation_report_json(val_result, n_cases=n_cases, input_path=input)
-    reports_dir.mkdir(parents=True, exist_ok=True)
     (reports_dir / "validation_report.json").write_text(
         _json.dumps(val_json, indent=2, ensure_ascii=False), encoding="utf-8"
     )
@@ -360,12 +376,19 @@ def all(
     console.print(f"[green]Scored {len(scored)} cases[/green]")
     console.print(f"  ↳ Also written to: {data_processed_scored}")
 
-    # 3. Analyze
-    console.rule("Step 3: Analyze")
+    # 3. Analyze — manuscript tables (1–7)
+    console.rule("Step 3: Analyze (manuscript tables)")
     tables = compute_all_tables(scored)
     for name, tdf in tables.items():
         write_table_csv(tdf, tables_dir / f"{name}.csv")
-    console.print(f"[green]Generated {len(tables)} tables[/green]")
+    console.print(f"[green]Generated {len(tables)} manuscript tables[/green]")
+
+    # 3b. Supplementary tables (S1–S7)
+    console.rule("Step 3b: Supplementary Tables")
+    supp_tables = compute_all_supplementary_tables(scored)
+    for name, tdf in supp_tables.items():
+        write_table_csv(tdf, tables_dir / f"{name}.csv")
+    console.print(f"[green]Generated {len(supp_tables)} supplementary tables[/green]")
 
     # 4. Figures
     console.rule("Step 4: Figures")
@@ -381,12 +404,20 @@ def all(
     write_table_csv(sens_df, tables_dir / "sensitivity_detail.csv")
     console.print("[green]Sensitivity detail written[/green]")
 
-    # 6. Scoring summary report
-    console.rule("Step 6: Report")
+    # 6. Case audit
+    console.rule("Step 6: Case Audit")
+    audit_md, audit_json = build_case_audit_report(scored)
+    write_report(audit_md, reports_dir / "case_audit_report.md")
+    (reports_dir / "case_audit_report.json").write_text(
+        _json.dumps(audit_json, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+    console.print("[green]Case audit report written[/green]")
+
+    # 7. Reports
+    console.rule("Step 7: Reports")
     summary_md = build_scoring_summary_report(scored, validation_result=val_result)
     write_report(summary_md, reports_dir / "scoring_summary.md")
 
-    # Reproducibility report
     repro_md = build_reproducibility_report(
         n_cases=n_cases,
         input_path=input,
@@ -394,15 +425,28 @@ def all(
     )
     write_report(repro_md, reports_dir / "reproducibility_report.md")
 
-    # Artifact manifest
+    repro_json = build_reproducibility_report_json(
+        n_cases=n_cases,
+        input_path=input,
+        outdir=outdir,
+        validation_result=val_result,
+    )
+    (reports_dir / "reproducibility_report.json").write_text(
+        _json.dumps(repro_json, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+
+    # 8. Artifact manifest (JSON + MD)
+    console.rule("Step 8: Artifact Manifest")
     manifest = build_artifact_manifest(
         outdir=outdir,
         input_path=input,
-        dataset_version=__version__,
+        dataset_version="0.2.0",
     )
     (reports_dir / "manuscript_artifact_manifest.json").write_text(
         _json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8"
     )
+    manifest_md = build_artifact_manifest_md(manifest)
+    write_report(manifest_md, reports_dir / "manuscript_artifact_manifest.md")
 
     console.print(f"[green]Reports written to: {reports_dir}[/green]")
 

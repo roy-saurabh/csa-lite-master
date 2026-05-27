@@ -2,13 +2,13 @@
 
 **Reproducible Public-Records Framework for Deployment-Conditioned Risk Analysis of AI Systems**
 
-Companion code for the MDPI Electronics paper:
+Companion code for the manuscript submitted to MDPI Electronics:
 
 > "Context-Sliced AI Assurance Lite: A Reproducible Public-Records Framework
 > for Deployment-Conditioned Risk Analysis of AI Systems"
-> *Electronics*, MDPI, 2026.
+> Submitted to *Electronics*, MDPI, 2026 (under review — not yet accepted).
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20403166.svg)](https://doi.org/10.5281/zenodo.20403166)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20403848.svg)](https://doi.org/10.5281/zenodo.20403848)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://python.org)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
@@ -44,7 +44,7 @@ legal compliance assessment.
 ## Repository Structure
 
 ```
-csa-lite-mdpi-electronics/
+csa-lite-master/
   README.md              -- This file
   LICENSE                -- CC BY 4.0
   CITATION.cff           -- Citation metadata
@@ -73,8 +73,8 @@ csa-lite-mdpi-electronics/
 
 ```bash
 # Clone the repository
-git clone https://github.com/placeholder/csa-lite-mdpi-electronics.git
-cd csa-lite-mdpi-electronics
+git clone https://github.com/roy-saurabh/csa-lite-master.git
+cd csa-lite-master
 
 # Create and activate a virtual environment
 python -m venv .venv
@@ -163,17 +163,24 @@ See `docs/data_dictionary.md` for all field descriptions.
 
 ## Citation
 
-If you use this code or methodology, please cite:
+If you use this code, dataset, or methodology, please cite the software/repository:
 
 ```bibtex
-@article{csalite2025,
-  title   = {Context-Sliced AI Assurance Lite: A Reproducible Public-Records
-             Framework for Deployment-Conditioned Risk Analysis of AI Systems},
-  journal = {Electronics},
-  year    = {2025},
-  publisher = {MDPI},
+@software{saurabh_csalite_2026,
+  author    = {Saurabh, Roy},
+  title     = {CSA-Lite: Context-Sliced AI Assurance Lite},
+  version   = {v0.2.0},
+  year      = {2026},
+  publisher = {Zenodo},
+  doi       = {10.5281/zenodo.20403848},
+  url       = {https://github.com/roy-saurabh/csa-lite-master}
 }
 ```
+
+The companion manuscript has been submitted to *Electronics* (MDPI) and is
+currently under review. When the article is accepted and published, an
+`@article` citation will be added here. Until then, please use the `@software`
+citation above.
 
 See `CITATION.cff` for complete citation metadata.
 

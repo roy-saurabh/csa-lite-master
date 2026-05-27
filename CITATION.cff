@@ -1,7 +1,10 @@
 cff-version: 1.2.0
 message: >
   If you use this software, dataset, or the CSA-lite methodology,
-  please cite the associated manuscript as given below.
+  please cite the software repository using the metadata below.
+  A companion manuscript has been submitted to Electronics (MDPI)
+  and is currently under review. Use the @software citation until
+  the article DOI is available.
 type: software
 title: >
   CSA-Lite: Context-Sliced AI Assurance Lite — Reproducible
@@ -9,7 +12,7 @@ title: >
   Analysis of AI Systems
 version: 0.2.0
 date-released: "2026-05-27"
-doi: "10.5281/zenodo.20403166"
+doi: "10.5281/zenodo.20403848"
 url: "https://github.com/roy-saurabh/csa-lite-master"
 repository-code: "https://github.com/roy-saurabh/csa-lite-master"
 license: CC-BY-4.0
@@ -44,14 +47,19 @@ authors:
     affiliation: "AffectLog SAS"
     email: "royz.saurabh@gmail.com"
 
+# preferred-citation: The companion manuscript is under review at Electronics
+# (MDPI) and has not yet been accepted or published. The preferred citation
+# is the software/repository until the article DOI is assigned.
+# This block will be updated to type: article once accepted.
 preferred-citation:
-  type: article
+  type: software
   title: >
-    Context-Sliced AI Assurance Lite: A Reproducible Public-Records
-    Framework for Deployment-Conditioned Risk Analysis of AI Systems
-  journal: "Electronics"
-  publisher:
-    name: "MDPI"
+    CSA-Lite: Context-Sliced AI Assurance Lite — Reproducible
+    Public-Records Framework for Deployment-Conditioned Risk
+    Analysis of AI Systems
+  version: "0.2.0"
+  doi: "10.5281/zenodo.20403848"
+  url: "https://github.com/roy-saurabh/csa-lite-master"
   year: 2026
   authors:
     - family-names: "Saurabh"

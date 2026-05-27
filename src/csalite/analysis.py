@@ -399,6 +399,253 @@ def table_7_matched_case_contrasts(df: pd.DataFrame) -> pd.DataFrame:
     return result
 
 
+# ── Supplementary Tables ───────────────────────────────────────────────────────
+
+
+def supp_table_s1_full_case_corpus(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Supplementary Table S1: Full case corpus with all fields.
+
+    All 45 cases, all coded columns, no truncation.
+    Adds dataset_version column.
+    """
+    result = df.copy()
+    result["dataset_version"] = DATASET_VERSION
+    return result.reset_index(drop=True)
+
+
+def supp_table_s2_scored_cases(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Supplementary Table S2: Scored cases with all scoring columns.
+
+    If context_severity_index is not present (unscored df), scores first.
+    """
+    if "context_severity_index" not in df.columns:
+        from csalite.scoring import score_dataframe
+        df = score_dataframe(df)
+    result = df.copy()
+    result["dataset_version"] = DATASET_VERSION
+    return result.reset_index(drop=True)
+
+
+def supp_table_s3_sensitivity_per_case(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Supplementary Table S3: Per-case sensitivity analysis.
+
+    Columns: case_id, case_name, csi_neutral, csi_zero, csi_conservative,
+    band_neutral, band_zero, band_conservative, sensitivity_band_change.
+    """
+    from csalite.sensitivity import compute_sensitivity_dataframe
+
+    if "context_severity_index" not in df.columns:
+        from csalite.scoring import score_dataframe
+        df = score_dataframe(df)
+
+    sens = compute_sensitivity_dataframe(df)
+
+    rename_map = {
+        "context_severity_index": "csi_neutral",
+        "unknown_as_zero_score": "csi_zero",
+        "unknown_as_neutral_score": "csi_neutral_check",
+        "unknown_as_conservative_score": "csi_conservative",
+        "context_severity_band": "band_neutral",
+        "unknown_as_zero_band": "band_zero",
+        "unknown_as_neutral_band": "band_neutral_check",
+        "unknown_as_conservative_band": "band_conservative",
+    }
+
+    priority_cols = ["case_id", "case_name"] + list(rename_map.keys()) + ["sensitivity_band_change"]
+    available = [c for c in priority_cols if c in sens.columns]
+    result = sens[available].rename(columns=rename_map).copy()
+    result["dataset_version"] = DATASET_VERSION
+    return result.reset_index(drop=True)
+
+
+def supp_table_s4_sources_manifest(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Supplementary Table S4: Sources manifest.
+
+    One row per case; extracts source fields and quality metadata.
+    """
+    cols = [
+        "case_id", "case_name", "source_repository",
+        "primary_sources", "secondary_sources",
+        "source_quality_score", "source_quality_rationale",
+        "last_verified_date",
+    ]
+    available = [c for c in cols if c in df.columns]
+    result = df[available].copy()
+    result["dataset_version"] = DATASET_VERSION
+    return result.reset_index(drop=True)
+
+
+def supp_table_s5_annex_mapping_rationales(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Supplementary Table S5: Annex III mapping rationales.
+
+    One row per case; captures the mapping classification evidence.
+    """
+    cols = [
+        "case_id", "case_name",
+        "annex_iii_area", "annex_iii_subcategory",
+        "annex_mapping_type", "annex_mapping_confidence",
+        "annex_mapping_rationale", "eu_scope_note",
+    ]
+    available = [c for c in cols if c in df.columns]
+    result = df[available].copy()
+    result["dataset_version"] = DATASET_VERSION
+    return result.reset_index(drop=True)
+
+
+def supp_table_s6_validation_summary(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Supplementary Table S6: Validation summary — per-case rule check results.
+
+    Runs validate_dataframe and summarises per-case issues.
+    """
+    from csalite.validation import validate_dataframe
+
+    val_result = validate_dataframe(df)
+
+    case_errors: dict[str, int] = {}
+    case_warnings: dict[str, int] = {}
+    for issue in val_result.errors:
+        case_errors[issue.case_id] = case_errors.get(issue.case_id, 0) + 1
+    for issue in val_result.warnings:
+        case_warnings[issue.case_id] = case_warnings.get(issue.case_id, 0) + 1
+
+    rows = []
+    for _, row in df.iterrows():
+        cid = str(row.get("case_id", ""))
+        rows.append({
+            "case_id": cid,
+            "case_name": str(row.get("case_name", "")),
+            "n_errors": case_errors.get(cid, 0),
+            "n_warnings": case_warnings.get(cid, 0),
+            "validation_status": "pass" if case_errors.get(cid, 0) == 0 else "fail",
+            "dataset_version": DATASET_VERSION,
+        })
+
+    summary_row = {
+        "case_id": "__CORPUS__",
+        "case_name": f"All {len(df)} cases",
+        "n_errors": len(val_result.errors),
+        "n_warnings": len(val_result.warnings),
+        "validation_status": "pass" if val_result.is_valid else "fail",
+        "dataset_version": DATASET_VERSION,
+    }
+    return pd.DataFrame([summary_row] + rows)
+
+
+def supp_table_s7_case_audit_flags(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Supplementary Table S7: Case audit flags.
+
+    For each case, reports per-case quality and completeness flags.
+    Classifies issues as blocking / major / minor / informational.
+    """
+    from csalite.constants import SCORE_DIMENSIONS
+
+    if "context_severity_index" not in df.columns:
+        from csalite.scoring import score_dataframe
+        df = score_dataframe(df)
+
+    rows = []
+    for _, row in df.iterrows():
+        cid = str(row.get("case_id", ""))
+        cname = str(row.get("case_name", ""))
+
+        n_coded = 0
+        n_missing = 0
+        for dim in SCORE_DIMENSIONS:
+            val = row.get(f"{dim}_score", None)
+            if val is None or (isinstance(val, float) and math.isnan(val)):
+                n_missing += 1
+            else:
+                n_coded += 1
+
+        sq = row.get("source_quality_score", None)
+        try:
+            sq_int = int(sq) if sq is not None else None
+        except (ValueError, TypeError):
+            sq_int = None
+        low_sq = (sq_int is not None and sq_int <= 1)
+
+        ps = str(row.get("primary_sources", "")).strip()
+        no_primary = (ps == "" or ps.lower() in ("nan", "n/a", "none"))
+
+        mr = str(row.get("annex_mapping_rationale", "")).strip()
+        no_mapping_rationale = (mr == "" or mr.lower() in ("nan", "n/a", "none"))
+
+        flags = []
+        if n_missing > 0:
+            flags.append(f"missing_dimensions:{n_missing}")
+        if low_sq:
+            flags.append("low_source_quality")
+        if no_primary:
+            flags.append("no_primary_source")
+        if no_mapping_rationale:
+            flags.append("no_mapping_rationale")
+        if row.get("high_missingness_flag", False):
+            flags.append("high_missingness_flag")
+        if row.get("sensitivity_band_change", False):
+            flags.append("sensitivity_band_change")
+
+        severity = "informational"
+        if no_primary or n_missing == len(SCORE_DIMENSIONS):
+            severity = "blocking"
+        elif low_sq or no_mapping_rationale:
+            severity = "major"
+        elif n_missing > 0:
+            severity = "minor"
+
+        rows.append({
+            "case_id": cid,
+            "case_name": cname,
+            "n_dimensions_coded": n_coded,
+            "n_dimensions_missing": n_missing,
+            "source_quality_score": sq_int,
+            "low_source_quality_flag": low_sq,
+            "no_primary_source_flag": no_primary,
+            "no_mapping_rationale_flag": no_mapping_rationale,
+            "high_missingness_flag": bool(row.get("high_missingness_flag", False)),
+            "sensitivity_band_change_flag": bool(row.get("sensitivity_band_change", False)),
+            "audit_flags": "; ".join(flags) if flags else "none",
+            "audit_severity": severity,
+            "dataset_version": DATASET_VERSION,
+        })
+
+    return pd.DataFrame(rows)
+
+
+def compute_all_supplementary_tables(df: pd.DataFrame) -> dict[str, pd.DataFrame]:
+    """
+    Compute all 7 supplementary tables from a (optionally scored) DataFrame.
+
+    Returns a dict keyed by supplementary table names:
+      supp_table_s1_full_case_corpus
+      supp_table_s2_scored_cases
+      supp_table_s3_sensitivity_per_case
+      supp_table_s4_sources_manifest
+      supp_table_s5_annex_mapping_rationales
+      supp_table_s6_validation_summary
+      supp_table_s7_case_audit_flags
+    """
+    if "context_severity_index" not in df.columns:
+        from csalite.scoring import score_dataframe
+        df = score_dataframe(df)
+
+    return {
+        "supp_table_s1_full_case_corpus": supp_table_s1_full_case_corpus(df),
+        "supp_table_s2_scored_cases": supp_table_s2_scored_cases(df),
+        "supp_table_s3_sensitivity_per_case": supp_table_s3_sensitivity_per_case(df),
+        "supp_table_s4_sources_manifest": supp_table_s4_sources_manifest(df),
+        "supp_table_s5_annex_mapping_rationales": supp_table_s5_annex_mapping_rationales(df),
+        "supp_table_s6_validation_summary": supp_table_s6_validation_summary(df),
+        "supp_table_s7_case_audit_flags": supp_table_s7_case_audit_flags(df),
+    }
+
+
 # ── All tables ─────────────────────────────────────────────────────────────────
 
 

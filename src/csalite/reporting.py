@@ -1,7 +1,8 @@
 """
 Report generation for CSA-lite.
 
-Produces a structured Markdown validation and scoring report.
+Produces structured Markdown and JSON reports for validation, scoring,
+reproducibility, case audit, and the artifact manifest.
 No I/O except the final write — callers supply paths.
 """
 
@@ -152,7 +153,6 @@ def build_scoring_summary_report(
             lines.append("| Flag | Count | % |")
             lines.append("|------|-------|---|")
             for col in flag_cols:
-                # Handle bool, np.bool_, or string representation of booleans
                 series = scored_df[col]
                 if series.dtype == object:
                     bool_series = series.map(
@@ -218,6 +218,246 @@ def build_validation_report_json(
     }
 
 
+def build_reproducibility_report_json(
+    n_cases: int,
+    input_path: Optional[Path],
+    outdir: Path,
+    run_timestamp: Optional[str] = None,
+    validation_result: Optional[ValidationResult] = None,
+) -> dict:
+    """
+    Build a JSON-serialisable reproducibility report dict.
+
+    Suitable for outputs/reports/reproducibility_report.json.
+    """
+    import sys
+    import importlib
+
+    ts = run_timestamp or datetime.datetime.now().isoformat(timespec="seconds")
+
+    pkg_versions: dict[str, str] = {}
+    for pkg in ["pandas", "numpy", "matplotlib", "pydantic", "pandera", "typer", "rich"]:
+        try:
+            mod = importlib.import_module(pkg)
+            pkg_versions[pkg] = getattr(mod, "__version__", "unknown")
+        except ImportError:
+            pkg_versions[pkg] = "not installed"
+
+    table_names = [
+        "table_1_csalite_dimensions.csv",
+        "table_2_corpus_composition_by_annex_area.csv",
+        "table_3_within_category_variance.csv",
+        "table_4_dimension_level_patterns.csv",
+        "table_5_evidence_confidence_by_dimension.csv",
+        "table_6_sensitivity_summary.csv",
+        "table_7_matched_case_contrasts.csv",
+    ]
+    supp_table_names = [
+        "supp_table_s1_full_case_corpus.csv",
+        "supp_table_s2_scored_cases.csv",
+        "supp_table_s3_sensitivity_per_case.csv",
+        "supp_table_s4_sources_manifest.csv",
+        "supp_table_s5_annex_mapping_rationales.csv",
+        "supp_table_s6_validation_summary.csv",
+        "supp_table_s7_case_audit_flags.csv",
+    ]
+    fig_stems = [
+        "fig_1_pipeline_architecture",
+        "fig_2_corpus_by_annex_area",
+        "fig_3_context_severity_by_annex_area",
+        "fig_4_dimension_heatmap",
+        "fig_5_evidence_confidence_matrix",
+        "fig_6_sensitivity_comparison",
+    ]
+
+    tables_status = {t: (outdir / "tables" / t).exists() for t in table_names}
+    supp_tables_status = {t: (outdir / "tables" / t).exists() for t in supp_table_names}
+    figs_status: dict[str, bool] = {}
+    for stem in fig_stems:
+        for ext in ("png", "svg"):
+            fname = f"{stem}.{ext}"
+            figs_status[fname] = (outdir / "figures" / fname).exists()
+
+    val_summary = None
+    if validation_result is not None:
+        val_summary = {
+            "is_valid": validation_result.is_valid,
+            "n_errors": len(validation_result.errors),
+            "n_warnings": len(validation_result.warnings),
+        }
+
+    return {
+        "schema": PROJECT_NAME,
+        "version": PROJECT_VERSION,
+        "generated": ts,
+        "input_file": str(input_path) if input_path else None,
+        "n_cases": n_cases,
+        "command": f"csalite all --input {input_path} --outdir {outdir}",
+        "python_version": sys.version,
+        "package_versions": pkg_versions,
+        "validation": val_summary,
+        "tables": tables_status,
+        "supplementary_tables": supp_tables_status,
+        "figures": figs_status,
+        "outdir": str(outdir),
+    }
+
+
+def build_case_audit_report(
+    df: pd.DataFrame,
+    run_timestamp: Optional[str] = None,
+) -> tuple[str, dict]:
+    """
+    Build a case audit report in both Markdown and JSON formats.
+
+    Parameters
+    ----------
+    df : scored DataFrame (must include context_severity_index).
+    run_timestamp : ISO timestamp string.
+
+    Returns
+    -------
+    (markdown_str, json_dict)
+    """
+    from csalite.analysis import supp_table_s7_case_audit_flags
+    from csalite.validation import validate_dataframe
+
+    ts = run_timestamp or datetime.datetime.now().isoformat(timespec="seconds")
+    audit_df = supp_table_s7_case_audit_flags(df)
+    val_result = validate_dataframe(df)
+
+    n_cases = len(df)
+    n_blocking = int((audit_df["audit_severity"] == "blocking").sum())
+    n_major = int((audit_df["audit_severity"] == "major").sum())
+    n_minor = int((audit_df["audit_severity"] == "minor").sum())
+    n_info = int((audit_df["audit_severity"] == "informational").sum())
+
+    # ── Markdown ──────────────────────────────────────────────────────────────
+    lines: list[str] = []
+    lines.append(f"# {PROJECT_NAME} v{PROJECT_VERSION} — Case Audit Report")
+    lines.append(f"\n_Generated: {ts}_\n")
+    lines.append("> **Disclaimer:** " + DISCLAIMER)
+    lines.append("\n---\n")
+
+    lines.append("## Audit Summary\n")
+    lines.append(f"- **Cases audited:** {n_cases}")
+    lines.append(f"- **Validation status:** {'PASS' if val_result.is_valid else 'FAIL'}")
+    lines.append(f"- **Validation errors:** {len(val_result.errors)}")
+    lines.append(f"- **Validation warnings:** {len(val_result.warnings)}")
+    lines.append(f"- **Blocking issues:** {n_blocking}")
+    lines.append(f"- **Major issues:** {n_major}")
+    lines.append(f"- **Minor issues:** {n_minor}")
+    lines.append(f"- **Informational:** {n_info}")
+
+    lines.append("\n## Per-Case Audit Flags\n")
+    lines.append("| Case ID | Case Name | Dims Coded | Dims Missing | SQ | Flags | Severity |")
+    lines.append("|---------|-----------|-----------|-------------|-----|-------|----------|")
+    for _, row in audit_df.iterrows():
+        cid = str(row.get("case_id", ""))
+        cname = str(row.get("case_name", ""))[:40]
+        nc = row.get("n_dimensions_coded", "")
+        nm = row.get("n_dimensions_missing", "")
+        sq = row.get("source_quality_score", "")
+        flags = str(row.get("audit_flags", "none"))[:60]
+        sev = str(row.get("audit_severity", ""))
+        lines.append(f"| {cid} | {cname} | {nc} | {nm} | {sq} | {flags} | {sev} |")
+
+    lines.append("\n## Classification Legend\n")
+    lines.append("- **blocking**: case should not be included without correction")
+    lines.append("- **major**: significant quality issue, review recommended")
+    lines.append("- **minor**: small gap, flag for next coding round")
+    lines.append("- **informational**: no action required")
+
+    lines.append("\n## Validation Issues\n")
+    if val_result.errors:
+        for issue in val_result.errors:
+            lines.append(f"- [ERROR] `{issue.rule_id}` {issue.field} ({issue.case_id}): {issue.message}")
+    else:
+        lines.append("No errors.")
+    if val_result.warnings:
+        lines.append("")
+        for issue in val_result.warnings:
+            lines.append(f"- [WARN] `{issue.rule_id}` {issue.field} ({issue.case_id}): {issue.message}")
+
+    md = "\n".join(lines) + "\n"
+
+    # ── JSON ──────────────────────────────────────────────────────────────────
+    json_dict: dict = {
+        "schema": PROJECT_NAME,
+        "version": PROJECT_VERSION,
+        "generated": ts,
+        "n_cases": n_cases,
+        "validation_status": "pass" if val_result.is_valid else "fail",
+        "n_validation_errors": len(val_result.errors),
+        "n_validation_warnings": len(val_result.warnings),
+        "n_blocking": n_blocking,
+        "n_major": n_major,
+        "n_minor": n_minor,
+        "n_informational": n_info,
+        "cases": audit_df.to_dict(orient="records"),
+    }
+
+    return md, json_dict
+
+
+def build_artifact_manifest_md(manifest: dict) -> str:
+    """
+    Convert a JSON manifest dict (from build_artifact_manifest) into Markdown.
+
+    Produces outputs/reports/manuscript_artifact_manifest.md.
+    """
+    lines: list[str] = []
+    lines.append(f"# {PROJECT_NAME} v{PROJECT_VERSION} — Manuscript Artifact Manifest")
+    lines.append(
+        f"\n_Generated: {manifest.get('generated', '')}_ | "
+        f"Dataset version: {manifest.get('dataset_version', '')} | "
+        f"Package version: {manifest.get('version', '')}"
+    )
+    lines.append(f"\n**Command:** `{manifest.get('command', '')}`")
+    lines.append(f"\n**Total artifacts:** {manifest.get('n_artifacts', 0)}")
+    lines.append("\n---\n")
+
+    lines.append("## Tables\n")
+    lines.append("| Filename | Type | Exists | SHA256 (prefix) |")
+    lines.append("|----------|------|--------|-----------------|")
+    for a in manifest.get("artifacts", []):
+        if a.get("type") == "table":
+            fname = Path(a.get("path", "")).name
+            exists = "✓" if a.get("exists") else "✗"
+            sha = a.get("sha256_prefix", "—")
+            lines.append(f"| `{fname}` | table | {exists} | `{sha}` |")
+
+    lines.append("\n## Figures\n")
+    lines.append("| Filename | Format | Exists | SHA256 (prefix) |")
+    lines.append("|----------|--------|--------|-----------------|")
+    for a in manifest.get("artifacts", []):
+        if a.get("type") == "figure":
+            fname = Path(a.get("path", "")).name
+            fmt = a.get("format", "")
+            exists = "✓" if a.get("exists") else "✗"
+            sha = a.get("sha256_prefix", "—")
+            lines.append(f"| `{fname}` | {fmt} | {exists} | `{sha}` |")
+
+    lines.append("\n## Reports\n")
+    lines.append("| Filename | Type | Exists | SHA256 (prefix) |")
+    lines.append("|----------|------|--------|-----------------|")
+    for a in manifest.get("artifacts", []):
+        if a.get("type") == "report":
+            fname = Path(a.get("path", "")).name
+            exists = "✓" if a.get("exists") else "✗"
+            sha = a.get("sha256_prefix", "—")
+            lines.append(f"| `{fname}` | report | {exists} | `{sha}` |")
+
+    lines.append("\n---\n")
+    lines.append(
+        "The artifact manifest in `outputs/reports/manuscript_artifact_manifest.json` "
+        "records the filename, generation command, dataset version, and SHA256 hash of "
+        "each table and figure used in the manuscript."
+    )
+
+    return "\n".join(lines) + "\n"
+
+
 def build_reproducibility_report(
     n_cases: int,
     input_path: Optional[Path],
@@ -249,7 +489,7 @@ def build_reproducibility_report(
 
     lines.append("\n## Command\n")
     lines.append(
-        f"```\ncsa lite all --input {input_path} --outdir {outdir}\n```"
+        f"```\ncsa-lite all --input {input_path} --outdir {outdir}\n```"
     )
 
     lines.append("\n## Python Environment\n")
@@ -275,6 +515,21 @@ def build_reproducibility_report(
         "table_7_matched_case_contrasts.csv",
     ]
     for t in table_names:
+        p = outdir / "tables" / t
+        status = "✓" if p.exists() else "✗"
+        lines.append(f"- {status} `{t}`")
+
+    lines.append("\n### Supplementary Tables\n")
+    supp_table_names = [
+        "supp_table_s1_full_case_corpus.csv",
+        "supp_table_s2_scored_cases.csv",
+        "supp_table_s3_sensitivity_per_case.csv",
+        "supp_table_s4_sources_manifest.csv",
+        "supp_table_s5_annex_mapping_rationales.csv",
+        "supp_table_s6_validation_summary.csv",
+        "supp_table_s7_case_audit_flags.csv",
+    ]
+    for t in supp_table_names:
         p = outdir / "tables" / t
         status = "✓" if p.exists() else "✗"
         lines.append(f"- {status} `{t}`")
@@ -322,6 +577,7 @@ def build_artifact_manifest(
 
     artifacts: list[dict] = []
 
+    # Manuscript tables (1-7)
     table_names = [
         "table_1_csalite_dimensions.csv",
         "table_2_corpus_composition_by_annex_area.csv",
@@ -337,6 +593,7 @@ def build_artifact_manifest(
             {
                 "path": str(p.relative_to(outdir.parent) if outdir.parent != outdir else p),
                 "type": "table",
+                "manuscript_label": name.replace(".csv", "").replace("_", " ").title(),
                 "exists": p.exists(),
                 "sha256_prefix": _file_hash(p),
                 "generated_from": command,
@@ -344,6 +601,31 @@ def build_artifact_manifest(
             }
         )
 
+    # Supplementary tables (S1-S7)
+    supp_table_names = [
+        "supp_table_s1_full_case_corpus.csv",
+        "supp_table_s2_scored_cases.csv",
+        "supp_table_s3_sensitivity_per_case.csv",
+        "supp_table_s4_sources_manifest.csv",
+        "supp_table_s5_annex_mapping_rationales.csv",
+        "supp_table_s6_validation_summary.csv",
+        "supp_table_s7_case_audit_flags.csv",
+    ]
+    for name in supp_table_names:
+        p = outdir / "tables" / name
+        artifacts.append(
+            {
+                "path": str(p.relative_to(outdir.parent) if outdir.parent != outdir else p),
+                "type": "table",
+                "manuscript_label": name.replace(".csv", "").replace("_", " ").title(),
+                "exists": p.exists(),
+                "sha256_prefix": _file_hash(p),
+                "generated_from": command,
+                "dataset_version": dataset_version,
+            }
+        )
+
+    # Figures (1-6, PNG + SVG)
     fig_stems = [
         "fig_1_pipeline_architecture",
         "fig_2_corpus_by_annex_area",
@@ -360,6 +642,7 @@ def build_artifact_manifest(
                     "path": str(p.relative_to(outdir.parent) if outdir.parent != outdir else p),
                     "type": "figure",
                     "format": ext,
+                    "manuscript_label": stem.replace("_", " ").title(),
                     "exists": p.exists(),
                     "sha256_prefix": _file_hash(p),
                     "generated_from": command,
@@ -367,11 +650,16 @@ def build_artifact_manifest(
                 }
             )
 
+    # Reports (self-referencing manifest files are excluded — they cannot exist
+    # at manifest-build time; they are written after this function returns)
     report_names = [
         "validation_report.md",
         "validation_report.json",
         "reproducibility_report.md",
+        "reproducibility_report.json",
         "scoring_summary.md",
+        "case_audit_report.md",
+        "case_audit_report.json",
     ]
     for name in report_names:
         p = outdir / "reports" / name
