@@ -1,6 +1,6 @@
-# CSA-Lite v0.1.0 — Validation Report
+# CSA-Lite v0.2.0 — Validation Report
 
-_Generated: 2026-05-27T01:37:10_
+_Generated: 2026-05-27T02:43:18_
 
 **Input file:** `data/processed/csa_lite_cases.csv`  
 **Cases checked:** 45  

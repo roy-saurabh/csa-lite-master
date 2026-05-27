@@ -1,5 +1,7 @@
 """
 Tests for the analysis module (table generation).
+
+23 tests covering all 7 manuscript tables.
 """
 
 from __future__ import annotations
@@ -11,14 +13,15 @@ import pytest
 
 from csalite.analysis import (
     compute_all_tables,
-    table_1_corpus_composition,
-    table_2_within_category_variance,
-    table_3_dimension_patterns,
-    table_4_missingness_by_category,
-    table_5_sensitivity,
-    table_6_high_variance_pairs,
-    table_7_review_flags,
+    table_1_csalite_dimensions,
+    table_2_corpus_composition_by_annex_area,
+    table_3_within_category_variance,
+    table_4_dimension_level_patterns,
+    table_5_evidence_confidence_by_dimension,
+    table_6_sensitivity_summary,
+    table_7_matched_case_contrasts,
 )
+from csalite.constants import SCORE_DIMENSIONS
 from csalite.scoring import score_dataframe
 
 FIXTURES = Path(__file__).parent / "fixtures"
@@ -35,15 +38,37 @@ def scored_df(valid_cases_df):
     return score_dataframe(valid_cases_df)
 
 
-# ── Table 1 ───────────────────────────────────────────────────────────────────
+# ── Table 1: CSA-lite dimensions (no df needed) ───────────────────────────────
 
 class TestTable1:
+    def test_returns_dataframe(self):
+        result = table_1_csalite_dimensions()
+        assert isinstance(result, pd.DataFrame)
+
+    def test_has_required_columns(self):
+        result = table_1_csalite_dimensions()
+        for col in ["dimension", "description", "score_0", "score_1", "score_2",
+                    "evidence_required", "missingness_note", "dataset_version"]:
+            assert col in result.columns, f"Missing column: {col}"
+
+    def test_has_8_rows(self):
+        result = table_1_csalite_dimensions()
+        assert len(result) == 8
+
+    def test_all_dimensions_present(self):
+        result = table_1_csalite_dimensions()
+        assert set(result["dimension"]) == set(SCORE_DIMENSIONS)
+
+
+# ── Table 2: Corpus composition by Annex III area ─────────────────────────────
+
+class TestTable2:
     def test_returns_dataframe(self, scored_df):
-        result = table_1_corpus_composition(scored_df)
+        result = table_2_corpus_composition_by_annex_area(scored_df)
         assert isinstance(result, pd.DataFrame)
 
     def test_has_required_columns(self, scored_df):
-        result = table_1_corpus_composition(scored_df)
+        result = table_2_corpus_composition_by_annex_area(scored_df)
         required = ["annex_iii_area", "n_cases", "n_direct", "n_analogous",
                     "n_comparator", "n_unclear", "n_countries",
                     "most_common_deployer_type", "median_source_quality"]
@@ -51,109 +76,89 @@ class TestTable1:
             assert col in result.columns, f"Missing column: {col}"
 
     def test_correct_case_count(self, scored_df):
-        result = table_1_corpus_composition(scored_df)
+        result = table_2_corpus_composition_by_annex_area(scored_df)
         assert result["n_cases"].sum() == len(scored_df)
 
-    def test_empty_returns_empty(self):
-        result = table_1_corpus_composition(pd.DataFrame())
-        assert result.empty
 
+# ── Table 3: Within-category variance ────────────────────────────────────────
 
-# ── Table 2 ───────────────────────────────────────────────────────────────────
-
-class TestTable2:
+class TestTable3:
     def test_returns_dataframe(self, scored_df):
-        result = table_2_within_category_variance(scored_df)
+        result = table_3_within_category_variance(scored_df)
         assert isinstance(result, pd.DataFrame)
 
     def test_has_variance_columns(self, scored_df):
-        result = table_2_within_category_variance(scored_df)
+        result = table_3_within_category_variance(scored_df)
         for col in ["min", "max", "median", "iqr", "mean"]:
             assert col in result.columns
 
     def test_empty_returns_empty(self):
-        result = table_2_within_category_variance(pd.DataFrame())
+        result = table_3_within_category_variance(pd.DataFrame())
         assert result.empty
 
 
-# ── Table 3 ───────────────────────────────────────────────────────────────────
+# ── Table 4: Dimension-level patterns ────────────────────────────────────────
 
-class TestTable3:
+class TestTable4:
     def test_returns_8_rows(self, scored_df):
-        result = table_3_dimension_patterns(scored_df)
+        result = table_4_dimension_level_patterns(scored_df)
         assert len(result) == 8
 
     def test_has_required_columns(self, scored_df):
-        result = table_3_dimension_patterns(scored_df)
-        for col in ["dimension", "mean_score", "n_missing", "missingness_rate"]:
+        result = table_4_dimension_level_patterns(scored_df)
+        for col in ["dimension", "mean_score", "n_missing", "missingness_rate",
+                    "mean_confidence_weight"]:
             assert col in result.columns
 
     def test_missingness_rate_in_range(self, scored_df):
-        result = table_3_dimension_patterns(scored_df)
+        result = table_4_dimension_level_patterns(scored_df)
         rates = result["missingness_rate"].dropna()
         assert (rates >= 0).all()
         assert (rates <= 1).all()
 
     def test_empty_returns_empty(self):
-        result = table_3_dimension_patterns(pd.DataFrame())
+        result = table_4_dimension_level_patterns(pd.DataFrame())
         assert result.empty
 
 
-# ── Table 4 ───────────────────────────────────────────────────────────────────
-
-class TestTable4:
-    def test_returns_area_x_dimension_rows(self, scored_df):
-        result = table_4_missingness_by_category(scored_df)
-        n_areas = scored_df["annex_iii_area"].nunique()
-        assert len(result) == n_areas * 8
-
-    def test_has_required_columns(self, scored_df):
-        result = table_4_missingness_by_category(scored_df)
-        for col in ["annex_iii_area", "dimension", "n_cases", "n_missing", "missingness_rate"]:
-            assert col in result.columns
-
-    def test_empty_returns_empty(self):
-        result = table_4_missingness_by_category(pd.DataFrame())
-        assert result.empty
-
-
-# ── Table 5 ───────────────────────────────────────────────────────────────────
+# ── Table 5: Evidence confidence by dimension ─────────────────────────────────
 
 class TestTable5:
-    def test_returns_correct_row_count(self, scored_df):
-        result = table_5_sensitivity(scored_df)
-        assert len(result) == len(scored_df)
+    def test_returns_8_rows(self, scored_df):
+        result = table_5_evidence_confidence_by_dimension(scored_df)
+        assert len(result) == 8
 
-    def test_empty_returns_empty(self):
-        result = table_5_sensitivity(pd.DataFrame())
-        assert result.empty
+    def test_has_required_columns(self, scored_df):
+        result = table_5_evidence_confidence_by_dimension(scored_df)
+        for col in ["dimension", "n_high", "n_medium", "n_low", "n_unknown",
+                    "mean_confidence_weight"]:
+            assert col in result.columns
 
 
-# ── Table 7 ───────────────────────────────────────────────────────────────────
+# ── Table 6: Sensitivity summary ─────────────────────────────────────────────
 
-class TestTable7:
-    def test_only_includes_flagged_cases(self, scored_df):
-        result = table_7_review_flags(scored_df)
-        if not result.empty:
-            assert result["review_required_flag"].all()
-
-    def test_review_reason_column_present(self, scored_df):
-        result = table_7_review_flags(scored_df)
-        if not result.empty:
-            assert "review_reason" in result.columns
-
-    def test_case_0002_flagged(self, scored_df):
-        """Case 0002 has low_source_quality (score=4 -> not flagged) but high severity + low ECI."""
-        result = table_7_review_flags(scored_df)
-        # 0002 has ECI=1.0 (all high confidence) so not flagged for that reason
-        # It has source_quality=4 -> not low quality. Check it may or may not appear.
+class TestTable6:
+    def test_returns_dataframe(self, scored_df):
+        result = table_6_sensitivity_summary(scored_df)
         assert isinstance(result, pd.DataFrame)
 
-    def test_case_0003_flagged(self, scored_df):
-        """Case 0003 has high_missingness_flag=True so should appear in review table."""
-        result = table_7_review_flags(scored_df)
+    def test_has_required_columns(self, scored_df):
+        result = table_6_sensitivity_summary(scored_df)
+        for col in ["annex_iii_area", "n_cases", "n_band_changes", "pct_band_changes"]:
+            assert col in result.columns
+
+
+# ── Table 7: Matched case contrasts ──────────────────────────────────────────
+
+class TestTable7:
+    def test_returns_dataframe(self, scored_df):
+        result = table_7_matched_case_contrasts(scored_df)
+        assert isinstance(result, pd.DataFrame)
+
+    def test_csi_difference_nonnegative_when_nonempty(self, scored_df):
+        result = table_7_matched_case_contrasts(scored_df)
         if not result.empty:
-            assert "CSA-LITE-0003" in result["case_id"].values
+            assert (result["csi_difference"] >= 0).all()
 
 
 # ── compute_all_tables ────────────────────────────────────────────────────────
@@ -171,12 +176,12 @@ class TestComputeAllTables:
     def test_table_names_correct(self, scored_df):
         tables = compute_all_tables(scored_df)
         expected = {
-            "table_1_corpus_composition",
-            "table_2_within_category_variance",
-            "table_3_dimension_patterns",
-            "table_4_missingness_by_category",
-            "table_5_sensitivity",
-            "table_6_high_variance_case_pairs",
-            "table_7_review_flags",
+            "table_1_csalite_dimensions",
+            "table_2_corpus_composition_by_annex_area",
+            "table_3_within_category_variance",
+            "table_4_dimension_level_patterns",
+            "table_5_evidence_confidence_by_dimension",
+            "table_6_sensitivity_summary",
+            "table_7_matched_case_contrasts",
         }
         assert set(tables.keys()) == expected

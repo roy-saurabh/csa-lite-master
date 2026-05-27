@@ -7,10 +7,12 @@ Commands:
   validate   -- Validate a cases CSV/JSONL against rules and schema
   score      -- Compute scoring fields and write scored_cases CSV/JSONL
   analyze    -- Generate analysis tables
-  figures    -- Generate manuscript figures
+  figures    -- Generate manuscript figures (6 figures)
   sensitivity-- Generate sensitivity analysis
   report     -- Generate a combined Markdown report
   all        -- Run validate + score + analyze + figures + sensitivity + report
+                Also writes: validation_report.json, reproducibility_report.md,
+                             manuscript_artifact_manifest.json
 """
 
 from __future__ import annotations
@@ -201,7 +203,7 @@ def figures(
     input: Path = typer.Option(..., "--input", "-i", help="Scored cases CSV or JSONL"),
     outdir: Path = typer.Option(..., "--outdir", "-d", help="Output directory for figures"),
 ) -> None:
-    """Generate all 8 manuscript figures."""
+    """Generate all 6 manuscript figures."""
     from csalite.plots import generate_all_figures
 
     console.print(f"[bold]CSA-Lite Figures v{__version__}[/bold]")
@@ -290,11 +292,25 @@ def all(
     input: Path = typer.Option(..., "--input", "-i", help="Input cases CSV or JSONL"),
     outdir: Path = typer.Option(..., "--outdir", "-d", help="Root output directory"),
 ) -> None:
-    """Run the full CSA-lite pipeline: validate, score, analyze, figures, sensitivity, report."""
+    """Run the full CSA-lite pipeline: validate, score, analyze, figures, sensitivity, report.
+
+    Also writes validation_report.json, reproducibility_report.md, and
+    manuscript_artifact_manifest.json to outputs/reports/.
+    Scored cases are written both to <outdir>/scored_cases.csv and
+    to <input_dir>/scored_cases.csv (i.e. data/processed/scored_cases.csv).
+    """
+    import json as _json
     from csalite.analysis import compute_all_tables
     from csalite.io import write_cases_csv, write_cases_jsonl, write_table_csv
     from csalite.plots import generate_all_figures
-    from csalite.reporting import build_validation_report, build_scoring_summary_report, write_report
+    from csalite.reporting import (
+        build_validation_report,
+        build_validation_report_json,
+        build_scoring_summary_report,
+        build_reproducibility_report,
+        build_artifact_manifest,
+        write_report,
+    )
     from csalite.scoring import score_dataframe
     from csalite.sensitivity import compute_sensitivity_dataframe, compute_band_change_summary
     from csalite.validation import validate_dataframe
@@ -321,6 +337,14 @@ def all(
     val_result = validate_dataframe(df)
     val_md = build_validation_report(val_result, input_path=input, n_cases=n_cases)
     write_report(val_md, reports_dir / "validation_report.md")
+
+    # JSON validation report
+    val_json = build_validation_report_json(val_result, n_cases=n_cases, input_path=input)
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    (reports_dir / "validation_report.json").write_text(
+        _json.dumps(val_json, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+
     status_style = "green" if val_result.is_valid else "yellow"
     console.print(f"[{status_style}]{val_result.summary()}[/{status_style}]")
 
@@ -329,7 +353,12 @@ def all(
     scored = score_dataframe(df)
     write_cases_csv(scored, outdir / "scored_cases.csv")
     write_cases_jsonl(scored, outdir / "scored_cases.jsonl")
+
+    # Also write scored_cases to data/processed/ alongside the input file
+    data_processed_scored = input.parent / "scored_cases.csv"
+    write_cases_csv(scored, data_processed_scored)
     console.print(f"[green]Scored {len(scored)} cases[/green]")
+    console.print(f"  ↳ Also written to: {data_processed_scored}")
 
     # 3. Analyze
     console.rule("Step 3: Analyze")
@@ -346,18 +375,35 @@ def all(
     except ValueError as exc:
         console.print(f"[yellow]Figures skipped: {exc}[/yellow]")
 
-    # 5. Sensitivity
+    # 5. Sensitivity (supplementary detail)
     console.rule("Step 5: Sensitivity")
     sens_df = compute_sensitivity_dataframe(scored)
     write_table_csv(sens_df, tables_dir / "sensitivity_detail.csv")
-    summary_df = compute_band_change_summary(sens_df)
-    write_table_csv(summary_df, tables_dir / "sensitivity_summary.csv")
-    console.print("[green]Sensitivity analysis complete[/green]")
+    console.print("[green]Sensitivity detail written[/green]")
 
-    # 6. Report
+    # 6. Scoring summary report
     console.rule("Step 6: Report")
     summary_md = build_scoring_summary_report(scored, validation_result=val_result)
     write_report(summary_md, reports_dir / "scoring_summary.md")
+
+    # Reproducibility report
+    repro_md = build_reproducibility_report(
+        n_cases=n_cases,
+        input_path=input,
+        outdir=outdir,
+    )
+    write_report(repro_md, reports_dir / "reproducibility_report.md")
+
+    # Artifact manifest
+    manifest = build_artifact_manifest(
+        outdir=outdir,
+        input_path=input,
+        dataset_version=__version__,
+    )
+    (reports_dir / "manuscript_artifact_manifest.json").write_text(
+        _json.dumps(manifest, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+
     console.print(f"[green]Reports written to: {reports_dir}[/green]")
 
     console.rule("Done")

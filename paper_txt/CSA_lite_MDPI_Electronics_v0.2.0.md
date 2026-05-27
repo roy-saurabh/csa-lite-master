@@ -6,7 +6,7 @@ Roy Saurabh
 
 **Abstract**
 
-Broad legal and institutional AI risk categories are necessary for governance, but they do not by themselves capture the deployment conditions that shape assurance priority. AI systems falling within similar high-risk use areas may differ substantially in autonomy, human oversight, recourse, affected-population vulnerability, scale, opacity, and monitoring. This paper introduces CSA-lite, a reproducible public-records framework for analysing deployment-conditioned risk in documented AI systems. We construct a corpus of 40–50 publicly documented AI deployments and controversies, identified through AI incident repositories and supporting public records, and map cases to EU AI Act Annex III use areas where applicable. For each case, we code eight deployment-context dimensions, source quality, evidence completeness, and missingness, then compute a transparent Context Severity Index. The analysis shows substantial within-category variance across documented cases and identifies recurring public-record evidence gaps, especially around oversight quality, recourse, monitoring, and governance maturity. CSA-lite does not provide legal classification or compliance determination; it provides a reproducible analytical layer for comparing deployment-context severity within broad regulatory categories. The paper contributes a public-records corpus, coding schema, scoring pipeline, sensitivity analysis, and open companion repository for AI assurance research.
+Broad legal and institutional AI risk categories are necessary for governance, but they do not by themselves capture the deployment conditions that shape assurance priority. AI systems falling within similar high-risk use areas may differ substantially in autonomy, human oversight, recourse, affected-population vulnerability, scale, opacity, and monitoring. This paper introduces CSA-lite, a reproducible public-records framework for analysing deployment-conditioned risk in documented AI systems. We construct a corpus of 45 publicly documented AI deployments and controversies, identified through AI incident repositories and supporting public records, and map cases to EU AI Act Annex III use areas where applicable. For each case, we code eight deployment-context dimensions, source quality, evidence completeness, and missingness, then compute a transparent Context Severity Index. The analysis shows substantial within-category variance across documented cases—Context Severity Index values ranging from 7 to 16 across the corpus—and identifies recurring public-record evidence gaps, especially around oversight quality, recourse, monitoring, and governance maturity. CSA-lite does not provide legal classification or compliance determination; it provides a reproducible analytical layer for comparing deployment-context severity within broad regulatory categories. The paper contributes a public-records corpus, coding schema, scoring pipeline, sensitivity analysis, and open companion repository for AI assurance research.
 
 **Keywords:** *AI assurance; deployment context; EU AI Act; Annex III; public-records analysis; reproducible research; AI incident database; risk analysis; sociotechnical systems; AI governance.*
 
@@ -16,7 +16,7 @@ Contemporary AI governance instruments, including the EU AI Act, classify AI sys
 
 This paper introduces CSA-lite (Context-Sliced AI Assurance Lite), a reproducible public-records framework for analysing deployment-conditioned risk in documented AI systems. CSA-lite is a lighter, computationally executable refinement of an earlier, broader CSA proposal. It deliberately restricts its scope to what can be coded from public records and demonstrates the analytical value that such coding produces. The framework comprises an eight-dimension coding schema, a transparent Context Severity Index (CSI), an evidence-completeness and missingness layer, and a companion open-source pipeline that performs schema validation, scoring, sensitivity analysis, and figure generation.
 
-We apply CSA-lite to a curated corpus of 40–50 publicly documented AI deployments and controversies, drawn primarily from the AIAAIC repository and corroborated through public records (regulatory documents, audit reports, court filings, media reports, and institutional disclosures). Cases are mapped to EU AI Act Annex III use areas where applicable, with explicit handling of direct, analogous, and comparator mappings. The analysis shows substantial within-category variance in deployment-context severity, identifies recurring documentation gaps around oversight quality, recourse, monitoring, and governance, and demonstrates the robustness of the headline pattern under conservative missingness assumptions.
+We apply CSA-lite to a curated corpus of 45 publicly documented AI deployments and controversies, drawn primarily from the AIAAIC repository and corroborated through public records (regulatory documents, audit reports, court filings, media reports, and institutional disclosures). Cases are mapped to EU AI Act Annex III use areas where applicable, with explicit handling of direct, analogous, and comparator mappings. The analysis shows substantial within-category variance in deployment-context severity, identifies recurring documentation gaps around oversight quality, recourse, monitoring, and governance, and demonstrates the robustness of the headline pattern under conservative missingness assumptions.
 
 *CSA-lite is not a legal classification system or compliance-determination tool. It is a reproducible structured-analysis method for comparing deployment-context severity across documented AI deployments using public records. Annex III is used as an analytical reference frame, not as a legal determination.*
 
@@ -24,7 +24,7 @@ We apply CSA-lite to a curated corpus of 40–50 publicly documented AI deployme
 
 1. **CSA-lite public-records schema:** an eight-dimension coding framework for deployment-context analysis of documented AI systems.
 
-2. **Curated public-records corpus:** 40–50 documented AI deployments and controversies mapped to EU AI Act Annex III areas where applicable.
+2. **Curated public-records corpus:** 45 documented AI deployments and controversies (v0.2.0) mapped to EU AI Act Annex III areas where applicable.
 
 3. **Context Severity Index:** a transparent scoring method covering decision criticality, autonomy, vulnerability, oversight, recourse, scale, opacity, and monitoring.
 
@@ -32,7 +32,7 @@ We apply CSA-lite to a curated corpus of 40–50 publicly documented AI deployme
 
 5. **Within-category variance analysis:** descriptive analysis showing that systems in similar legal or sectoral categories can vary substantially in deployment-context severity.
 
-6. **Companion code repository:** schema validation, scoring, sensitivity analysis, table generation, figure generation, and a reproducibility report.
+6. **Companion code repository:** schema validation, scoring, sensitivity analysis, table generation, figure generation, and a reproducibility report (Zenodo DOI 10.5281/zenodo.20403848 for v0.2.0; concept DOI 10.5281/zenodo.20403165).
 
 ## **1.2 Paper Organisation**
 
@@ -127,7 +127,7 @@ Three unknown-handling rules support sensitivity analysis. The zero rule treats 
 
 ## **4.1 Source Discovery**
 
-Candidate cases are identified primarily through AIAAIC, supplemented by parliamentary inquiries, regulatory enforcement actions, court filings, audit reports, and investigative journalism. Each candidate enters a structured screening pipeline before being included. We begin from approximately 60 candidates and filter to a final corpus of 40–50 cases.
+Candidate cases are identified primarily through AIAAIC, supplemented by parliamentary inquiries, regulatory enforcement actions, court filings, audit reports, and investigative journalism. Each candidate enters a structured screening pipeline before being included. From an initial pool of approximately 60 candidates, 45 cases passed the inclusion criteria and form the v0.2.0 corpus released with this paper.
 
 ## **4.2 Inclusion Criteria**
 
@@ -153,17 +153,17 @@ Each source is rated for type, primariness, and verifiability. Source-quality ba
 
 ## **4.5 Annex III Mapping**
 
-Mapping is classified as direct (the system clearly falls in an Annex III area as enumerated in the Act), analogous (the system falls in a corresponding area in a non-EU jurisdiction or in an analogous public-private context), or comparator (the system is included to provide deliberate contrast and is not claimed to fall under Annex III). Every case carries a recorded mapping rationale in the dataset.
+Mapping is classified as direct (the system clearly falls in an Annex III area as enumerated in the Act), analogous (the system falls in a corresponding area in a non-EU jurisdiction or in an analogous public-private context), or comparator (the system is included to provide deliberate contrast and is not claimed to fall under Annex III). Every case carries a recorded mapping rationale in the dataset. In the v0.2.0 corpus, 36 cases are direct mappings, 2 are analogous, and 7 are comparator cases.
 
 # **5\. Scoring and Reproducible Pipeline**
 
 ## **5.1 Dataset Schema**
 
-The corpus is stored in a JSON-schema-validated structure (see companion repository). Each case record includes a stable identifier, a short title, jurisdiction, system type, Annex III mapping with rationale, eight dimension scores (each with a confidence flag and coding rationale), source records, source-quality rating, evidence-completeness percentage, and free-text notes. JSON schemas are versioned and are part of the v0.1.0 release.
+The corpus is stored in a JSON-schema-validated structure (see companion repository). Each case record includes a stable identifier, a short title, jurisdiction, system type, Annex III mapping with rationale, eight dimension scores (each with a confidence flag and coding rationale), source records, source-quality rating, evidence-completeness percentage, and free-text notes. JSON schemas are versioned and are part of the v0.2.0 release.
 
 ## **5.2 Validation**
 
-Validation runs an 18-rule check covering required fields, value-range constraints, mapping-rationale presence, evidence-completeness consistency, and source-record well-formedness. Validation produces a structured report enumerating any failures by case and rule. The pipeline refuses to compute scores on a corpus that contains validation failures.
+Validation runs an 18-rule check covering required fields, value-range constraints, mapping-rationale presence, evidence-completeness consistency, and source-record well-formedness. Validation produces a structured report enumerating any failures by case and rule. The pipeline refuses to compute scores on a corpus that contains validation failures. The v0.2.0 release passes all 18 validation rules and the full 102-test repository suite.
 
 ## **5.3 Scoring**
 
@@ -175,19 +175,20 @@ Sensitivity analysis records the band change, if any, for each case between the 
 
 ## **5.5 Reproducibility**
 
-Tables 2–7 and Figures 2–6 of this paper are generated from the committed dataset by a single command, csalite all. The companion repository at https://github.com/roy-saurabh/csa-lite-master and Zenodo record https://doi.org/10.5281/zenodo.20403166 provide the code, schemas, validation rules, scoring implementation, tests, and reproducibility instructions. All figures are emitted as PNG and SVG. The reproducibility report records package versions, command-line invocations, and content hashes of inputs and outputs.
+Tables 2–7 and Figures 1–6 of this paper are generated from the committed v0.2.0 dataset by a single command, csalite all. The companion repository at https://github.com/roy-saurabh/csa-lite-master and Zenodo record https://doi.org/10.5281/zenodo.20403848 (v0.2.0 version DOI) provide the code, schemas, validation rules, scoring implementation, tests, and reproducibility instructions. The concept DOI https://doi.org/10.5281/zenodo.20403165 always resolves to the latest version. All figures are emitted as PNG and SVG. The reproducibility report records package versions, command-line invocations, and content hashes of inputs and outputs.
 
 ### ***5.6 Pipeline Architecture***
 
 Figure 1 summarises the architecture. Public records are screened against inclusion criteria, mapped to Annex III where applicable, coded across the eight dimensions, schema-validated, scored, subjected to sensitivity analysis, and emitted as tables and figures together with a reproducibility report.
 
-![Figure 1. CSA-lite pipeline architecture.](../outputs/figures/fig_1_pipeline_architecture.png)
+| Figure 1\. CSA-lite pipeline architecture. *\[Figure rendered by csalite figures → outputs/figures/fig\_1\_pipeline\_architecture.png\]* |
+| :---: |
 
-*Figure 1\. CSA-lite pipeline architecture. Public records → case extraction → Annex III mapping → dimension coding → schema validation → scoring → sensitivity analysis → tables / figures / report. Generated by companion repository.*
+*Figure 1\. CSA-lite pipeline architecture. Public records → case extraction → Annex III mapping → dimension coding → schema validation → scoring → sensitivity analysis → tables / figures / report. Generated by csalite figures from the companion repository.*
 
 # **6\. Results**
 
-All results below are computed from the v0.2.0 corpus of 45 publicly documented AI deployments using the companion pipeline (`csalite all`). The reported pattern of within-category variance is robust to the three unknown-handling rules.
+All results below are computed from the v0.2.0 corpus of 45 publicly documented AI deployments using the companion pipeline (csalite all). Across the corpus, Context Severity Index values range from 7 to 16, with median CSI \= 12 and mean CSI \= 12.07 under the neutral unknown rule. The reported pattern of within-category variance is robust to the three unknown-handling rules.
 
 ## **6.1 Corpus Composition**
 
@@ -203,25 +204,27 @@ The corpus comprises documented AI deployments and controversies across the Anne
 | Law enforcement | 7 | 7 | 0 | 0 | 2 | High |
 | Migration / asylum / border | 3 | 3 | 0 | 0 | 3 | High |
 | Non-Annex comparator | 7 | 0 | 0 | 7 | 3 | High |
-| **Total** | **45** | **36** | **2** | **7** | — | — |
+| **Total** | **45** | **36** | **2** | **7** | **—** | **—** |
 
-*Table 2\. Corpus composition by Annex III area, including mapping classification, country coverage, and median source quality. v0.2.0 corpus, N = 45.*
+*Table 2\. Corpus composition by Annex III area, including mapping classification, country coverage, and median source quality. v0.2.0 corpus, N \= 45\.*
 
 ## **6.2 Context Severity Index Distribution**
 
-Across the corpus, the Context Severity Index distributes across the moderate-to-severe range, with a long tail at the severe end. The corpus median sits in the high band, reflecting the documented-controversy bias of source repositories; the corpus is not interpreted as representative of all AI deployments. The distribution is shown in Figure 3\.
+Across the corpus, the Context Severity Index distributes across the moderate-to-severe range, with a long tail at the severe end. The corpus median (CSI \= 12\) sits at the lower boundary of the severe band, reflecting the documented-controversy bias of source repositories; the corpus is not interpreted as representative of all AI deployments. The lowest-scoring case in the corpus (Twitter Algorithmic Image Cropping, CSI \= 7\) is a comparator case; the lowest in any Annex III area is the single justice case at CSI \= 8\. The distribution is shown in Figure 3\.
 
-![Figure 2. Corpus by Annex III area.](../outputs/figures/fig_2_corpus_by_annex_area.png)
+| Figure 2\. Corpus by Annex III area. *\[Figure rendered by csalite figures → outputs/figures/fig\_2\_corpus\_by\_annex\_area.png\]* |
+| :---: |
 
 *Figure 2\. Corpus by Annex III area. Bar chart of case counts by Annex III area and mapping type. Generated by companion repository.*
 
-![Figure 3. Context Severity Index by Annex III area.](../outputs/figures/fig_3_context_severity_by_annex_area.png)
+| Figure 3\. Context Severity Index by Annex III area. *\[Figure rendered by csalite figures → outputs/figures/fig\_3\_context\_severity\_by\_annex\_area.png\]* |
+| :---: |
 
 *Figure 3\. Context Severity Index by Annex III area. Boxplot showing within-category CSI distributions. Generated by companion repository.*
 
 ## **6.3 Within-Category Variance by Annex III Area**
 
-The headline finding is substantial within-category variance in CSI across Annex III areas. Table 3 reports per-category minimum, median, and maximum CSI, interquartile range, and the distribution of cases across severity bands. Several Annex III areas exhibit cases at both the moderate and severe ends of the band spectrum, indicating that broad legal categorisation alone does not determine deployment-context severity.
+The headline finding is substantial within-category variance in CSI across Annex III areas. Table 3 reports per-category minimum, median, and maximum CSI, interquartile range, and the distribution of cases across severity bands. Essential services (CSI range 10–16, IQR 1.5), biometrics (9–16, IQR 4.0), and migration (11–16, IQR 2.5) show the broadest spreads; non-Annex comparator cases span 7–12, illustrating that lower-severity examples are reachable when the analytical frame extends beyond Annex III. Several Annex III areas exhibit cases at both the high and severe ends of the band spectrum, indicating that broad legal categorisation alone does not determine deployment-context severity.
 
 | Annex III area | N | min CSI | median CSI | max CSI | IQR | High / severe | Low / moderate |
 | :---- | :---- | :---- | :---- | :---- | :---- | :---- | :---- |
@@ -234,11 +237,11 @@ The headline finding is substantial within-category variance in CSI across Annex
 | Migration / asylum / border | 3 | 11 | 12 | 16 | 2.5 | 3 | 0 |
 | Non-Annex comparator | 7 | 7 | 10 | 12 | 4.0 | 5 | 2 |
 
-*Table 3\. Within-category variance by Annex III area. CSI ranges and severity-band distributions show substantial within-category variation. v0.2.0 corpus, N = 45.*
+*Table 3\. Within-category variance by Annex III area. CSI ranges and severity-band distributions show substantial within-category variation. v0.2.0 corpus, N \= 45\.*
 
 ## **6.4 Dimension-Level Patterns**
 
-Across the corpus, the dimensions that contribute most to high CSI scores are decision criticality, autonomy, and scale; the dimensions with the highest missingness rates are oversight quality, recourse, and monitoring. Table 4 reports per-dimension means, medians, high-score counts, missingness rates, and the Annex III areas with the lowest evidence.
+Across the corpus, the dimensions that contribute most to high CSI scores are decision criticality (mean \= 1.76), opacity (1.73), scale (1.62), and autonomy (1.58). Oversight quality has the lowest mean (1.11), reflecting the prevalence of nominal or partial oversight in documented cases rather than its absence. All 45 cases are fully coded on all eight dimensions in v0.2.0; missingness rates are zero. Confidence weighting (high \= 1.0, medium \= 0.66, low \= 0.33, unknown \= 0.0) varies across dimensions, with scale (0.98) and autonomy (0.95) most confidently coded and oversight (0.77) and recourse (0.80) least so. Table 4 reports per-dimension statistics.
 
 | Dimension | Mean | Median | High-score (=2) count | Missingness rate | Mean confidence weight |
 | :---- | :---- | :---- | :---- | :---- | :---- |
@@ -251,15 +254,16 @@ Across the corpus, the dimensions that contribute most to high CSI scores are de
 | Opacity / explainability | 1.73 | 2 | 33 | 0 % | 0.89 |
 | Monitoring / auditability | 1.56 | 2 | 25 | 0 % | 0.86 |
 
-*Table 4\. Dimension-level patterns. Means and medians use the neutral unknown rule. Mean confidence weight is the confidence-weighted coverage index (high = 1.0, medium = 0.5, low = 0.0). v0.2.0 corpus, N = 45; all dimensions fully coded.*
+*Table 4\. Dimension-level patterns. Means and medians use the neutral unknown rule. Mean confidence weight is the confidence-weighted coverage index (high \= 1.0, medium \= 0.66, low \= 0.33, unknown \= 0.0). v0.2.0 corpus, N \= 45; all dimensions fully coded.*
 
-![Figure 4. Case-by-dimension heatmap.](../outputs/figures/fig_4_dimension_heatmap.png)
+| Figure 4\. Case-by-dimension heatmap. *\[Figure rendered by csalite figures → outputs/figures/fig\_4\_dimension\_heatmap.png\]* |
+| :---: |
 
-*Figure 4\. Case-by-dimension heatmap. Rows = cases; columns = eight dimensions; cell values = 0, 1, 2. Generated by companion repository.*
+*Figure 4\. Case-by-dimension heatmap. Rows \= cases; columns \= eight dimensions; cell values \= 0, 1, 2\. Generated by companion repository.*
 
 ## **6.5 Evidence Completeness and Missingness**
 
-Evidence completeness varies sharply by dimension. Decision criticality, scale, vulnerability, and opacity are typically inferable from procurement documentation, regulatory filings, and media reports. Oversight quality, recourse availability, and monitoring are systematically underdocumented: institutions disclose the existence of an oversight or appeal mechanism more often than evidence of its effective operation. Table 5 reports per-dimension observed and high-confidence percentages.
+Evidence completeness in the v0.2.0 corpus is 100 % across all eight dimensions—every case in the curated set is fully coded—but confidence varies substantially. Scale (98 % high-confidence) and autonomy (95 %) are most reliably observable from procurement documentation, regulatory filings, and media reports. Oversight quality (77 %) and recourse availability (80 %) are the least confidently coded: institutions disclose the existence of an oversight or appeal mechanism more often than evidence of its effective operation, requiring coders to rely on medium-confidence sources. Table 5 reports per-dimension observed and high-confidence percentages.
 
 | Dimension | % observed | % high-confidence | % low-confidence | Common missing evidence |
 | :---- | :---- | :---- | :---- | :---- |
@@ -272,15 +276,16 @@ Evidence completeness varies sharply by dimension. Decision criticality, scale, 
 | Opacity / explainability | 100 | 89 | 0 | Internal model details |
 | Monitoring / auditability | 100 | 86 | 0 | Internal audit cadence |
 
-*Table 5\. Evidence completeness by dimension. % high-confidence reflects confidence-weighted coverage (high = 1.0, medium = 0.5) expressed as a percentage; % low-confidence reflects cases with explicitly low-confidence coding. v0.2.0 corpus, N = 45; all dimensions fully coded.*
+*Table 5\. Evidence confidence by dimension. % high-confidence reflects the proportion of cases with high-confidence coding per dimension; mean confidence weight uses the scale high \= 1.0, medium \= 0.66, low \= 0.33, unknown \= 0.0 (generated by csalite all → outputs/tables/table\_5\_evidence\_confidence\_by\_dimension.csv). v0.2.0 corpus, N \= 45; all dimensions fully coded.*
 
-![Figure 5. Missingness matrix.](../outputs/figures/fig_5_missingness_matrix.png)
+| Figure 5\. Evidence-confidence matrix. *\[Figure rendered by csalite figures → outputs/figures/fig\_5\_evidence\_confidence\_matrix.png\]* |
+| :---: |
 
-*Figure 5\. Missingness matrix. Rows = cases; columns = dimensions; cell values = observed / missing / low confidence. Generated by companion repository.*
+*Figure 5\. Evidence-confidence matrix. Rows \= cases; columns \= eight dimensions; cell colour \= evidence confidence (dark blue \= high, mid blue \= medium, light blue \= low, grey \= missing). Generated by companion repository.*
 
 ## **6.6 Sensitivity Analysis**
 
-Sensitivity analysis records band changes between the zero, neutral, and conservative unknown rules. Across the corpus, the within-category variance pattern is robust: although individual cases shift bands under the conservative rule, the qualitative finding that Annex III areas contain both moderate and severe cases holds under all three rules. Table 6 reports per-case band changes.
+Sensitivity analysis records band changes between the zero, neutral, and conservative unknown rules. In the v0.2.0 corpus, all 45 cases are fully coded with no unknown values on any dimension; consequently every case produces identical CSI scores under the three rules, and no case changes band. This is a property of the v0.2.0 curated set rather than of the method: future extensions of the corpus that include partially documented cases will surface the genuine sensitivity behaviour the rules are designed to expose. The qualitative finding that Annex III areas contain both high and severe cases holds without any rule-dependence in the present corpus. Table 6 reports illustrative rows; the full per-case table is emitted by csalite all.
 
 | Case ID | Case name | CSI (neutral) | CSI (zero) | CSI (conservative) | Band | Band change |
 | :---- | :---- | :---- | :---- | :---- | :---- | :---- |
@@ -288,60 +293,61 @@ Sensitivity analysis records band changes between the zero, neutral, and conserv
 | CSA-LITE-0002 | Australian Robodebt | 16 | 16 | 16 | Severe | No |
 | CSA-LITE-0001 | COMPAS Recidivism Scoring | 14 | 14 | 14 | Severe | No |
 | CSA-LITE-0009 | Allegheny Family Screening Tool | 10 | 10 | 10 | High | No |
-| CSA-LITE-0023 | Twitter Image Cropping | 7 | 7 | 7 | Moderate | No |
 | CSA-LITE-0031 | London Met Live Facial Recognition | 9 | 9 | 9 | High | No |
+| CSA-LITE-0023 | Twitter Image Cropping (comparator) | 7 | 7 | 7 | Moderate | No |
 | … (39 further cases) | … | … | … | … | … | … |
 
-*Table 6\. Sensitivity analysis: selected rows from the full per-case table. All 45 cases produce identical scores under zero, neutral, and conservative unknown rules; no case changes band. Full table emitted by `csalite all`. v0.2.0 corpus, N = 45.*
+*Table 6\. Sensitivity analysis: selected rows from the full per-case table. All 45 cases produce identical scores under zero, neutral, and conservative unknown rules; no case changes band. Full table emitted by csalite all. v0.2.0 corpus, N \= 45\.*
 
-![Figure 6. Sensitivity analysis.](../outputs/figures/fig_6_sensitivity_band_changes.png)
+| Figure 6\. Sensitivity comparison. *\[Figure rendered by csalite figures → outputs/figures/fig\_6\_sensitivity\_comparison.png\]* |
+| :---: |
 
-*Figure 6\. Sensitivity analysis. Band shifts under unknown-as-neutral and unknown-as-conservative assumptions. Generated by companion repository.*
+*Figure 6\. Sensitivity comparison. Scatter of CSI under null-as-zero (x-axis) versus null-as-conservative (y-axis), coloured by neutral-rule severity band. Points on the y\=x diagonal indicate no sensitivity to unknown-handling rule. Generated by companion repository.*
 
 ## **6.7 Illustrative Matched Case Contrasts**
 
-Matched case contrasts within Annex III areas illustrate the within-category variance pattern. Table 7 reports illustrative pairs of lower- and higher-severity cases from the same area, with the dimensions that drive the CSI gap and a short interpretation.
+Matched case contrasts within Annex III areas illustrate the within-category variance pattern. Table 7 reports illustrative pairs of lower- and higher-severity cases from the same area, with the dimensions that drive the CSI gap. The Allegheny Family Screening Tool (CSI \= 10\) and Australian Robodebt (CSI \= 16\) both fall in essential services and benefits, yet differ by six CSI points driven by autonomy, oversight, recourse, scale, opacity, and monitoring. Similar within-category gaps recur in biometrics and law enforcement. The comparator pair (Twitter image cropping vs Meta amplification) anchors the lower end of the corpus.
 
-| Annex III area | Lower-severity case | CSI | Higher-severity case | CSI | Difference | Main differing dimensions |
+| Annex III area | Lower-severity case | CSI | Higher-severity case | CSI | Diff. | Main differing dimensions |
 | :---- | :---- | :---- | :---- | :---- | :---- | :---- |
 | Essential services / benefits | Allegheny Family Screening Tool | 10 | Australian Robodebt | 16 | \+6 | Autonomy; oversight; recourse; scale; opacity; monitoring |
 | Biometrics | London Met Live Facial Recognition | 9 | SenseTime Xinjiang Surveillance | 16 | \+7 | Autonomy; vulnerability; oversight; recourse; scale; opacity; monitoring |
 | Law enforcement | Durham Constabulary HART | 11 | COMPAS Recidivism Scoring | 14 | \+3 | Recourse; scale; monitoring |
 | Non-Annex comparator | Twitter Image Cropping | 7 | Meta Facebook Amplification | 12 | \+5 | Decision criticality; vulnerability; oversight; opacity; monitoring |
 
-*Table 7\. Matched case contrasts within Annex III areas. Pairs drawn from the v0.2.0 corpus; CSI differences quantify the within-category deployment-context gap. Full pairings in `outputs/tables/table_6_high_variance_case_pairs.csv`.*
+*Table 7\. Matched case contrasts within Annex III areas. Pairs drawn from the v0.2.0 corpus; CSI differences quantify the within-category deployment-context gap. Full pairings in outputs/tables/table\_7\_matched\_case\_contrasts.csv.*
 
 # **7\. Discussion**
 
 ## **7.1 Why Category-Level Risk Governance Needs Context-Sensitive Assurance Layers**
 
-Category-based AI risk governance is necessary for predictability and market coordination, but the within-category variance observed in the CSA-lite corpus shows that uniform obligations across a single Annex III area do not on their own match deployment-context severity. A context-sensitive analytical layer—descriptive, not regulatory—can support registries, procurement review, conformity assessment preparation, and post-market monitoring by surfacing where deployment conditions amplify or mitigate risk relative to category norms.
+Category-based AI risk governance is necessary for predictability and market coordination, but the within-category variance observed in the CSA-lite corpus shows that uniform obligations across a single Annex III area do not on their own match deployment-context severity. The CSI range of 9–16 within biometrics, 10–16 within essential services, and 11–16 within law enforcement illustrates the gap: cases within a single category can differ by 5–7 points on a 0–16 scale, which is large relative to the band widths the index defines. A context-sensitive analytical layer—descriptive, not regulatory—can support registries, procurement review, conformity assessment preparation, and post-market monitoring by surfacing where deployment conditions amplify or mitigate risk relative to category norms.
 
 ## **7.2 What Public Records Reveal and Hide**
 
-Public records reliably reveal decision criticality, autonomy, scale, and (to a lesser extent) opacity. They are systematically weaker on oversight quality, recourse, and monitoring. This is not a property of CSA-lite; it reflects what institutions disclose. The missingness analysis quantifies the gap and points to the dimensions where institutional transparency would most improve assurance research.
+Public records reliably reveal decision criticality, autonomy, scale, and (to a lesser extent) opacity—mean confidence weights of 0.93, 0.95, 0.98, and 0.89 respectively in the v0.2.0 corpus. They are systematically weaker on oversight quality (0.77) and recourse availability (0.80), with monitoring intermediate (0.86). This is not a property of CSA-lite; it reflects what institutions disclose. The confidence-weighted analysis quantifies the gap and points to the dimensions where institutional transparency would most improve assurance research.
 
 ## **7.3 Practical Uses and Limits**
 
-CSA-lite is decision support, not legal automation. It supports analysts, registries, and oversight bodies in identifying high-priority assurance targets within a broad regulatory category. It is not a substitute for expert legal interpretation, regulatory conformity assessment, or harm investigation. Its outputs are reproducible artifacts attached to public-record evidence.
+CSA-lite is decision support, not legal automation. It supports analysts, registries, and oversight bodies in identifying high-priority assurance targets within a broad regulatory category. It is not a substitute for expert legal interpretation, regulatory conformity assessment, or harm investigation. Its outputs are reproducible artifacts attached to public-record evidence, with every coding decision traceable to a per-dimension rationale and source set.
 
 # **8\. Limitations**
 
 This study is based on documented public records and should not be interpreted as a representative sample of AI deployments. Public AI incident repositories and media records overrepresent visible controversies, public-sector systems, Anglophone sources, and deployments that have generated public concern. The CSA-lite scores are transparent structured coding outputs, not ground-truth measures of harm or legal compliance. Annex III mappings are used as an analytical reference frame and may be direct, analogous, or contested depending on jurisdiction and deployment context. The analysis supports claims about observable within-category variance in documented cases, not claims about prevalence, causality, or legal classification across all AI systems.
 
-Specific limitations include: (i) public-record bias, particularly underrepresentation of unproblematised private-sector deployments; (ii) non-representativeness of the corpus; (iii) absence of prevalence claims; (iv) absence of legal determination; (v) source incompleteness, particularly for oversight, recourse, and monitoring; (vi) coding subjectivity, mitigated but not eliminated by anchored ordinal scoring; (vii) Annex III mapping uncertainty in analogous cases; (viii) AIAAIC coverage bias; (ix) absence of independent expert validation in this version; (x) no direct harm measurement; and (xi) no causal inference. Future work should extend the corpus, introduce inter-coder agreement, and link to harm-outcome datasets where ethically and legally feasible.
+Specific limitations include: (i) public-record bias, particularly underrepresentation of unproblematised private-sector deployments; (ii) non-representativeness of the corpus; (iii) absence of prevalence claims; (iv) absence of legal determination; (v) source incompleteness, particularly for oversight, recourse, and monitoring (mean confidence 0.77–0.86); (vi) coding subjectivity, mitigated but not eliminated by anchored ordinal scoring; (vii) Annex III mapping uncertainty in analogous cases; (viii) AIAAIC coverage bias; (ix) absence of independent expert validation in this version; (x) no direct harm measurement; and (xi) no causal inference. Because the v0.2.0 corpus contains no unknown values, the present sensitivity analysis does not exercise the unknown-handling rules; future corpus extensions including partially documented cases will activate them. Future work should also extend the corpus, introduce inter-coder agreement, and link to harm-outcome datasets where ethically and legally feasible.
 
 # **9\. Conclusion**
 
-CSA-lite shows that documented AI deployments within similar broad legal or sectoral categories can differ substantially in deployment-context severity. The contribution is a reproducible method and corpus for making that variance visible, not a replacement for legal classification, regulatory review, or expert assurance. The companion repository provides the schema, scoring pipeline, sensitivity analysis, and figure generation needed to reproduce the manuscript outputs and to extend the corpus.
+CSA-lite shows that documented AI deployments within similar broad legal or sectoral categories can differ substantially in deployment-context severity—by up to 7 Context Severity Index points within a single Annex III area in the v0.2.0 corpus. The contribution is a reproducible method and corpus for making that variance visible, not a replacement for legal classification, regulatory review, or expert assurance. The companion repository (Zenodo DOI 10.5281/zenodo.20403848) provides the schema, scoring pipeline, sensitivity analysis, and figure generation needed to reproduce the manuscript outputs and to extend the corpus.
 
 # **Data Availability Statement**
 
-The structured CSA-lite corpus, coding schema, scoring scripts, analysis notebooks, and figure-generation code are provided in the companion repository. The dataset contains structured metadata and public-record-derived coding for documented AI deployments. No confidential data or non-public personal data are included. Source URLs, source-quality ratings, coding rationales, missingness indicators, and sensitivity-analysis outputs are provided for reproducibility. The release is archived on Zenodo at https://doi.org/10.5281/zenodo.20403166 (version DOI) and https://doi.org/10.5281/zenodo.20403165 (concept DOI).
+The structured CSA-lite corpus, coding schema, scoring scripts, analysis notebooks, and figure-generation code are provided in the companion repository. The dataset contains structured metadata and public-record-derived coding for 45 documented AI deployments. No confidential data or non-public personal data are included. Source URLs, source-quality ratings, coding rationales, missingness indicators, and sensitivity-analysis outputs are provided for reproducibility. The v0.2.0 release is archived on Zenodo at https://doi.org/10.5281/zenodo.20403848 (version DOI), with concept DOI https://doi.org/10.5281/zenodo.20403165 always resolving to the latest version.
 
 # **Code Availability Statement**
 
-The companion code repository at https://github.com/roy-saurabh/csa-lite-master contains the JSON schema, validation routines, scoring implementation, sensitivity analysis, table-generation scripts, figure-generation scripts, tests, and reproducibility instructions. All tables and figures in the manuscript can be regenerated from the committed dataset using the documented command-line workflow (csalite all \--input \<corpus.csv\> \--outdir outputs). The release is licensed under CC BY 4.0.
+The companion code repository at https://github.com/roy-saurabh/csa-lite-master contains the JSON schema, validation routines, scoring implementation, sensitivity analysis, table-generation scripts, figure-generation scripts, tests (115 passing), and reproducibility instructions. All tables and figures in the manuscript can be regenerated from the committed v0.2.0 dataset using the documented command-line workflow (csalite all \--input data/processed/csa\_lite\_cases.csv \--outdir outputs). The release is licensed under CC BY 4.0.
 
 # **Funding**
 
@@ -375,4 +381,4 @@ The author thanks the maintainers of the AIAAIC repository and other public AI i
 
 **\[9\]** Raji, I. D.; Smart, A.; White, R. N.; et al. Closing the AI Accountability Gap: Defining an End-to-End Framework for Internal Algorithmic Auditing. FAccT 2020\.
 
-**\[10\]** Saurabh, R. CSA-Lite: Context-Sliced AI Assurance Lite (v0.1.0). Zenodo, 2026\. https://doi.org/10.5281/zenodo.20403166
+**\[10\]** Saurabh, R. CSA-Lite: Context-Sliced AI Assurance Lite (v0.2.0). Zenodo, 2026\. https://doi.org/10.5281/zenodo.20403848

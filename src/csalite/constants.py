@@ -11,7 +11,7 @@ from typing import Final
 
 # ── Project identity ──────────────────────────────────────────────────────────
 PROJECT_NAME: Final[str] = "CSA-Lite"
-PROJECT_VERSION: Final[str] = "0.1.0"
+PROJECT_VERSION: Final[str] = "0.2.0"
 PAPER_TITLE: Final[str] = (
     "Context-Sliced AI Assurance Lite: A Reproducible Public-Records Framework "
     "for Deployment-Conditioned Risk Analysis of AI Systems"
@@ -88,6 +88,77 @@ RANDOM_SEED: Final[int] = 42
 # ── Figure output ─────────────────────────────────────────────────────────────
 FIGURE_DPI: Final[int] = 300
 FIGURE_FORMATS: Final[tuple[str, ...]] = ("png", "svg")
+
+# ── Dataset version ───────────────────────────────────────────────────────────
+DATASET_VERSION: Final[str] = "0.2.0"
+
+# ── Dimension descriptions (for Table 1) ──────────────────────────────────────
+DIMENSION_DESCRIPTIONS: Final[dict[str, dict[str, str]]] = {
+    "decision_criticality": {
+        "description": "Magnitude and reversibility of decisions made by or with the system",
+        "score_0": "Advisory / low consequence",
+        "score_1": "Consequential but reversible",
+        "score_2": "Life- or livelihood-altering",
+        "evidence_required": "System output + institutional process",
+        "missingness_note": "Code as unknown if outcome chain unclear",
+    },
+    "autonomy": {
+        "description": "Degree to which the system, in practice, determines outcomes",
+        "score_0": "Weak advisory; human decides independently",
+        "score_1": "Materially influences human decision",
+        "score_2": "Automated / de facto determinative",
+        "evidence_required": "Human-AI interface + override practice",
+        "missingness_note": "Code unknown if practice undocumented",
+    },
+    "vulnerability": {
+        "description": "Structural vulnerability of those subject to system decisions",
+        "score_0": "General adult population",
+        "score_1": "Asymmetric institutional role (workers, claimants, applicants)",
+        "score_2": "Minors / highly dependent groups (detainees, asylum seekers, patients)",
+        "evidence_required": "Documentation of affected population",
+        "missingness_note": "Code unknown if population unclear",
+    },
+    "oversight": {
+        "description": "Documented quality of human oversight at the point of decision",
+        "score_0": "Documented meaningful review with authority to override",
+        "score_1": "Nominal / unclear / inconsistent review",
+        "score_2": "No meaningful oversight or review only after harm",
+        "evidence_required": "Oversight protocols and audit records",
+        "missingness_note": "Frequently missing in public records",
+    },
+    "recourse": {
+        "description": "Accessibility and effectiveness of appeal or correction",
+        "score_0": "Clear, accessible, timely pathway",
+        "score_1": "Partial / slow / costly / inconsistent recourse",
+        "score_2": "No meaningful recourse or practically unavailable",
+        "evidence_required": "Documented appeal mechanism",
+        "missingness_note": "Frequently missing in public records",
+    },
+    "scale": {
+        "description": "Breadth of deployment",
+        "score_0": "Pilot / limited internal use",
+        "score_1": "Institutional / municipal / regional / sectoral",
+        "score_2": "National / platform-scale / high-volume",
+        "evidence_required": "Procurement records, deployment scope",
+        "missingness_note": "Often inferable from public documents",
+    },
+    "opacity": {
+        "description": "Degree to which system role and decision basis are unavailable",
+        "score_0": "Sufficient public documentation",
+        "score_1": "Partial opacity with key details missing",
+        "score_2": "Proprietary / secret / meaningfully unchallengeable",
+        "evidence_required": "Documentation quality and disclosure",
+        "missingness_note": "Inferable from disclosure patterns",
+    },
+    "monitoring": {
+        "description": "Presence and quality of post-deployment monitoring",
+        "score_0": "Documented systematic audit, monitoring, or evaluation",
+        "score_1": "Unclear or periodic monitoring",
+        "score_2": "No documented monitoring; failures discovered externally",
+        "evidence_required": "Audit reports or external findings",
+        "missingness_note": "Frequently missing in public records",
+    },
+}
 
 # ── Disclaimer (canonical) ────────────────────────────────────────────────────
 DISCLAIMER: Final[str] = (

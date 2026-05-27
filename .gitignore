@@ -78,3 +78,10 @@ data/interim/*.csv
 .env.*
 *.pem
 *.key
+
+# Test-side-effect scored_cases written by `all` command during test runs
+tests/fixtures/scored_cases.csv
+tests/fixtures/scored_cases.jsonl
+
+# Manifest is generated — not version controlled
+outputs/reports/manuscript_artifact_manifest.json

@@ -176,3 +176,222 @@ def write_report(content: str, path: Path) -> None:
     """Write a Markdown report string to a file."""
     path.parent.mkdir(parents=True, exist_ok=True)
     path.write_text(content, encoding="utf-8")
+
+
+def build_validation_report_json(
+    result: ValidationResult,
+    n_cases: int = 0,
+    input_path: Optional[Path] = None,
+) -> dict:
+    """
+    Build a structured JSON-serialisable dict of the validation result.
+
+    Suitable for writing as outputs/reports/validation_report.json.
+    """
+    return {
+        "schema": PROJECT_NAME,
+        "version": PROJECT_VERSION,
+        "generated": datetime.datetime.now().isoformat(timespec="seconds"),
+        "input_file": str(input_path) if input_path else None,
+        "n_cases": n_cases,
+        "is_valid": result.is_valid,
+        "n_errors": len(result.errors),
+        "n_warnings": len(result.warnings),
+        "errors": [
+            {
+                "rule_id": e.rule_id,
+                "field": e.field,
+                "case_id": e.case_id,
+                "message": e.message,
+            }
+            for e in result.errors
+        ],
+        "warnings": [
+            {
+                "rule_id": w.rule_id,
+                "field": w.field,
+                "case_id": w.case_id,
+                "message": w.message,
+            }
+            for w in result.warnings
+        ],
+    }
+
+
+def build_reproducibility_report(
+    n_cases: int,
+    input_path: Optional[Path],
+    outdir: Path,
+    run_timestamp: Optional[str] = None,
+) -> str:
+    """
+    Build a Markdown reproducibility report for outputs/reports/reproducibility_report.md.
+
+    Records run metadata, package versions, and the command invoked.
+    """
+    import sys
+    import importlib
+
+    ts = run_timestamp or datetime.datetime.now().isoformat(timespec="seconds")
+
+    lines: list[str] = []
+    lines.append(f"# {PROJECT_NAME} v{PROJECT_VERSION} — Reproducibility Report")
+    lines.append(f"\n_Generated: {ts}_\n")
+    lines.append("> **Disclaimer:** " + DISCLAIMER)
+    lines.append("\n---\n")
+
+    lines.append("## Run Metadata\n")
+    lines.append(f"- **Dataset version:** {PROJECT_VERSION}")
+    lines.append(f"- **Cases processed:** {n_cases}")
+    lines.append(f"- **Input file:** `{input_path}`")
+    lines.append(f"- **Output root:** `{outdir}`")
+    lines.append(f"- **Run timestamp:** {ts}")
+
+    lines.append("\n## Command\n")
+    lines.append(
+        f"```\ncsa lite all --input {input_path} --outdir {outdir}\n```"
+    )
+
+    lines.append("\n## Python Environment\n")
+    lines.append(f"- **Python:** {sys.version}")
+    pkg_list = ["pandas", "numpy", "matplotlib", "pydantic", "pandera", "typer", "rich"]
+    for pkg in pkg_list:
+        try:
+            mod = importlib.import_module(pkg)
+            ver = getattr(mod, "__version__", "unknown")
+        except ImportError:
+            ver = "not installed"
+        lines.append(f"- **{pkg}:** {ver}")
+
+    lines.append("\n## Expected Outputs\n")
+    lines.append("### Tables\n")
+    table_names = [
+        "table_1_csalite_dimensions.csv",
+        "table_2_corpus_composition_by_annex_area.csv",
+        "table_3_within_category_variance.csv",
+        "table_4_dimension_level_patterns.csv",
+        "table_5_evidence_confidence_by_dimension.csv",
+        "table_6_sensitivity_summary.csv",
+        "table_7_matched_case_contrasts.csv",
+    ]
+    for t in table_names:
+        p = outdir / "tables" / t
+        status = "✓" if p.exists() else "✗"
+        lines.append(f"- {status} `{t}`")
+
+    lines.append("\n### Figures\n")
+    fig_stems = [
+        "fig_1_pipeline_architecture",
+        "fig_2_corpus_by_annex_area",
+        "fig_3_context_severity_by_annex_area",
+        "fig_4_dimension_heatmap",
+        "fig_5_evidence_confidence_matrix",
+        "fig_6_sensitivity_comparison",
+    ]
+    for stem in fig_stems:
+        for ext in ("png", "svg"):
+            p = outdir / "figures" / f"{stem}.{ext}"
+            status = "✓" if p.exists() else "✗"
+            lines.append(f"- {status} `{stem}.{ext}`")
+
+    return "\n".join(lines) + "\n"
+
+
+def build_artifact_manifest(
+    outdir: Path,
+    input_path: Optional[Path] = None,
+    dataset_version: str = "0.2.0",
+) -> dict:
+    """
+    Build a JSON-serialisable artifact manifest for outputs/reports/manuscript_artifact_manifest.json.
+
+    Lists all expected output artifacts with their existence status,
+    generated_from command, and dataset_version.
+    """
+    import hashlib
+
+    def _file_hash(p: Path) -> Optional[str]:
+        if not p.exists():
+            return None
+        h = hashlib.sha256()
+        h.update(p.read_bytes())
+        return h.hexdigest()[:16]
+
+    generated = datetime.datetime.now().isoformat(timespec="seconds")
+    command = f"csalite all --input {input_path} --outdir {outdir}"
+
+    artifacts: list[dict] = []
+
+    table_names = [
+        "table_1_csalite_dimensions.csv",
+        "table_2_corpus_composition_by_annex_area.csv",
+        "table_3_within_category_variance.csv",
+        "table_4_dimension_level_patterns.csv",
+        "table_5_evidence_confidence_by_dimension.csv",
+        "table_6_sensitivity_summary.csv",
+        "table_7_matched_case_contrasts.csv",
+    ]
+    for name in table_names:
+        p = outdir / "tables" / name
+        artifacts.append(
+            {
+                "path": str(p.relative_to(outdir.parent) if outdir.parent != outdir else p),
+                "type": "table",
+                "exists": p.exists(),
+                "sha256_prefix": _file_hash(p),
+                "generated_from": command,
+                "dataset_version": dataset_version,
+            }
+        )
+
+    fig_stems = [
+        "fig_1_pipeline_architecture",
+        "fig_2_corpus_by_annex_area",
+        "fig_3_context_severity_by_annex_area",
+        "fig_4_dimension_heatmap",
+        "fig_5_evidence_confidence_matrix",
+        "fig_6_sensitivity_comparison",
+    ]
+    for stem in fig_stems:
+        for ext in ("png", "svg"):
+            p = outdir / "figures" / f"{stem}.{ext}"
+            artifacts.append(
+                {
+                    "path": str(p.relative_to(outdir.parent) if outdir.parent != outdir else p),
+                    "type": "figure",
+                    "format": ext,
+                    "exists": p.exists(),
+                    "sha256_prefix": _file_hash(p),
+                    "generated_from": command,
+                    "dataset_version": dataset_version,
+                }
+            )
+
+    report_names = [
+        "validation_report.md",
+        "validation_report.json",
+        "reproducibility_report.md",
+        "scoring_summary.md",
+    ]
+    for name in report_names:
+        p = outdir / "reports" / name
+        artifacts.append(
+            {
+                "path": str(p.relative_to(outdir.parent) if outdir.parent != outdir else p),
+                "type": "report",
+                "exists": p.exists(),
+                "sha256_prefix": _file_hash(p),
+                "generated_from": command,
+                "dataset_version": dataset_version,
+            }
+        )
+
+    return {
+        "schema": PROJECT_NAME,
+        "version": PROJECT_VERSION,
+        "dataset_version": dataset_version,
+        "generated": generated,
+        "command": command,
+        "n_artifacts": len(artifacts),
+        "artifacts": artifacts,
+    }

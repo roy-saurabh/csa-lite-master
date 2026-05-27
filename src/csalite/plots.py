@@ -1,8 +1,16 @@
 """
 Figure generation for CSA-lite manuscript.
 
-Produces 8 figures, each saved in both PNG and SVG formats.
+Produces 6 figures, each saved in both PNG and SVG formats.
 Uses matplotlib ONLY — no seaborn.
+
+Figure function names:
+  plot_pipeline_architecture(outdir)           → fig_1_pipeline_architecture
+  plot_corpus_by_annex_area(df, outdir)        → fig_2_corpus_by_annex_area
+  plot_context_severity_by_annex_area(df, outdir) → fig_3_context_severity_by_annex_area
+  plot_dimension_heatmap(df, outdir)           → fig_4_dimension_heatmap
+  plot_evidence_confidence_matrix(df, outdir)  → fig_5_evidence_confidence_matrix
+  plot_sensitivity_comparison(df, outdir)      → fig_6_sensitivity_comparison
 
 All figure functions:
   - Raise ValueError for empty datasets
@@ -61,9 +69,10 @@ def _require_nonempty(df: pd.DataFrame, context: str) -> None:
 # ── Figure 1 ──────────────────────────────────────────────────────────────────
 
 
-def fig_1_pipeline_architecture(outdir: Path) -> plt.Figure:
+def plot_pipeline_architecture(outdir: Path) -> plt.Figure:
     """
     Fig 1: CSA-lite pipeline architecture diagram (text boxes + arrows).
+    Saved as fig_1_pipeline_architecture.{png,svg}.
     """
     fig, ax = plt.subplots(figsize=(12, 7))
     ax.set_xlim(0, 10)
@@ -109,7 +118,6 @@ def fig_1_pipeline_architecture(outdir: Path) -> plt.Figure:
             arrowprops=arrow_props,
         )
 
-    # Disclaimer note
     ax.text(
         5, -0.3,
         "CSA-lite does not produce legal classifications or compliance determinations.",
@@ -125,11 +133,12 @@ def fig_1_pipeline_architecture(outdir: Path) -> plt.Figure:
 # ── Figure 2 ──────────────────────────────────────────────────────────────────
 
 
-def fig_2_corpus_by_annex_area(df: pd.DataFrame, outdir: Path) -> plt.Figure:
+def plot_corpus_by_annex_area(df: pd.DataFrame, outdir: Path) -> plt.Figure:
     """
     Fig 2: Bar chart of case counts by Annex III area.
+    Saved as fig_2_corpus_by_annex_area.{png,svg}.
     """
-    _require_nonempty(df, "fig_2_corpus_by_annex_area")
+    _require_nonempty(df, "plot_corpus_by_annex_area")
 
     counts = df["annex_iii_area"].value_counts().sort_index()
 
@@ -170,13 +179,14 @@ def fig_2_corpus_by_annex_area(df: pd.DataFrame, outdir: Path) -> plt.Figure:
 # ── Figure 3 ──────────────────────────────────────────────────────────────────
 
 
-def fig_3_context_severity_by_annex_area(df: pd.DataFrame, outdir: Path) -> plt.Figure:
+def plot_context_severity_by_annex_area(df: pd.DataFrame, outdir: Path) -> plt.Figure:
     """
     Fig 3: Boxplot with jitter of CSI by Annex III area.
+    Saved as fig_3_context_severity_by_annex_area.{png,svg}.
     """
-    _require_nonempty(df, "fig_3_context_severity_by_annex_area")
+    _require_nonempty(df, "plot_context_severity_by_annex_area")
     if "context_severity_index" not in df.columns:
-        raise ValueError("context_severity_index column required for fig_3")
+        raise ValueError("context_severity_index column required for Fig 3")
 
     rng = np.random.default_rng(RANDOM_SEED)
     areas = sorted(df["annex_iii_area"].dropna().unique())
@@ -240,12 +250,13 @@ def fig_3_context_severity_by_annex_area(df: pd.DataFrame, outdir: Path) -> plt.
 # ── Figure 4 ──────────────────────────────────────────────────────────────────
 
 
-def fig_4_dimension_heatmap(df: pd.DataFrame, outdir: Path) -> plt.Figure:
+def plot_dimension_heatmap(df: pd.DataFrame, outdir: Path) -> plt.Figure:
     """
     Fig 4: Heatmap of dimension scores (rows=cases, cols=dimensions).
     Values: 0=green, 1=amber, 2=red, missing=grey.
+    Saved as fig_4_dimension_heatmap.{png,svg}.
     """
-    _require_nonempty(df, "fig_4_dimension_heatmap")
+    _require_nonempty(df, "plot_dimension_heatmap")
 
     df_sorted = df.sort_values("case_id").reset_index(drop=True)
     n_cases = len(df_sorted)
@@ -262,7 +273,6 @@ def fig_4_dimension_heatmap(df: pd.DataFrame, outdir: Path) -> plt.Figure:
             except (TypeError, ValueError):
                 pass
 
-    # Map 0->0, 1->0.5, 2->1.0, nan->-0.1 for colour mapping
     cmap = matplotlib.colormaps.get_cmap("RdYlGn_r")
     cmap.set_bad(color="#BDBDBD")
 
@@ -306,11 +316,15 @@ def fig_4_dimension_heatmap(df: pd.DataFrame, outdir: Path) -> plt.Figure:
 # ── Figure 5 ──────────────────────────────────────────────────────────────────
 
 
-def fig_5_missingness_matrix(df: pd.DataFrame, outdir: Path) -> plt.Figure:
+def plot_evidence_confidence_matrix(df: pd.DataFrame, outdir: Path) -> plt.Figure:
     """
-    Fig 5: Confidence/missingness matrix (rows=cases, cols=dimensions).
+    Fig 5: Evidence-confidence matrix (rows=cases, cols=dimensions).
+
+    Colour-codes each cell by the evidence confidence level:
+      high=dark blue, medium=mid blue, low=light blue, missing/unknown=grey.
+    Saved as fig_5_evidence_confidence_matrix.{png,svg}.
     """
-    _require_nonempty(df, "fig_5_missingness_matrix")
+    _require_nonempty(df, "plot_evidence_confidence_matrix")
 
     df_sorted = df.sort_values("case_id").reset_index(drop=True)
     n_cases = len(df_sorted)
@@ -355,13 +369,16 @@ def fig_5_missingness_matrix(df: pd.DataFrame, outdir: Path) -> plt.Figure:
     ax.set_yticklabels(labels, fontsize=7)
 
     cbar = plt.colorbar(im, ax=ax, fraction=0.03, pad=0.04, ticks=[-1, 0, 1, 2, 3])
-    cbar.set_ticklabels(["missing", "unknown", "low", "medium", "high"])
+    cbar.set_ticklabels(["missing", "unknown", "low conf.", "med. conf.", "high conf."])
     cbar.set_label("Evidence Confidence", fontsize=8)
 
-    ax.set_title("Fig 5: Evidence Confidence / Missingness Matrix", fontsize=11, fontweight="bold")
+    ax.set_title(
+        "Fig 5: Evidence-Confidence Matrix\n(blue intensity = confidence; grey = missing score)",
+        fontsize=11, fontweight="bold",
+    )
     fig.tight_layout()
 
-    _save_figure(fig, outdir, "fig_5_missingness_matrix")
+    _save_figure(fig, outdir, "fig_5_evidence_confidence_matrix")
     plt.close(fig)
     return fig
 
@@ -369,148 +386,77 @@ def fig_5_missingness_matrix(df: pd.DataFrame, outdir: Path) -> plt.Figure:
 # ── Figure 6 ──────────────────────────────────────────────────────────────────
 
 
-def fig_6_sensitivity_band_changes(df: pd.DataFrame, outdir: Path) -> plt.Figure:
+def plot_sensitivity_comparison(df: pd.DataFrame, outdir: Path) -> plt.Figure:
     """
-    Fig 6: Grouped bar chart of band counts under 3 sensitivity assumptions.
+    Fig 6: Sensitivity comparison — CSI under zero vs conservative assumptions.
+
+    Scatter plot: x = CSI (zero/optimistic assumption),
+                  y = CSI (conservative assumption).
+    Points on the y=x diagonal indicate no sensitivity to unknown handling.
+    Coloured by neutral-assumption severity band.
+    Saved as fig_6_sensitivity_comparison.{png,svg}.
     """
-    _require_nonempty(df, "fig_6_sensitivity_band_changes")
-    required = {"unknown_as_zero_band", "unknown_as_neutral_band", "unknown_as_conservative_band"}
+    _require_nonempty(df, "plot_sensitivity_comparison")
+
+    required = {"unknown_as_zero_score", "unknown_as_neutral_band", "unknown_as_conservative_score"}
     if not required.issubset(df.columns):
-        raise ValueError(f"Missing columns for fig_6: {required - set(df.columns)}")
+        raise ValueError(f"Missing sensitivity columns for Fig 6: {required - set(df.columns)}")
 
-    areas = sorted(df["annex_iii_area"].dropna().unique())
-    n_areas = len(areas)
+    x = pd.to_numeric(df["unknown_as_zero_score"], errors="coerce")
+    y = pd.to_numeric(df["unknown_as_conservative_score"], errors="coerce")
+    bands = df["unknown_as_neutral_band"].fillna("unknown")
 
-    assumptions = ["unknown_as_zero_band", "unknown_as_neutral_band", "unknown_as_conservative_band"]
-    labels = ["Null=0 (optimistic)", "Null=1 (neutral)", "Null=2 (conservative)"]
-    colours = ["#4CAF50", "#FFC107", "#F44336"]
+    fig, ax = plt.subplots(figsize=(7, 7))
 
-    width = 0.25
-    x = np.arange(n_areas)
+    for band, colour in _BAND_COLOURS.items():
+        mask = bands == band
+        if mask.any():
+            ax.scatter(
+                x[mask], y[mask],
+                c=colour,
+                label=f"{band} (n={int(mask.sum())})",
+                s=60,
+                alpha=0.85,
+                edgecolors="#333",
+                linewidths=0.5,
+                zorder=3,
+            )
 
-    fig, ax = plt.subplots(figsize=(max(8, n_areas * 1.5), 6))
+    # y = x reference diagonal (no sensitivity)
+    lim_min = min(float(x.min()), float(y.min())) - 0.5
+    lim_max = max(float(x.max()), float(y.max())) + 0.5
+    diag = np.linspace(lim_min, lim_max, 100)
+    ax.plot(diag, diag, color="#888", linestyle="--", linewidth=1.2, label="No sensitivity (y=x)", zorder=2)
 
-    for offset, (col, label, colour) in enumerate(zip(assumptions, labels, colours)):
-        counts_high_severe = []
-        for area in areas:
-            group = df[df["annex_iii_area"] == area]
-            n = int(((group[col] == "high") | (group[col] == "severe")).sum())
-            counts_high_severe.append(n)
-        ax.bar(
-            x + (offset - 1) * width,
-            counts_high_severe,
-            width=width,
-            label=label,
-            color=colour,
-            edgecolor="#333",
-            linewidth=0.6,
-        )
-
-    ax.set_xticks(x)
-    ax.set_xticklabels([a.replace("_", "\n") for a in areas], fontsize=8)
-    ax.set_xlabel("EU AI Act Annex III Area", fontsize=10)
-    ax.set_ylabel("Cases classified High or Severe", fontsize=10)
+    ax.set_xlim(lim_min, lim_max)
+    ax.set_ylim(lim_min, lim_max)
+    ax.set_xlabel("CSI — null as 0 (optimistic)", fontsize=10)
+    ax.set_ylabel("CSI — null as 2 (conservative)", fontsize=10)
     ax.set_title(
-        "Fig 6: Sensitivity Analysis — Band Counts by Imputation Assumption\n"
-        "(High + Severe cases per assumption)",
+        "Fig 6: Sensitivity Comparison\n"
+        "(Points on diagonal = no band sensitivity to unknown-handling rule)",
         fontsize=11, fontweight="bold",
     )
-    ax.legend(fontsize=8)
+    ax.legend(fontsize=8, title="Neutral-rule band", title_fontsize=8)
     ax.spines["top"].set_visible(False)
     ax.spines["right"].set_visible(False)
+
+    total = int(mask.sum() * 0)  # reset; check all-on-diagonal
+    n_off_diagonal = int(((x - y).abs() > 0).sum())
+    note = (
+        f"All {len(df)} cases on diagonal (no unknown values in v0.2.0 corpus)"
+        if n_off_diagonal == 0
+        else f"{n_off_diagonal}/{len(df)} cases off diagonal (CSI changes with imputation)"
+    )
+    ax.text(
+        0.02, 0.97, note,
+        transform=ax.transAxes,
+        fontsize=7, color="#555", va="top", style="italic",
+    )
+
     fig.tight_layout()
 
-    _save_figure(fig, outdir, "fig_6_sensitivity_band_changes")
-    plt.close(fig)
-    return fig
-
-
-# ── Figure 7 ──────────────────────────────────────────────────────────────────
-
-
-def fig_7_source_quality_distribution(df: pd.DataFrame, outdir: Path) -> plt.Figure:
-    """
-    Fig 7: Bar chart of source quality score distribution (0–4).
-    """
-    _require_nonempty(df, "fig_7_source_quality_distribution")
-
-    scores = pd.to_numeric(df.get("source_quality_score", pd.Series(dtype=float)), errors="coerce").dropna()
-    counts = scores.value_counts().sort_index().reindex([0, 1, 2, 3, 4], fill_value=0)
-
-    fig, ax = plt.subplots(figsize=(7, 5))
-    bars = ax.bar(
-        counts.index,
-        counts.values,
-        color=["#F44336", "#FF7043", "#FFA726", "#66BB6A", "#2E7D32"],
-        edgecolor="#333",
-        linewidth=0.8,
-    )
-    for bar, val in zip(bars, counts.values):
-        ax.text(
-            bar.get_x() + bar.get_width() / 2,
-            bar.get_height() + 0.05,
-            str(int(val)),
-            ha="center", va="bottom", fontsize=10,
-        )
-    ax.set_xticks([0, 1, 2, 3, 4])
-    ax.set_xlabel("Source Quality Score (0=very low, 4=very high)", fontsize=10)
-    ax.set_ylabel("Number of cases", fontsize=10)
-    ax.set_title("Fig 7: Source Quality Score Distribution", fontsize=12, fontweight="bold")
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    fig.tight_layout()
-
-    _save_figure(fig, outdir, "fig_7_source_quality_distribution")
-    plt.close(fig)
-    return fig
-
-
-# ── Figure 8 ──────────────────────────────────────────────────────────────────
-
-
-def fig_8_dimension_mean_scores(df: pd.DataFrame, outdir: Path) -> plt.Figure:
-    """
-    Fig 8: Bar chart of mean score per dimension.
-    """
-    _require_nonempty(df, "fig_8_dimension_mean_scores")
-
-    means = []
-    for dim in SCORE_DIMENSIONS:
-        col = f"{dim}_score"
-        scores = pd.to_numeric(df.get(col, pd.Series(dtype=float)), errors="coerce")
-        means.append(round(float(scores.dropna().mean()), 4) if not scores.dropna().empty else 0.0)
-
-    fig, ax = plt.subplots(figsize=(10, 5))
-    colours = ["#42A5F5"] * len(SCORE_DIMENSIONS)
-    bars = ax.bar(range(len(SCORE_DIMENSIONS)), means, color=colours, edgecolor="#1565C0", linewidth=0.8)
-
-    for bar, val in zip(bars, means):
-        ax.text(
-            bar.get_x() + bar.get_width() / 2,
-            bar.get_height() + 0.02,
-            f"{val:.2f}",
-            ha="center", va="bottom", fontsize=9,
-        )
-
-    ax.set_xticks(range(len(SCORE_DIMENSIONS)))
-    ax.set_xticklabels(
-        [d.replace("_", "\n") for d in SCORE_DIMENSIONS],
-        fontsize=8,
-    )
-    ax.set_ylim(0, 2.3)
-    ax.axhline(1.0, color="#888", linestyle="--", linewidth=1, alpha=0.7, label="Mid-point (1.0)")
-    ax.set_xlabel("Scoring Dimension", fontsize=10)
-    ax.set_ylabel("Mean Score (0–2)", fontsize=10)
-    ax.set_title(
-        "Fig 8: Mean Dimension Scores Across All Cases",
-        fontsize=12, fontweight="bold",
-    )
-    ax.legend(fontsize=8)
-    ax.spines["top"].set_visible(False)
-    ax.spines["right"].set_visible(False)
-    fig.tight_layout()
-
-    _save_figure(fig, outdir, "fig_8_dimension_mean_scores")
+    _save_figure(fig, outdir, "fig_6_sensitivity_comparison")
     plt.close(fig)
     return fig
 
@@ -520,20 +466,18 @@ def fig_8_dimension_mean_scores(df: pd.DataFrame, outdir: Path) -> plt.Figure:
 
 def generate_all_figures(df: pd.DataFrame, outdir: Path) -> dict[str, plt.Figure]:
     """
-    Generate all 8 figures. Fig 1 has no data dependency.
+    Generate all 6 manuscript figures. Fig 1 has no data dependency.
 
-    Raises ValueError if df is empty (for figs 2-8).
-    Returns dict of figure name -> Figure.
+    Raises ValueError if df is empty (for figs 2-6).
+    Returns dict of figure name -> Figure object.
     """
     figs: dict[str, plt.Figure] = {}
-    figs["fig_1"] = fig_1_pipeline_architecture(outdir)
+    figs["fig_1"] = plot_pipeline_architecture(outdir)
 
     _require_nonempty(df, "generate_all_figures")
-    figs["fig_2"] = fig_2_corpus_by_annex_area(df, outdir)
-    figs["fig_3"] = fig_3_context_severity_by_annex_area(df, outdir)
-    figs["fig_4"] = fig_4_dimension_heatmap(df, outdir)
-    figs["fig_5"] = fig_5_missingness_matrix(df, outdir)
-    figs["fig_6"] = fig_6_sensitivity_band_changes(df, outdir)
-    figs["fig_7"] = fig_7_source_quality_distribution(df, outdir)
-    figs["fig_8"] = fig_8_dimension_mean_scores(df, outdir)
+    figs["fig_2"] = plot_corpus_by_annex_area(df, outdir)
+    figs["fig_3"] = plot_context_severity_by_annex_area(df, outdir)
+    figs["fig_4"] = plot_dimension_heatmap(df, outdir)
+    figs["fig_5"] = plot_evidence_confidence_matrix(df, outdir)
+    figs["fig_6"] = plot_sensitivity_comparison(df, outdir)
     return figs

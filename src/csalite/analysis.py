@@ -4,6 +4,15 @@ Analysis table generation for CSA-lite manuscript.
 Produces the 7 analysis tables described in the manuscript.
 All functions return DataFrames sorted deterministically.
 No I/O — callers handle reading/writing via io.py.
+
+Table naming follows the manuscript:
+  table_1_csalite_dimensions          — framework metadata (no df needed)
+  table_2_corpus_composition_by_annex_area
+  table_3_within_category_variance
+  table_4_dimension_level_patterns
+  table_5_evidence_confidence_by_dimension
+  table_6_sensitivity_summary
+  table_7_matched_case_contrasts
 """
 
 from __future__ import annotations
@@ -13,9 +22,14 @@ import math
 import numpy as np
 import pandas as pd
 
-from csalite.constants import CONFIDENCE_WEIGHTS, SCORE_DIMENSIONS
+from csalite.constants import (
+    CONFIDENCE_WEIGHTS,
+    DATASET_VERSION,
+    DIMENSION_DESCRIPTIONS,
+    SCORE_DIMENSIONS,
+)
 from csalite.enums import SeverityBand
-from csalite.sensitivity import compute_sensitivity_dataframe, find_high_variance_pairs
+from csalite.sensitivity import compute_band_change_summary, compute_sensitivity_dataframe, find_high_variance_pairs
 
 
 # ── Helpers ────────────────────────────────────────────────────────────────────
@@ -52,14 +66,46 @@ def _confidence_weight(val: object) -> float:
 # ── Table 1 ────────────────────────────────────────────────────────────────────
 
 
-def table_1_corpus_composition(df: pd.DataFrame) -> pd.DataFrame:
+def table_1_csalite_dimensions() -> pd.DataFrame:
     """
-    Table 1: Corpus composition by Annex III area.
+    Table 1: CSA-lite dimension reference table.
+
+    No DataFrame input — this is a framework-level metadata table.
+    One row per dimension (8 total), with scoring anchors and evidence notes.
+
+    Columns:
+      dimension, description, score_0, score_1, score_2,
+      evidence_required, missingness_note, dataset_version
+    """
+    rows = []
+    for dim in SCORE_DIMENSIONS:
+        info = DIMENSION_DESCRIPTIONS.get(dim, {})
+        rows.append(
+            {
+                "dimension": dim,
+                "description": info.get("description", ""),
+                "score_0": info.get("score_0", ""),
+                "score_1": info.get("score_1", ""),
+                "score_2": info.get("score_2", ""),
+                "evidence_required": info.get("evidence_required", ""),
+                "missingness_note": info.get("missingness_note", ""),
+                "dataset_version": DATASET_VERSION,
+            }
+        )
+    return pd.DataFrame(rows)
+
+
+# ── Table 2 ────────────────────────────────────────────────────────────────────
+
+
+def table_2_corpus_composition_by_annex_area(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Table 2: Corpus composition by Annex III area.
 
     Columns:
       annex_iii_area, n_cases, n_direct, n_analogous, n_comparator, n_unclear,
       n_countries, most_common_deployer_type, median_source_quality,
-      median_evidence_completeness
+      median_evidence_completeness, dataset_version
     """
     if df.empty:
         return pd.DataFrame(
@@ -67,7 +113,7 @@ def table_1_corpus_composition(df: pd.DataFrame) -> pd.DataFrame:
                 "annex_iii_area", "n_cases", "n_direct", "n_analogous",
                 "n_comparator", "n_unclear", "n_countries",
                 "most_common_deployer_type", "median_source_quality",
-                "median_evidence_completeness",
+                "median_evidence_completeness", "dataset_version",
             ]
         )
 
@@ -103,30 +149,31 @@ def table_1_corpus_composition(df: pd.DataFrame) -> pd.DataFrame:
                 "most_common_deployer_type": deployer_mode,
                 "median_source_quality": round(med_sq, 2) if not math.isnan(med_sq) else None,
                 "median_evidence_completeness": round(med_eci, 4) if not math.isnan(med_eci) else None,
+                "dataset_version": DATASET_VERSION,
             }
         )
 
     return pd.DataFrame(rows).sort_values("annex_iii_area").reset_index(drop=True)
 
 
-# ── Table 2 ────────────────────────────────────────────────────────────────────
+# ── Table 3 ────────────────────────────────────────────────────────────────────
 
 
-def table_2_within_category_variance(df: pd.DataFrame) -> pd.DataFrame:
+def table_3_within_category_variance(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Table 2: Within-category CSI variance.
+    Table 3: Within-category CSI variance by Annex III area.
 
     Columns:
       annex_iii_area, n_cases, min, q1, median, q3, max, iqr, mean, std,
       n_low, n_moderate, n_high, n_severe, n_high_or_severe,
-      variance_interpretation
+      variance_interpretation, dataset_version
     """
     if df.empty or "context_severity_index" not in df.columns:
         return pd.DataFrame(
             columns=[
                 "annex_iii_area", "n_cases", "min", "q1", "median", "q3", "max",
                 "iqr", "mean", "std", "n_low", "n_moderate", "n_high", "n_severe",
-                "n_high_or_severe", "variance_interpretation",
+                "n_high_or_severe", "variance_interpretation", "dataset_version",
             ]
         )
 
@@ -141,7 +188,7 @@ def table_2_within_category_variance(df: pd.DataFrame) -> pd.DataFrame:
         n_severe = (band_col == SeverityBand.severe.value).sum()
 
         if csi.empty:
-            row = {
+            row: dict = {
                 "annex_iii_area": area,
                 "n_cases": len(group),
                 "min": None, "q1": None, "median": None, "q3": None,
@@ -181,6 +228,7 @@ def table_2_within_category_variance(df: pd.DataFrame) -> pd.DataFrame:
                 "n_severe": int(n_severe),
                 "n_high_or_severe": int(n_high + n_severe),
                 "variance_interpretation": interpretation,
+                "dataset_version": DATASET_VERSION,
             }
         )
         rows.append(row)
@@ -188,16 +236,17 @@ def table_2_within_category_variance(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows).sort_values("annex_iii_area").reset_index(drop=True)
 
 
-# ── Table 3 ────────────────────────────────────────────────────────────────────
+# ── Table 4 ────────────────────────────────────────────────────────────────────
 
 
-def table_3_dimension_patterns(df: pd.DataFrame) -> pd.DataFrame:
+def table_4_dimension_level_patterns(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Table 3: Dimension-level scoring patterns.
+    Table 4: Dimension-level scoring patterns across the corpus.
 
     Columns:
       dimension, mean_score, median_score, n_score_0, n_score_1, n_score_2,
-      n_missing, missingness_rate, high_score_rate, mean_confidence_weight
+      n_missing, missingness_rate, high_score_rate, mean_confidence_weight,
+      dataset_version
     """
     if df.empty:
         return pd.DataFrame(
@@ -205,7 +254,7 @@ def table_3_dimension_patterns(df: pd.DataFrame) -> pd.DataFrame:
                 "dimension", "mean_score", "median_score",
                 "n_score_0", "n_score_1", "n_score_2",
                 "n_missing", "missingness_rate", "high_score_rate",
-                "mean_confidence_weight",
+                "mean_confidence_weight", "dataset_version",
             ]
         )
 
@@ -233,162 +282,121 @@ def table_3_dimension_patterns(df: pd.DataFrame) -> pd.DataFrame:
                 "missingness_rate": round(n_missing / n_total, 4) if n_total > 0 else None,
                 "high_score_rate": round(float((known == 2).sum() / n_total), 4) if n_total > 0 else None,
                 "mean_confidence_weight": round(float(conf_weights.mean()), 4) if not conf_weights.empty else None,
+                "dataset_version": DATASET_VERSION,
             }
         )
 
     return pd.DataFrame(rows)
 
 
-# ── Table 4 ────────────────────────────────────────────────────────────────────
-
-
-def table_4_missingness_by_category(df: pd.DataFrame) -> pd.DataFrame:
-    """
-    Table 4: Missingness by annex area and dimension.
-
-    Columns:
-      annex_iii_area, dimension, n_cases, n_missing, missingness_rate,
-      n_low_confidence, low_confidence_rate
-    """
-    if df.empty:
-        return pd.DataFrame(
-            columns=[
-                "annex_iii_area", "dimension", "n_cases", "n_missing",
-                "missingness_rate", "n_low_confidence", "low_confidence_rate",
-            ]
-        )
-
-    rows = []
-    for area, group in df.groupby("annex_iii_area"):
-        n_cases = len(group)
-        for dim in SCORE_DIMENSIONS:
-            score_col = f"{dim}_score"
-            conf_col = f"{dim}_confidence"
-
-            scores = pd.to_numeric(group.get(score_col, pd.Series(dtype=float)), errors="coerce")
-            n_missing = int(scores.isna().sum())
-
-            confs = group.get(conf_col, pd.Series(dtype=str)).fillna("unknown")
-            n_low_conf = int((confs == "low").sum())
-
-            rows.append(
-                {
-                    "annex_iii_area": area,
-                    "dimension": dim,
-                    "n_cases": n_cases,
-                    "n_missing": n_missing,
-                    "missingness_rate": round(n_missing / n_cases, 4) if n_cases > 0 else None,
-                    "n_low_confidence": n_low_conf,
-                    "low_confidence_rate": round(n_low_conf / n_cases, 4) if n_cases > 0 else None,
-                }
-            )
-
-    return (
-        pd.DataFrame(rows)
-        .sort_values(["annex_iii_area", "dimension"])
-        .reset_index(drop=True)
-    )
-
-
 # ── Table 5 ────────────────────────────────────────────────────────────────────
 
 
-def table_5_sensitivity(df: pd.DataFrame) -> pd.DataFrame:
+def table_5_evidence_confidence_by_dimension(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Table 5: Sensitivity analysis per case.
+    Table 5: Evidence confidence distribution by dimension.
 
-    Columns per spec (wraps sensitivity.compute_sensitivity_dataframe and adds ECI).
+    For each dimension, reports the count and proportion of cases at each
+    confidence level (high / medium / low / unknown) and the mean confidence
+    weight (high=1.0, medium=0.66, low=0.33, unknown=0.0).
+
+    Columns:
+      dimension, n_high, n_medium, n_low, n_unknown,
+      pct_high, pct_medium, pct_low, pct_unknown,
+      mean_confidence_weight, dataset_version
     """
     if df.empty:
         return pd.DataFrame(
             columns=[
-                "case_id", "case_name", "annex_iii_area",
-                "unknown_as_zero_score", "unknown_as_zero_band",
-                "unknown_as_neutral_score", "unknown_as_neutral_band",
-                "unknown_as_conservative_score", "unknown_as_conservative_band",
-                "sensitivity_band_change", "missing_dimensions_count",
-                "evidence_completeness_index",
+                "dimension", "n_high", "n_medium", "n_low", "n_unknown",
+                "pct_high", "pct_medium", "pct_low", "pct_unknown",
+                "mean_confidence_weight", "dataset_version",
             ]
         )
 
-    sens = compute_sensitivity_dataframe(df)
+    n_total = len(df)
+    rows = []
+    for dim in SCORE_DIMENSIONS:
+        conf_col = f"{dim}_confidence"
+        confs = df.get(conf_col, pd.Series(dtype=str)).fillna("unknown")
+        confs = confs.apply(lambda v: str(v).strip().lower() if v else "unknown")
 
-    if "evidence_completeness_index" in df.columns:
-        eci_map = df.set_index("case_id")["evidence_completeness_index"].to_dict()
-        sens["evidence_completeness_index"] = sens["case_id"].map(eci_map)
-    else:
-        sens["evidence_completeness_index"] = None
+        n_high = int((confs == "high").sum())
+        n_medium = int((confs == "medium").sum())
+        n_low = int((confs == "low").sum())
+        n_unknown = int((confs == "unknown").sum() + confs.isin(["", "nan", "n/a"]).sum())
 
-    return sens.sort_values("case_id").reset_index(drop=True)
+        weights = confs.map(lambda v: CONFIDENCE_WEIGHTS.get(v, 0.0))
+        mean_w = round(float(weights.mean()), 4) if n_total > 0 else None
+
+        rows.append(
+            {
+                "dimension": dim,
+                "n_high": n_high,
+                "n_medium": n_medium,
+                "n_low": n_low,
+                "n_unknown": n_unknown,
+                "pct_high": round(100 * n_high / n_total, 1) if n_total > 0 else None,
+                "pct_medium": round(100 * n_medium / n_total, 1) if n_total > 0 else None,
+                "pct_low": round(100 * n_low / n_total, 1) if n_total > 0 else None,
+                "pct_unknown": round(100 * n_unknown / n_total, 1) if n_total > 0 else None,
+                "mean_confidence_weight": mean_w,
+                "dataset_version": DATASET_VERSION,
+            }
+        )
+
+    return pd.DataFrame(rows)
 
 
 # ── Table 6 ────────────────────────────────────────────────────────────────────
 
 
-def table_6_high_variance_pairs(df: pd.DataFrame) -> pd.DataFrame:
+def table_6_sensitivity_summary(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Table 6: High-variance within-category case pairs.
-    Delegates to sensitivity.find_high_variance_pairs.
+    Table 6: Sensitivity analysis summary by Annex III area.
+
+    Wraps sensitivity.compute_sensitivity_dataframe + compute_band_change_summary.
+
+    Columns:
+      annex_iii_area, n_cases, n_band_changes, pct_band_changes,
+      dataset_version
     """
-    return find_high_variance_pairs(df)
+    if df.empty:
+        return pd.DataFrame(
+            columns=[
+                "annex_iii_area", "n_cases", "n_band_changes",
+                "pct_band_changes", "dataset_version",
+            ]
+        )
+
+    sens_df = compute_sensitivity_dataframe(df)
+    summary = compute_band_change_summary(sens_df)
+    summary["dataset_version"] = DATASET_VERSION
+    return summary
 
 
 # ── Table 7 ────────────────────────────────────────────────────────────────────
 
 
-def table_7_review_flags(df: pd.DataFrame) -> pd.DataFrame:
+def table_7_matched_case_contrasts(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Table 7: Cases requiring review.
+    Table 7: Matched case contrasts within Annex III areas.
+
+    For each area, identifies the lowest- and highest-CSI case pair
+    (where gap >= 3 points) and records the dimensions driving the difference.
+
+    Wraps sensitivity.find_high_variance_pairs.
 
     Columns:
-      case_id, case_name, annex_iii_area, context_severity_index,
-      context_severity_band, missing_dimensions_count, evidence_completeness_index,
-      source_quality_score, high_missingness_flag, low_source_quality_flag,
-      sensitivity_band_change, review_required_flag, review_reason
+      annex_iii_area, low_case_id, low_case_name, low_csi,
+      high_case_id, high_case_name, high_csi, csi_difference,
+      differing_dimensions, interpretation, dataset_version
     """
-    required_cols = {"review_required_flag"}
-    if df.empty or not required_cols.issubset(df.columns):
-        return pd.DataFrame(
-            columns=[
-                "case_id", "case_name", "annex_iii_area",
-                "context_severity_index", "context_severity_band",
-                "missing_dimensions_count", "evidence_completeness_index",
-                "source_quality_score", "high_missingness_flag",
-                "low_source_quality_flag", "sensitivity_band_change",
-                "review_required_flag", "review_reason",
-            ]
-        )
-
-    flagged = df[df["review_required_flag"] == True].copy()  # noqa: E712
-
-    cols = [
-        "case_id", "case_name", "annex_iii_area",
-        "context_severity_index", "context_severity_band",
-        "missing_dimensions_count", "evidence_completeness_index",
-        "source_quality_score", "high_missingness_flag",
-        "low_source_quality_flag", "sensitivity_band_change",
-        "review_required_flag",
-    ]
-    # Only include columns that exist
-    cols = [c for c in cols if c in flagged.columns]
-    flagged = flagged[cols].copy()
-
-    def _reason(row: pd.Series) -> str:
-        reasons = []
-        if row.get("high_missingness_flag"):
-            reasons.append("high missingness")
-        if row.get("low_source_quality_flag"):
-            reasons.append("low source quality")
-        if row.get("sensitivity_band_change"):
-            reasons.append("sensitivity band change")
-        band = row.get("context_severity_band", "")
-        eci = row.get("evidence_completeness_index", 1.0)
-        if band in ("high", "severe") and (eci is not None and eci < 0.5):
-            reasons.append(f"high/severe band with low ECI ({eci:.2f})")
-        return "; ".join(reasons) if reasons else "unknown"
-
-    flagged["review_reason"] = flagged.apply(_reason, axis=1)
-    return flagged.sort_values("case_id").reset_index(drop=True)
+    result = find_high_variance_pairs(df)
+    if not result.empty:
+        result = result.copy()
+        result["dataset_version"] = DATASET_VERSION
+    return result
 
 
 # ── All tables ─────────────────────────────────────────────────────────────────
@@ -398,21 +406,24 @@ def compute_all_tables(df: pd.DataFrame) -> dict[str, pd.DataFrame]:
     """
     Compute all 7 analysis tables from a scored DataFrame.
 
-    Returns a dict with keys:
-      table_1_corpus_composition
-      table_2_within_category_variance
-      table_3_dimension_patterns
-      table_4_missingness_by_category
-      table_5_sensitivity
-      table_6_high_variance_case_pairs
-      table_7_review_flags
+    Returns a dict with keys matching the manuscript table names:
+      table_1_csalite_dimensions
+      table_2_corpus_composition_by_annex_area
+      table_3_within_category_variance
+      table_4_dimension_level_patterns
+      table_5_evidence_confidence_by_dimension
+      table_6_sensitivity_summary
+      table_7_matched_case_contrasts
+
+    Table 1 does not require a DataFrame (framework metadata).
+    All other tables require a scored DataFrame with context_severity_* columns.
     """
     return {
-        "table_1_corpus_composition": table_1_corpus_composition(df),
-        "table_2_within_category_variance": table_2_within_category_variance(df),
-        "table_3_dimension_patterns": table_3_dimension_patterns(df),
-        "table_4_missingness_by_category": table_4_missingness_by_category(df),
-        "table_5_sensitivity": table_5_sensitivity(df),
-        "table_6_high_variance_case_pairs": table_6_high_variance_pairs(df),
-        "table_7_review_flags": table_7_review_flags(df),
+        "table_1_csalite_dimensions": table_1_csalite_dimensions(),
+        "table_2_corpus_composition_by_annex_area": table_2_corpus_composition_by_annex_area(df),
+        "table_3_within_category_variance": table_3_within_category_variance(df),
+        "table_4_dimension_level_patterns": table_4_dimension_level_patterns(df),
+        "table_5_evidence_confidence_by_dimension": table_5_evidence_confidence_by_dimension(df),
+        "table_6_sensitivity_summary": table_6_sensitivity_summary(df),
+        "table_7_matched_case_contrasts": table_7_matched_case_contrasts(df),
     }

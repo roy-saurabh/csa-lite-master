@@ -1,6 +1,6 @@
-# CSA-Lite v0.1.0 — Scoring Summary Report
+# CSA-Lite v0.2.0 — Scoring Summary Report
 
-_Generated: 2026-05-27T01:37:20_
+_Generated: 2026-05-27T02:43:28_
 
 > **Disclaimer:** CSA-lite does not produce legal classifications, compliance determinations, conformity assessments, or validated harm predictions. EU AI Act Annex III categories are used only as an analytical reference frame for grouping documented deployments by use area. The Context Severity Index is a transparent structured-coding output derived from public-record evidence. It is not a legal risk class. Public records may be incomplete, biased, contested, or outdated.
 
