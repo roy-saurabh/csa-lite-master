@@ -10,7 +10,8 @@ Companion code for the manuscript submitted to MDPI Electronics:
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20406743.svg)](https://doi.org/10.5281/zenodo.20406743)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://python.org)
-[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![License: MIT](https://img.shields.io/badge/code-MIT-green.svg)](LICENSE-MIT)
+[![License: CC BY 4.0](https://img.shields.io/badge/data%2Fdocs-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
 ---
 
@@ -28,10 +29,10 @@ Companion code for the manuscript submitted to MDPI Electronics:
 
 ## Versioning
 
-The 45-case corpus is fixed as dataset version 0.2.0. The v0.2.2 release corrects
-Figure 5 title (removes stale "(grey = missing score)" clause absent from the
-v0.2.0 corpus) and fixes the CLI docstring table count. No case data, scores, or
-manuscript claims change. All prior v0.2.1 outputs remain valid.
+The 45-case corpus is fixed as dataset version 0.2.0. The v0.2.2 release updates
+the software pipeline, generated manuscript outputs, validation report, case audit
+report, artifact manifest, documentation, and Zenodo archive without changing the
+45-case corpus.
 
 ---
 
@@ -55,7 +56,8 @@ legal compliance assessment.
 ```
 csa-lite-master/
   README.md              -- This file
-  LICENSE                -- CC BY 4.0
+  LICENSE                -- Dual license (MIT for code; CC BY 4.0 for data/docs/outputs)
+  LICENSE-MIT            -- MIT license text (applies to src/)
   CITATION.cff           -- Citation metadata
   pyproject.toml         -- Package configuration
   requirements.txt       -- Dependencies
@@ -199,4 +201,8 @@ See `CITATION.cff` for complete citation metadata.
 
 ## License
 
-This work is licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+Code is released under the [MIT License](LICENSE-MIT). Dataset, documentation,
+generated tables, and generated figures are released under
+[CC BY 4.0](https://creativecommons.org/licenses/by/4.0/).
+
+See [LICENSE](LICENSE) for the full dual-license notice.

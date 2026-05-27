@@ -7,7 +7,7 @@ name = "csalite"
 version = "0.2.2"
 description = "Context-Sliced AI Assurance Lite: A Reproducible Public-Records Framework for Deployment-Conditioned Risk Analysis of AI Systems"
 readme = "README.md"
-license = { text = "CC BY 4.0" }
+license = { text = "MIT" }
 requires-python = ">=3.10"
 authors = [
     { name = "Roy Saurabh", email = "royz.saurabh@gmail.com" }
@@ -16,7 +16,7 @@ keywords = ["AI assurance", "AI governance", "EU AI Act", "risk analysis", "repr
 classifiers = [
     "Development Status :: 3 - Alpha",
     "Intended Audience :: Science/Research",
-    "License :: Other/Proprietary License",
+    "License :: OSI Approved :: MIT License",
     "Programming Language :: Python :: 3",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",

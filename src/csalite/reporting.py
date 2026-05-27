@@ -458,7 +458,7 @@ def build_artifact_manifest_md(manifest: dict) -> str:
     lines.append("")
     lines.append(
         "> **Versioning note:** The 45-case corpus is fixed as dataset version 0.2.0. "
-        "The v0.2.1 release updates the software pipeline, generated manuscript outputs, "
+        "The v0.2.2 release updates the software pipeline, generated manuscript outputs, "
         "validation report, case audit report, artifact manifest, documentation, and Zenodo archive "
         "without changing the 45-case corpus."
     )
@@ -499,14 +499,15 @@ def build_reproducibility_report(
     lines.append("\n## Versioning Note\n")
     lines.append(
         "> The 45-case corpus is fixed as dataset version 0.2.0. "
-        "The v0.2.1 release updates the software pipeline, generated manuscript outputs, "
+        "The v0.2.2 release updates the software pipeline, generated manuscript outputs, "
         "validation report, case audit report, artifact manifest, documentation, and Zenodo archive "
         "without changing the 45-case corpus."
     )
 
     lines.append("\n## Command\n")
     lines.append(
-        f"```\ncsa-lite all --input {input_path} --outdir {outdir}\n```"
+        f"```\ncsa-lite all --input {input_path} --outdir {outdir}\n```\n\n"
+        "*(Equivalent: `csalite all --input data/processed/csa_lite_cases.csv --outdir outputs`)*"
     )
 
     lines.append("\n## Python Environment\n")
@@ -701,4 +702,12 @@ def build_artifact_manifest(
         "command": command,
         "n_artifacts": len(artifacts),
         "artifacts": artifacts,
+        "manifest_metadata": {
+            "package_version": PROJECT_VERSION,
+            "dataset_version": dataset_version,
+            "release_version": f"v{PROJECT_VERSION}",
+            "doi": "10.5281/zenodo.20406743",
+            "concept_doi": "10.5281/zenodo.20403165",
+            "generated_at": generated,
+        },
     }

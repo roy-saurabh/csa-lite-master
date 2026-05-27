@@ -15,7 +15,7 @@ date-released: "2026-05-27"
 doi: "10.5281/zenodo.20406743"
 url: "https://github.com/roy-saurabh/csa-lite-master"
 repository-code: "https://github.com/roy-saurabh/csa-lite-master"
-license: CC-BY-4.0
+license: MIT
 abstract: >
   CSA-lite is a reproducible public-records analysis methodology
   for structured coding of AI system deployments using publicly

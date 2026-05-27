@@ -11,7 +11,7 @@ from typing import Final
 
 # ── Project identity ──────────────────────────────────────────────────────────
 PROJECT_NAME: Final[str] = "CSA-Lite"
-PROJECT_VERSION: Final[str] = "0.2.1"
+PROJECT_VERSION: Final[str] = "0.2.2"
 PAPER_TITLE: Final[str] = (
     "Context-Sliced AI Assurance Lite: A Reproducible Public-Records Framework "
     "for Deployment-Conditioned Risk Analysis of AI Systems"

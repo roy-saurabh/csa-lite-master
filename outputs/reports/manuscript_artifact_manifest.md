@@ -1,6 +1,6 @@
-# CSA-Lite v0.2.1 — Manuscript Artifact Manifest
+# CSA-Lite v0.2.2 — Manuscript Artifact Manifest
 
-_Generated: 2026-05-27T08:42:12_ | Dataset version: 0.2.0 | Package version: 0.2.1
+_Generated: 2026-05-27T09:27:13_ | Dataset version: 0.2.0 | Package version: 0.2.2
 
 **Command:** `csalite all --input data/processed/csa_lite_cases.csv --outdir outputs`
 
@@ -33,32 +33,32 @@ _Generated: 2026-05-27T08:42:12_ | Dataset version: 0.2.0 | Package version: 0.2
 | Filename | Format | Exists | SHA256 (prefix) |
 |----------|--------|--------|-----------------|
 | `fig_1_pipeline_architecture.png` | png | ✓ | `3f0f26e791b577b7` |
-| `fig_1_pipeline_architecture.svg` | svg | ✓ | `af27660c22f1e316` |
+| `fig_1_pipeline_architecture.svg` | svg | ✓ | `6c7ad84f79296bb8` |
 | `fig_2_corpus_by_annex_area.png` | png | ✓ | `160fcaeec529fc0b` |
-| `fig_2_corpus_by_annex_area.svg` | svg | ✓ | `96fc3597edbc6018` |
+| `fig_2_corpus_by_annex_area.svg` | svg | ✓ | `67368aa328b79265` |
 | `fig_3_context_severity_by_annex_area.png` | png | ✓ | `1cd41665465015f8` |
-| `fig_3_context_severity_by_annex_area.svg` | svg | ✓ | `1036ff82810738e5` |
+| `fig_3_context_severity_by_annex_area.svg` | svg | ✓ | `121d23e1a84ba353` |
 | `fig_4_dimension_heatmap.png` | png | ✓ | `4739dae04abdfe0d` |
-| `fig_4_dimension_heatmap.svg` | svg | ✓ | `7584c1c6c866811e` |
+| `fig_4_dimension_heatmap.svg` | svg | ✓ | `71075fb86455970c` |
 | `fig_5_evidence_confidence_matrix.png` | png | ✓ | `e162af37b28e84a7` |
-| `fig_5_evidence_confidence_matrix.svg` | svg | ✓ | `ce3d3decbfcd7b21` |
+| `fig_5_evidence_confidence_matrix.svg` | svg | ✓ | `67ffa0f93af9c4de` |
 | `fig_6_sensitivity_comparison.png` | png | ✓ | `16f4b8758bd56f9b` |
-| `fig_6_sensitivity_comparison.svg` | svg | ✓ | `e54f0656f4daa556` |
+| `fig_6_sensitivity_comparison.svg` | svg | ✓ | `7fa46874a80bb7e2` |
 
 ## Reports
 
 | Filename | Type | Exists | SHA256 (prefix) |
 |----------|------|--------|-----------------|
-| `validation_report.md` | report | ✓ | `eab31fd3f6a283cc` |
-| `validation_report.json` | report | ✓ | `8096818768d31fd4` |
-| `reproducibility_report.md` | report | ✓ | `bbac68f82243ca25` |
-| `reproducibility_report.json` | report | ✓ | `5834c0e10c5a9135` |
-| `scoring_summary.md` | report | ✓ | `200882af45aa6ca5` |
-| `case_audit_report.md` | report | ✓ | `d132af0773e82c4a` |
-| `case_audit_report.json` | report | ✓ | `62e44015b2c8fc4f` |
+| `validation_report.md` | report | ✓ | `724ef08fc8a2d8ef` |
+| `validation_report.json` | report | ✓ | `ff00cf24995106f0` |
+| `reproducibility_report.md` | report | ✓ | `4febb58ec8c75dd4` |
+| `reproducibility_report.json` | report | ✓ | `e1524be5b69fcded` |
+| `scoring_summary.md` | report | ✓ | `8b16a59863aa2069` |
+| `case_audit_report.md` | report | ✓ | `a370f4ca2735a8e2` |
+| `case_audit_report.json` | report | ✓ | `d105a5d98cae6dfa` |
 
 ---
 
 The artifact manifest in `outputs/reports/manuscript_artifact_manifest.json` records the filename, generation command, dataset version, release version, and SHA-256 hash of each table and figure used in the manuscript.
 
-> **Versioning note:** The 45-case corpus is fixed as dataset version 0.2.0. The v0.2.1 release updates the software pipeline, generated manuscript outputs, validation report, case audit report, artifact manifest, documentation, and Zenodo archive without changing the 45-case corpus.
+> **Versioning note:** The 45-case corpus is fixed as dataset version 0.2.0. The v0.2.2 release updates the software pipeline, generated manuscript outputs, validation report, case audit report, artifact manifest, documentation, and Zenodo archive without changing the 45-case corpus.

@@ -2,12 +2,12 @@
 Manuscript headline-value verification tests.
 
 Verifies every numerical claim made in the CSA-lite manuscript
-(CSA_lite_MDPI_Electronics_v0.2.0.md) that can be derived from the
+(CSA_lite_MDPI_Electronics_v0.2.2.md) that can be derived from the
 committed v0.2.0 corpus and pipeline.
 
-22 tests total:
-  TestCorpusProperties    (13 tests) — data file + scoring claims
-  TestPipelineArtifacts   (14 tests) — run-once session fixture + metadata
+32 tests total:
+  TestCorpusProperties    (15 tests) — data file + scoring claims
+  TestPipelineArtifacts   (17 tests) — run-once session fixture + metadata
 """
 
 from __future__ import annotations
@@ -175,7 +175,7 @@ class TestCorpusProperties:
 
 
 class TestPipelineArtifacts:
-    """14 tests verifying that the full pipeline emits all expected artifacts."""
+    """17 tests verifying that the full pipeline emits all expected artifacts."""
 
     def test_all_6_figure_stems_have_png_and_svg(self, pipeline_outputs):
         """Manuscript claim: Figures 1–6 emitted as PNG and SVG."""
@@ -341,3 +341,31 @@ class TestPipelineArtifacts:
             notes = zenodo.get("notes", "")
             journal = zenodo.get("journal", {})
             assert not journal, f".zenodo.json should not have a 'journal' key before acceptance: {journal}"
+
+    def test_readme_doi_is_correct(self):
+        """Check 28: README DOI badge must reference 10.5281/zenodo.20406743."""
+        text = _README.read_text(encoding="utf-8")
+        assert "10.5281/zenodo.20406743" in text, (
+            "README must contain the version-specific DOI 10.5281/zenodo.20406743"
+        )
+
+    def test_pyproject_version_is_022(self):
+        """Check 31: pyproject.toml package version must be 0.2.2."""
+        pyproject_path = _REPO_ROOT / "pyproject.toml"
+        text = pyproject_path.read_text(encoding="utf-8")
+        import re
+        match = re.search(r'^version\s*=\s*"([^"]+)"', text, re.MULTILINE)
+        assert match is not None, "pyproject.toml must have a version field"
+        assert match.group(1) == "0.2.2", (
+            f"pyproject.toml version is '{match.group(1)}', expected '0.2.2'"
+        )
+
+    def test_zenodo_json_version_is_022(self):
+        """Check 32: .zenodo.json version must be 0.2.2."""
+        import json
+        zenodo_path = _REPO_ROOT / ".zenodo.json"
+        assert zenodo_path.exists(), ".zenodo.json not found"
+        zenodo = json.loads(zenodo_path.read_text())
+        assert zenodo.get("version") == "0.2.2", (
+            f".zenodo.json version is '{zenodo.get('version')}', expected '0.2.2'"
+        )
