@@ -301,8 +301,8 @@ class TestPipelineArtifacts:
         """
         text = _CITATION_CFF.read_text(encoding="utf-8")
         assert "0.2.2" in text, "CITATION.cff must contain version 0.2.2"
-        assert "10.5281/zenodo.20403165" in text, (
-            "CITATION.cff must contain concept DOI 10.5281/zenodo.20403165"
+        assert "10.5281/zenodo.20406743" in text, (
+            "CITATION.cff must contain version-specific DOI 10.5281/zenodo.20406743"
         )
 
     def test_citation_does_not_claim_publication(self):

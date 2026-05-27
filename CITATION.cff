@@ -12,7 +12,7 @@ title: >
   Analysis of AI Systems
 version: 0.2.2
 date-released: "2026-05-27"
-doi: "10.5281/zenodo.20403165"
+doi: "10.5281/zenodo.20406743"
 url: "https://github.com/roy-saurabh/csa-lite-master"
 repository-code: "https://github.com/roy-saurabh/csa-lite-master"
 license: CC-BY-4.0
@@ -58,7 +58,7 @@ preferred-citation:
     Public-Records Framework for Deployment-Conditioned Risk
     Analysis of AI Systems
   version: "0.2.2"
-  doi: "10.5281/zenodo.20403165"
+  doi: "10.5281/zenodo.20406743"
   url: "https://github.com/roy-saurabh/csa-lite-master"
   year: 2026
   authors:

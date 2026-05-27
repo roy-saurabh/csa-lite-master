@@ -8,7 +8,7 @@ Companion code for the manuscript submitted to MDPI Electronics:
 > for Deployment-Conditioned Risk Analysis of AI Systems"
 > Submitted to *Electronics*, MDPI, 2026 (under review — not yet accepted).
 
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20403165.svg)](https://doi.org/10.5281/zenodo.20403165)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.20406743.svg)](https://doi.org/10.5281/zenodo.20406743)
 [![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://python.org)
 [![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
 
@@ -183,7 +183,7 @@ If you use this code, dataset, or methodology, please cite the software/reposito
   version   = {v0.2.2},
   year      = {2026},
   publisher = {Zenodo},
-  doi       = {10.5281/zenodo.20403165},
+  doi       = {10.5281/zenodo.20406743},
   url       = {https://github.com/roy-saurabh/csa-lite-master}
 }
 ```
