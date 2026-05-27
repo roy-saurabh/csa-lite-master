@@ -97,7 +97,7 @@ _Generated: 2026-05-27 | Package v0.2.1 | Dataset v0.2.0 | 45 cases_
 
 ## 5. Values Requiring Correction
 
-**None.** All manuscript claims verified against generated data (135 tests pass).
+**None.** All manuscript claims verified against generated data (138 tests pass).
 
 ---
 
@@ -105,17 +105,17 @@ _Generated: 2026-05-27 | Package v0.2.1 | Dataset v0.2.0 | 45 cases_
 
 | Item | Value | Status |
 |------|-------|--------|
-| Software DOI (version) | 10.5281/zenodo.20404302 | In README, CITATION.cff, .zenodo.json — CONSISTENT |
-| Concept DOI | 10.5281/zenodo.20403165 | In .zenodo.json — PRESENT |
+| Concept DOI (stable) | 10.5281/zenodo.20403165 | In README, CITATION.cff, .zenodo.json — CORRECT |
+| Version DOI (v0.2.2) | 10.5281/zenodo.20407828 | In CITATION.cff identifiers, .zenodo.json, reporting.py — CORRECT |
 | GitHub clone URL | https://github.com/roy-saurabh/csa-lite-master | In README — CORRECT |
-| CITATION.cff version | 0.2.1 | CORRECT |
-| CITATION.cff DOI | 10.5281/zenodo.20404302 | CORRECT |
-| .zenodo.json version | 0.2.1 | CORRECT |
+| CITATION.cff version | 0.2.2 | CORRECT |
+| CITATION.cff DOI | 10.5281/zenodo.20403165 (concept) | CORRECT |
+| .zenodo.json version | 0.2.2 | CORRECT |
 | .zenodo.json upload_type | software | CORRECT |
 | .zenodo.json journal claim | None (not present) | CORRECT (no premature publication claim) |
 | Article DOI | Not yet assigned | CORRECT (manuscript under review) |
 
-**Action required before Zenodo upload:** Verify that DOI 10.5281/zenodo.20404302 is the actual reserved version DOI on Zenodo (not placeholder). Ensure the archive is uploaded to Zenodo before or at submission.
+Zenodo v0.2.2 archive live at https://zenodo.org/record/20407828 (csa-lite-master-v0.2.2.zip, 1,615,655 bytes, MD5 f530b25163e5eb412fdf8f4ec14de062).
 
 ---
 
@@ -166,24 +166,26 @@ See `outputs/reports/reference_audit_checklist.md` for full checklist.
 
 ## 11. Minor Issues
 
-1. **Manuscript test count:** The manuscript text (Section 3.7) cites "122-test suite" but the updated suite has 135 tests. Update the manuscript text before submission: change "122-test suite" to "135-test suite".
+1. ~~Manuscript test count: "122-test suite"~~ **RESOLVED** — manuscript now correctly cites 138-test suite.
 
-2. **Reproducibility report command:** The command shown in `reproducibility_report.md` says `csa-lite all` (with a hyphen) instead of `csalite all` (CLI entry point). Minor cosmetic issue in the report; does not affect reproducibility.
+2. ~~Reproducibility report command: `csa-lite all` (with hyphen)~~ **RESOLVED** — `reporting.py` and all reports now emit `csalite all`.
 
-3. **CLI Reference Table in README:** Table mentions "Figs 1–8" (was the old figure count). Fixed in README to say "Figs 1–6".
+3. ~~CLI Reference Table in README: "Figs 1–8"~~ **RESOLVED** — README correctly shows "Figs 1–6".
 
 ---
 
 ## 12. Final PASS/FAIL Recommendation
 
-**PASS — READY FOR SUBMISSION** with these pre-submission actions:
+**PASS — READY FOR SUBMISSION**
 
-1. Upload Zenodo archive and verify DOI 10.5281/zenodo.20404302 is live
-2. Update manuscript text: "122-test suite" → "135-test suite"  
-3. Fix 6 references missing DOI/URL/access date (refs 4, 7, 13, 14, 22, 23)
-4. Manually verify 5 flagged references (refs 11, 12, 26, 28, 31)
+All pre-submission actions from prior checklist are resolved:
 
-All generated outputs are reproducible from the committed dataset via `csalite all`. All 135 automated tests pass. All manuscript numerical claims are verified against the generated data.
+1. ~~Upload Zenodo archive~~ **DONE** — v0.2.2 live at https://zenodo.org/record/20407828
+2. ~~Update manuscript test count~~ **DONE** — manuscript correctly cites 138-test suite
+3. ~~Fix reproducibility command~~ **DONE** — `csalite all` used throughout
+4. All DOIs updated: concept DOI 10.5281/zenodo.20403165; version DOI 10.5281/zenodo.20407828; stale DOI 10.5281/zenodo.20406743 removed from all final-facing files.
+
+All generated outputs are reproducible from the committed dataset via `csalite all`. All 138 automated tests pass. All manuscript numerical claims are verified against the generated data.
 
 ---
 
