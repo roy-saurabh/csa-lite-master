@@ -1,7 +1,7 @@
 {
   "schema": "CSA-Lite",
   "version": "0.2.1",
-  "generated": "2026-05-27T03:05:46",
+  "generated": "2026-05-27T08:36:32",
   "n_cases": 45,
   "validation_status": "pass",
   "n_validation_errors": 0,
@@ -24,7 +24,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0002",
@@ -39,7 +39,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0003",
@@ -54,7 +54,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0004",
@@ -69,7 +69,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0005",
@@ -84,7 +84,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0006",
@@ -99,7 +99,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0007",
@@ -114,7 +114,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0008",
@@ -129,7 +129,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0009",
@@ -144,7 +144,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0010",
@@ -159,7 +159,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0011",
@@ -174,7 +174,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0012",
@@ -189,7 +189,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0013",
@@ -204,7 +204,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0014",
@@ -219,7 +219,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0015",
@@ -234,7 +234,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0016",
@@ -249,7 +249,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0017",
@@ -264,7 +264,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0018",
@@ -279,7 +279,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0019",
@@ -294,7 +294,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0020",
@@ -309,7 +309,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0021",
@@ -324,7 +324,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0022",
@@ -339,7 +339,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0023",
@@ -354,7 +354,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0024",
@@ -369,7 +369,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0025",
@@ -384,7 +384,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0026",
@@ -399,7 +399,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0027",
@@ -414,7 +414,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0028",
@@ -429,7 +429,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0029",
@@ -444,7 +444,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0030",
@@ -459,7 +459,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0031",
@@ -474,7 +474,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0032",
@@ -489,7 +489,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0033",
@@ -504,7 +504,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0034",
@@ -519,7 +519,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0035",
@@ -534,7 +534,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0036",
@@ -549,7 +549,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0037",
@@ -564,7 +564,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0038",
@@ -579,7 +579,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0039",
@@ -594,7 +594,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0040",
@@ -609,7 +609,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0041",
@@ -624,7 +624,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0042",
@@ -639,7 +639,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0043",
@@ -654,7 +654,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0044",
@@ -669,7 +669,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     },
     {
       "case_id": "CSA-LITE-0045",
@@ -684,7 +684,7 @@
       "sensitivity_band_change_flag": false,
       "audit_flags": "none",
       "audit_severity": "informational",
-      "dataset_version": "0.2.1"
+      "dataset_version": "0.2.0"
     }
   ]
 }

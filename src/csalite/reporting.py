@@ -245,12 +245,13 @@ def build_reproducibility_report_json(
 
     table_names = [
         "table_1_csalite_dimensions.csv",
-        "table_2_corpus_composition_by_annex_area.csv",
-        "table_3_within_category_variance.csv",
-        "table_4_dimension_level_patterns.csv",
-        "table_5_evidence_confidence_by_dimension.csv",
-        "table_6_sensitivity_summary.csv",
-        "table_7_matched_case_contrasts.csv",
+        "table_2_source_quality_scale.csv",
+        "table_3_corpus_composition_by_annex_area.csv",
+        "table_4_within_category_variance.csv",
+        "table_5_dimension_level_patterns.csv",
+        "table_6_evidence_confidence_by_dimension.csv",
+        "table_7_sensitivity_summary.csv",
+        "table_8_matched_case_contrasts.csv",
     ]
     supp_table_names = [
         "supp_table_s1_full_case_corpus.csv",
@@ -451,8 +452,15 @@ def build_artifact_manifest_md(manifest: dict) -> str:
     lines.append("\n---\n")
     lines.append(
         "The artifact manifest in `outputs/reports/manuscript_artifact_manifest.json` "
-        "records the filename, generation command, dataset version, and SHA256 hash of "
-        "each table and figure used in the manuscript."
+        "records the filename, generation command, dataset version, release version, "
+        "and SHA-256 hash of each table and figure used in the manuscript."
+    )
+    lines.append("")
+    lines.append(
+        "> **Versioning note:** The 45-case corpus is fixed as dataset version 0.2.0. "
+        "The v0.2.1 release updates the software pipeline, generated manuscript outputs, "
+        "validation report, case audit report, artifact manifest, documentation, and Zenodo archive "
+        "without changing the 45-case corpus."
     )
 
     return "\n".join(lines) + "\n"
@@ -481,11 +489,20 @@ def build_reproducibility_report(
     lines.append("\n---\n")
 
     lines.append("## Run Metadata\n")
-    lines.append(f"- **Dataset version:** {PROJECT_VERSION}")
+    lines.append(f"- **Package version:** {PROJECT_VERSION}")
+    lines.append(f"- **Dataset version:** 0.2.0")
     lines.append(f"- **Cases processed:** {n_cases}")
     lines.append(f"- **Input file:** `{input_path}`")
     lines.append(f"- **Output root:** `{outdir}`")
     lines.append(f"- **Run timestamp:** {ts}")
+
+    lines.append("\n## Versioning Note\n")
+    lines.append(
+        "> The 45-case corpus is fixed as dataset version 0.2.0. "
+        "The v0.2.1 release updates the software pipeline, generated manuscript outputs, "
+        "validation report, case audit report, artifact manifest, documentation, and Zenodo archive "
+        "without changing the 45-case corpus."
+    )
 
     lines.append("\n## Command\n")
     lines.append(
@@ -507,12 +524,13 @@ def build_reproducibility_report(
     lines.append("### Tables\n")
     table_names = [
         "table_1_csalite_dimensions.csv",
-        "table_2_corpus_composition_by_annex_area.csv",
-        "table_3_within_category_variance.csv",
-        "table_4_dimension_level_patterns.csv",
-        "table_5_evidence_confidence_by_dimension.csv",
-        "table_6_sensitivity_summary.csv",
-        "table_7_matched_case_contrasts.csv",
+        "table_2_source_quality_scale.csv",
+        "table_3_corpus_composition_by_annex_area.csv",
+        "table_4_within_category_variance.csv",
+        "table_5_dimension_level_patterns.csv",
+        "table_6_evidence_confidence_by_dimension.csv",
+        "table_7_sensitivity_summary.csv",
+        "table_8_matched_case_contrasts.csv",
     ]
     for t in table_names:
         p = outdir / "tables" / t
@@ -577,15 +595,16 @@ def build_artifact_manifest(
 
     artifacts: list[dict] = []
 
-    # Manuscript tables (1-7)
+    # Manuscript tables (1-8)
     table_names = [
         "table_1_csalite_dimensions.csv",
-        "table_2_corpus_composition_by_annex_area.csv",
-        "table_3_within_category_variance.csv",
-        "table_4_dimension_level_patterns.csv",
-        "table_5_evidence_confidence_by_dimension.csv",
-        "table_6_sensitivity_summary.csv",
-        "table_7_matched_case_contrasts.csv",
+        "table_2_source_quality_scale.csv",
+        "table_3_corpus_composition_by_annex_area.csv",
+        "table_4_within_category_variance.csv",
+        "table_5_dimension_level_patterns.csv",
+        "table_6_evidence_confidence_by_dimension.csv",
+        "table_7_sensitivity_summary.csv",
+        "table_8_matched_case_contrasts.csv",
     ]
     for name in table_names:
         p = outdir / "tables" / name

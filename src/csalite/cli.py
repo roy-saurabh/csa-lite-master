@@ -4,15 +4,16 @@ CSA-lite command-line interface.
 Entry point: `csalite`
 
 Commands:
-  validate   -- Validate a cases CSV/JSONL against rules and schema
-  score      -- Compute scoring fields and write scored_cases CSV/JSONL
-  analyze    -- Generate analysis tables
-  figures    -- Generate manuscript figures (6 figures)
-  sensitivity-- Generate sensitivity analysis
-  report     -- Generate a combined Markdown report
-  all        -- Run validate + score + analyze + figures + sensitivity + report
-                Also writes: validation_report.json, reproducibility_report.md,
-                             manuscript_artifact_manifest.json
+  validate     -- Validate a cases CSV/JSONL against rules and schema
+  score        -- Compute scoring fields and write scored_cases CSV/JSONL
+  analyze      -- Generate analysis tables (Tables 1–8)
+  figures      -- Generate manuscript figures (Figs 1–6)
+  sensitivity  -- Generate sensitivity analysis
+  audit-cases  -- Generate case audit report
+  report       -- Generate a combined Markdown report
+  manifest     -- Generate artifact manifest
+  all          -- Run full pipeline: validate → score → analyze → supplementary
+                  → figures → sensitivity → case audit → report → manifest
 """
 
 from __future__ import annotations
@@ -284,6 +285,77 @@ def report(
     console.print(f"[green]Report written to: {out}[/green]")
 
 
+# ── audit-cases ───────────────────────────────────────────────────────────────
+
+
+@app.command(name="audit-cases")
+def audit_cases(
+    input: Path = typer.Option(..., "--input", "-i", help="Input cases CSV or JSONL"),
+    scored: Optional[Path] = typer.Option(None, "--scored", "-s", help="Pre-scored cases CSV (optional)"),
+    outdir: Path = typer.Option(..., "--outdir", "-d", help="Output directory for audit reports"),
+) -> None:
+    """Generate case audit report (MD + JSON) and supp_table_s7_case_audit_flags.csv."""
+    import json as _json
+    from csalite.reporting import build_case_audit_report, write_report
+    from csalite.scoring import score_dataframe
+    from csalite.io import write_table_csv
+    from csalite.analysis import supp_table_s7_case_audit_flags
+
+    console.print(f"[bold]CSA-Lite Case Audit v{__version__}[/bold]")
+
+    if not input.exists():
+        console.print(f"[red]Input file not found: {input}[/red]")
+        raise typer.Exit(code=1)
+
+    df = _load_df(input)
+    if scored and scored.exists():
+        df_scored = _load_df(scored)
+    else:
+        df_scored = score_dataframe(df)
+
+    reports_dir = outdir / "reports"
+    tables_dir = outdir / "tables"
+    reports_dir.mkdir(parents=True, exist_ok=True)
+    tables_dir.mkdir(parents=True, exist_ok=True)
+
+    audit_md, audit_json = build_case_audit_report(df_scored)
+    write_report(audit_md, reports_dir / "case_audit_report.md")
+    (reports_dir / "case_audit_report.json").write_text(
+        _json.dumps(audit_json, indent=2, ensure_ascii=False), encoding="utf-8"
+    )
+
+    flags_df = supp_table_s7_case_audit_flags(df_scored)
+    write_table_csv(flags_df, tables_dir / "supp_table_s7_case_audit_flags.csv")
+
+    console.print(f"[green]Case audit report written to: {reports_dir}[/green]")
+    console.print(f"[green]Case audit flags table written to: {tables_dir}[/green]")
+
+
+# ── manifest ──────────────────────────────────────────────────────────────────
+
+
+@app.command()
+def manifest(
+    out: Path = typer.Option(..., "--out", "-o", help="Output JSON manifest path"),
+    outdir: Path = typer.Option(Path("outputs"), "--outdir", "-d", help="Root output directory to inspect"),
+    input: Path = typer.Option(Path("data/processed/csa_lite_cases.csv"), "--input", "-i", help="Input cases CSV"),
+) -> None:
+    """Generate artifact manifest (JSON + MD) for all pipeline outputs."""
+    import json as _json
+    from csalite.reporting import build_artifact_manifest, build_artifact_manifest_md, write_report
+
+    console.print(f"[bold]CSA-Lite Manifest v{__version__}[/bold]")
+
+    mf = build_artifact_manifest(outdir=outdir, input_path=input, dataset_version="0.2.0")
+    out.parent.mkdir(parents=True, exist_ok=True)
+    out.write_text(_json.dumps(mf, indent=2, ensure_ascii=False), encoding="utf-8")
+    console.print(f"[green]Manifest JSON written to: {out}[/green]")
+
+    md_path = out.with_suffix(".md")
+    write_report(build_artifact_manifest_md(mf), md_path)
+    console.print(f"[green]Manifest MD written to: {md_path}[/green]")
+
+
 # ── all ───────────────────────────────────────────────────────────────────────
 
 
@@ -376,7 +448,7 @@ def all(
     console.print(f"[green]Scored {len(scored)} cases[/green]")
     console.print(f"  ↳ Also written to: {data_processed_scored}")
 
-    # 3. Analyze — manuscript tables (1–7)
+    # 3. Analyze — manuscript tables (1–8)
     console.rule("Step 3: Analyze (manuscript tables)")
     tables = compute_all_tables(scored)
     for name, tdf in tables.items():

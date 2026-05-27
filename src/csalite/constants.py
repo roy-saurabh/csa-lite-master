@@ -90,7 +90,9 @@ FIGURE_DPI: Final[int] = 300
 FIGURE_FORMATS: Final[tuple[str, ...]] = ("png", "svg")
 
 # ── Dataset version ───────────────────────────────────────────────────────────
-DATASET_VERSION: Final[str] = "0.2.1"
+# Dataset version is fixed at 0.2.0 (the 45-case corpus).
+# The package/release version (PROJECT_VERSION) may advance without changing the dataset.
+DATASET_VERSION: Final[str] = "0.2.0"
 
 # ── Dimension descriptions (for Table 1) ──────────────────────────────────────
 DIMENSION_DESCRIPTIONS: Final[dict[str, dict[str, str]]] = {

@@ -113,7 +113,7 @@ class TestAnalyzeCommand:
         result = runner.invoke(app, ["analyze", "--input", str(scored), "--outdir", str(tables_dir)])
         assert result.exit_code == 0
         csvs = list(tables_dir.glob("*.csv"))
-        assert len(csvs) == 7
+        assert len(csvs) == 8
 
 
 # ── sensitivity ───────────────────────────────────────────────────────────────
@@ -162,4 +162,4 @@ class TestAllCommand:
         assert (outdir / "scored_cases.jsonl").exists()
         tables_dir = outdir / "tables"
         assert tables_dir.exists()
-        assert len(list(tables_dir.glob("*.csv"))) >= 7
+        assert len(list(tables_dir.glob("*.csv"))) >= 8

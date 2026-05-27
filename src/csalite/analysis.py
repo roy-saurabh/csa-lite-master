@@ -1,18 +1,19 @@
 """
 Analysis table generation for CSA-lite manuscript.
 
-Produces the 7 analysis tables described in the manuscript.
+Produces the 8 analysis tables described in the manuscript.
 All functions return DataFrames sorted deterministically.
 No I/O — callers handle reading/writing via io.py.
 
 Table naming follows the manuscript:
   table_1_csalite_dimensions          — framework metadata (no df needed)
-  table_2_corpus_composition_by_annex_area
-  table_3_within_category_variance
-  table_4_dimension_level_patterns
-  table_5_evidence_confidence_by_dimension
-  table_6_sensitivity_summary
-  table_7_matched_case_contrasts
+  table_2_source_quality_scale        — source quality scale reference (no df needed)
+  table_3_corpus_composition_by_annex_area
+  table_4_within_category_variance
+  table_5_dimension_level_patterns
+  table_6_evidence_confidence_by_dimension
+  table_7_sensitivity_summary
+  table_8_matched_case_contrasts
 """
 
 from __future__ import annotations
@@ -98,9 +99,31 @@ def table_1_csalite_dimensions() -> pd.DataFrame:
 # ── Table 2 ────────────────────────────────────────────────────────────────────
 
 
-def table_2_corpus_composition_by_annex_area(df: pd.DataFrame) -> pd.DataFrame:
+def table_2_source_quality_scale() -> pd.DataFrame:
     """
-    Table 2: Corpus composition by Annex III area.
+    Table 2: Source quality scale reference (framework metadata).
+
+    No DataFrame input — this is a framework-level metadata table.
+    Five rows (scores 0–4) with label and definition.
+
+    Columns: Score, Label, Definition
+    """
+    rows = [
+        {"Score": 0, "Label": "Unusable", "Definition": "No usable public record; source absent, paywalled, or removed"},
+        {"Score": 1, "Label": "Low", "Definition": "Single low-credibility source; blog, social media, or unverified report"},
+        {"Score": 2, "Label": "Medium", "Definition": "One or more credible secondary sources (journalism, NGO, government summary)"},
+        {"Score": 3, "Label": "High", "Definition": "Primary documentation (official report, court record, regulator finding, or investigation with methodology)"},
+        {"Score": 4, "Label": "Very High", "Definition": "Multiple independent primary sources with full methodology, including regulatory, judicial, or academic peer-reviewed documentation"},
+    ]
+    return pd.DataFrame(rows)
+
+
+# ── Table 3 ────────────────────────────────────────────────────────────────────
+
+
+def table_3_corpus_composition_by_annex_area(df: pd.DataFrame) -> pd.DataFrame:
+    """
+    Table 3: Corpus composition by Annex III area.
 
     Columns:
       annex_iii_area, n_cases, n_direct, n_analogous, n_comparator, n_unclear,
@@ -156,12 +179,12 @@ def table_2_corpus_composition_by_annex_area(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows).sort_values("annex_iii_area").reset_index(drop=True)
 
 
-# ── Table 3 ────────────────────────────────────────────────────────────────────
+# ── Table 4 ────────────────────────────────────────────────────────────────────
 
 
-def table_3_within_category_variance(df: pd.DataFrame) -> pd.DataFrame:
+def table_4_within_category_variance(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Table 3: Within-category CSI variance by Annex III area.
+    Table 4: Within-category CSI variance by Annex III area.
 
     Columns:
       annex_iii_area, n_cases, min, q1, median, q3, max, iqr, mean, std,
@@ -236,12 +259,12 @@ def table_3_within_category_variance(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows).sort_values("annex_iii_area").reset_index(drop=True)
 
 
-# ── Table 4 ────────────────────────────────────────────────────────────────────
+# ── Table 5 ────────────────────────────────────────────────────────────────────
 
 
-def table_4_dimension_level_patterns(df: pd.DataFrame) -> pd.DataFrame:
+def table_5_dimension_level_patterns(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Table 4: Dimension-level scoring patterns across the corpus.
+    Table 5: Dimension-level scoring patterns across the corpus.
 
     Columns:
       dimension, mean_score, median_score, n_score_0, n_score_1, n_score_2,
@@ -289,12 +312,12 @@ def table_4_dimension_level_patterns(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-# ── Table 5 ────────────────────────────────────────────────────────────────────
+# ── Table 6 ────────────────────────────────────────────────────────────────────
 
 
-def table_5_evidence_confidence_by_dimension(df: pd.DataFrame) -> pd.DataFrame:
+def table_6_evidence_confidence_by_dimension(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Table 5: Evidence confidence distribution by dimension.
+    Table 6: Evidence confidence distribution by dimension.
 
     For each dimension, reports the count and proportion of cases at each
     confidence level (high / medium / low / unknown) and the mean confidence
@@ -348,12 +371,12 @@ def table_5_evidence_confidence_by_dimension(df: pd.DataFrame) -> pd.DataFrame:
     return pd.DataFrame(rows)
 
 
-# ── Table 6 ────────────────────────────────────────────────────────────────────
+# ── Table 7 ────────────────────────────────────────────────────────────────────
 
 
-def table_6_sensitivity_summary(df: pd.DataFrame) -> pd.DataFrame:
+def table_7_sensitivity_summary(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Table 6: Sensitivity analysis summary by Annex III area.
+    Table 7: Sensitivity analysis summary by Annex III area.
 
     Wraps sensitivity.compute_sensitivity_dataframe + compute_band_change_summary.
 
@@ -375,12 +398,12 @@ def table_6_sensitivity_summary(df: pd.DataFrame) -> pd.DataFrame:
     return summary
 
 
-# ── Table 7 ────────────────────────────────────────────────────────────────────
+# ── Table 8 ────────────────────────────────────────────────────────────────────
 
 
-def table_7_matched_case_contrasts(df: pd.DataFrame) -> pd.DataFrame:
+def table_8_matched_case_contrasts(df: pd.DataFrame) -> pd.DataFrame:
     """
-    Table 7: Matched case contrasts within Annex III areas.
+    Table 8: Matched case contrasts within Annex III areas.
 
     For each area, identifies the lowest- and highest-CSI case pair
     (where gap >= 3 points) and records the dimensions driving the difference.
@@ -651,26 +674,28 @@ def compute_all_supplementary_tables(df: pd.DataFrame) -> dict[str, pd.DataFrame
 
 def compute_all_tables(df: pd.DataFrame) -> dict[str, pd.DataFrame]:
     """
-    Compute all 7 analysis tables from a scored DataFrame.
+    Compute all 8 analysis tables from a scored DataFrame.
 
     Returns a dict with keys matching the manuscript table names:
       table_1_csalite_dimensions
-      table_2_corpus_composition_by_annex_area
-      table_3_within_category_variance
-      table_4_dimension_level_patterns
-      table_5_evidence_confidence_by_dimension
-      table_6_sensitivity_summary
-      table_7_matched_case_contrasts
+      table_2_source_quality_scale
+      table_3_corpus_composition_by_annex_area
+      table_4_within_category_variance
+      table_5_dimension_level_patterns
+      table_6_evidence_confidence_by_dimension
+      table_7_sensitivity_summary
+      table_8_matched_case_contrasts
 
-    Table 1 does not require a DataFrame (framework metadata).
+    Tables 1 and 2 do not require a DataFrame (framework metadata).
     All other tables require a scored DataFrame with context_severity_* columns.
     """
     return {
         "table_1_csalite_dimensions": table_1_csalite_dimensions(),
-        "table_2_corpus_composition_by_annex_area": table_2_corpus_composition_by_annex_area(df),
-        "table_3_within_category_variance": table_3_within_category_variance(df),
-        "table_4_dimension_level_patterns": table_4_dimension_level_patterns(df),
-        "table_5_evidence_confidence_by_dimension": table_5_evidence_confidence_by_dimension(df),
-        "table_6_sensitivity_summary": table_6_sensitivity_summary(df),
-        "table_7_matched_case_contrasts": table_7_matched_case_contrasts(df),
+        "table_2_source_quality_scale": table_2_source_quality_scale(),
+        "table_3_corpus_composition_by_annex_area": table_3_corpus_composition_by_annex_area(df),
+        "table_4_within_category_variance": table_4_within_category_variance(df),
+        "table_5_dimension_level_patterns": table_5_dimension_level_patterns(df),
+        "table_6_evidence_confidence_by_dimension": table_6_evidence_confidence_by_dimension(df),
+        "table_7_sensitivity_summary": table_7_sensitivity_summary(df),
+        "table_8_matched_case_contrasts": table_8_matched_case_contrasts(df),
     }

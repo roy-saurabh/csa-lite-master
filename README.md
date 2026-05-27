@@ -26,6 +26,15 @@ Companion code for the manuscript submitted to MDPI Electronics:
 
 ---
 
+## Versioning
+
+The 45-case corpus is fixed as dataset version 0.2.0. The v0.2.1 release updates
+the software pipeline, generated manuscript outputs, validation report, case audit
+report, artifact manifest, documentation, and Zenodo archive without changing the
+45-case corpus.
+
+---
+
 ## What is CSA-Lite?
 
 CSA-lite is a reproducible public-records analysis methodology for structured
@@ -116,10 +125,12 @@ csalite all \
 |---------|-------------|
 | `csalite validate` | Validate case data against coding rules |
 | `csalite score` | Compute CSI and scoring fields |
-| `csalite analyze` | Generate analysis tables (Tables 1–7) |
-| `csalite figures` | Generate manuscript figures (Figs 1–8) |
+| `csalite analyze` | Generate analysis tables (Tables 1–8) |
+| `csalite figures` | Generate manuscript figures (Figs 1–6) |
 | `csalite sensitivity` | Generate sensitivity analysis |
+| `csalite audit-cases` | Generate case audit report and flags |
 | `csalite report` | Generate Markdown summary report |
+| `csalite manifest` | Generate artifact manifest (JSON + MD) |
 | `csalite all` | Run full pipeline |
 
 ---

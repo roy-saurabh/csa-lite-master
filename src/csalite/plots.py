@@ -123,7 +123,7 @@ def plot_pipeline_architecture(outdir: Path) -> plt.Figure:
         "CSA-lite does not produce legal classifications or compliance determinations.",
         ha="center", va="center", fontsize=7, color="#666", style="italic",
     )
-    ax.set_title("CSA-Lite: Analysis Pipeline Architecture", fontsize=12, fontweight="bold", pad=10)
+    ax.set_title("CSA-lite Analysis Pipeline Architecture", fontsize=12, fontweight="bold", pad=10)
 
     _save_figure(fig, outdir, "fig_1_pipeline_architecture")
     plt.close(fig)
@@ -157,7 +157,7 @@ def plot_corpus_by_annex_area(df: pd.DataFrame, outdir: Path) -> plt.Figure:
     )
     ax.set_xlabel("EU AI Act Annex III Area (analytical reference frame)", fontsize=10)
     ax.set_ylabel("Number of cases", fontsize=10)
-    ax.set_title("Fig 2: Corpus Composition by Annex III Area", fontsize=12, fontweight="bold")
+    ax.set_title("Corpus Composition by Annex III Analytical Area", fontsize=12, fontweight="bold")
 
     for bar, val in zip(bars, counts.values):
         ax.text(
@@ -233,7 +233,7 @@ def plot_context_severity_by_annex_area(df: pd.DataFrame, outdir: Path) -> plt.F
     ax.set_xlabel("EU AI Act Annex III Area (analytical reference frame)", fontsize=10)
     ax.set_ylabel("Context Severity Index (CSI, neutral imputation)", fontsize=10)
     ax.set_title(
-        "Fig 3: CSI Distribution by Annex III Area\n"
+        "Context Severity Index by Annex III Analytical Area\n"
         "(CSI is a structured-coding output, NOT a legal risk class)",
         fontsize=11, fontweight="bold",
     )
@@ -303,7 +303,7 @@ def plot_dimension_heatmap(df: pd.DataFrame, outdir: Path) -> plt.Figure:
     cbar.set_label("Score", fontsize=8)
 
     ax.set_title(
-        "Fig 4: Dimension Score Heatmap (grey = missing)",
+        "CSA-lite Dimension Score Heatmap",
         fontsize=11, fontweight="bold",
     )
     fig.tight_layout()
@@ -373,7 +373,7 @@ def plot_evidence_confidence_matrix(df: pd.DataFrame, outdir: Path) -> plt.Figur
     cbar.set_label("Evidence Confidence", fontsize=8)
 
     ax.set_title(
-        "Fig 5: Evidence-Confidence Matrix\n(blue intensity = confidence; grey = missing score)",
+        "Evidence Confidence Matrix by Case and Dimension\n(blue intensity = confidence; grey = missing score)",
         fontsize=11, fontweight="bold",
     )
     fig.tight_layout()
@@ -433,7 +433,7 @@ def plot_sensitivity_comparison(df: pd.DataFrame, outdir: Path) -> plt.Figure:
     ax.set_xlabel("CSI — null as 0 (optimistic)", fontsize=10)
     ax.set_ylabel("CSI — null as 2 (conservative)", fontsize=10)
     ax.set_title(
-        "Fig 6: Sensitivity Comparison\n"
+        "Sensitivity Comparison Across Missing-Value Rules\n"
         "(Points on diagonal = no band sensitivity to unknown-handling rule)",
         fontsize=11, fontweight="bold",
     )

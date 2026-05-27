@@ -5,13 +5,9 @@ Verifies every numerical claim made in the CSA-lite manuscript
 (CSA_lite_MDPI_Electronics_v0.2.0.md) that can be derived from the
 committed v0.2.0 corpus and pipeline.
 
-21 tests total (previously 15):
-  TestCorpusProperties   (10 tests) — data file + scoring claims
-  TestPipelineArtifacts  (11 tests) — run-once session fixture
-
-NOTE: The manuscript originally claimed 102 tests. The current test suite
-has 115 tests (before this file's expansion). The manuscript text must be
-updated to reflect the actual passing test count after running pytest.
+22 tests total:
+  TestCorpusProperties    (13 tests) — data file + scoring claims
+  TestPipelineArtifacts   (14 tests) — run-once session fixture + metadata
 """
 
 from __future__ import annotations
@@ -72,7 +68,7 @@ def pipeline_outputs(tmp_path_factory, corpus_df):
 
 
 class TestCorpusProperties:
-    """10 tests verifying corpus size, mapping types, CSI stats, and completeness."""
+    """13 tests verifying corpus size, mapping types, source quality, CSI stats, and completeness."""
 
     def test_n_equals_45(self, corpus_df):
         """Manuscript claim: N = 45 cases in v0.2.0 corpus."""
@@ -89,6 +85,21 @@ class TestCorpusProperties:
     def test_comparator_mappings_equals_7(self, corpus_df):
         """Manuscript claim: 7 comparator cases."""
         assert (corpus_df["annex_mapping_type"] == "comparator").sum() == 7
+
+    def test_source_quality_medium_equals_5(self, corpus_df):
+        """Manuscript claim: 5 cases with source quality Medium (score 2)."""
+        sq = pd.to_numeric(corpus_df["source_quality_score"], errors="coerce")
+        assert int((sq == 2).sum()) == 5
+
+    def test_source_quality_high_equals_26(self, corpus_df):
+        """Manuscript claim: 26 cases with source quality High (score 3)."""
+        sq = pd.to_numeric(corpus_df["source_quality_score"], errors="coerce")
+        assert int((sq == 3).sum()) == 26
+
+    def test_source_quality_very_high_equals_14(self, corpus_df):
+        """Manuscript claim: 14 cases with source quality Very High (score 4)."""
+        sq = pd.to_numeric(corpus_df["source_quality_score"], errors="coerce")
+        assert int((sq == 4).sum()) == 14
 
     def test_csi_min_equals_7(self, scored_df):
         """Manuscript claim: CSI min = 7."""
@@ -107,6 +118,14 @@ class TestCorpusProperties:
         mean = float(scored_df["context_severity_index"].mean())
         assert abs(mean - 12.07) < 0.005, f"Mean CSI = {mean:.4f}, expected ~12.07"
 
+    def test_severity_bands_distribution(self, scored_df):
+        """Manuscript claim: low=0, moderate=2, high=16, severe=27."""
+        band_counts = scored_df["context_severity_band"].value_counts()
+        assert int(band_counts.get("low", 0)) == 0, "Expected 0 low-band cases"
+        assert int(band_counts.get("moderate", 0)) == 2, "Expected 2 moderate-band cases"
+        assert int(band_counts.get("high", 0)) == 16, "Expected 16 high-band cases"
+        assert int(band_counts.get("severe", 0)) == 27, "Expected 27 severe-band cases"
+
     def test_all_dimensions_fully_coded_no_missing(self, scored_df):
         """Manuscript claim: all 45 cases fully coded on all 8 dimensions in v0.2.0."""
         from csalite.constants import SCORE_DIMENSIONS
@@ -124,12 +143,39 @@ class TestCorpusProperties:
             "expected 0 because v0.2.0 corpus has no unknown values"
         )
 
+    def test_evidence_confidence_weights(self, scored_df):
+        """Manuscript claim: confidence weights round to specified values (tolerance ±0.015)."""
+        from csalite.constants import SCORE_DIMENSIONS, CONFIDENCE_WEIGHTS
+
+        # Manually reload corpus for confidence columns (scored_df might not have confidence cols)
+        from csalite.io import read_cases_csv
+        df = read_cases_csv(_CORPUS_CSV)
+
+        expected = {
+            "decision_criticality": 0.93,
+            "autonomy": 0.95,
+            "vulnerability": 0.83,
+            "oversight": 0.77,
+            "recourse": 0.80,
+            "scale": 0.98,
+            "opacity": 0.89,
+            "monitoring": 0.86,
+        }
+        for dim, expected_w in expected.items():
+            col = f"{dim}_confidence"
+            confs = df[col].fillna("unknown").str.strip().str.lower()
+            weights = confs.map(lambda v: CONFIDENCE_WEIGHTS.get(v, 0.0))
+            actual = float(weights.mean())
+            assert abs(actual - expected_w) < 0.015, (
+                f"{dim} confidence weight = {actual:.4f}, expected ~{expected_w} (tolerance ±0.015)"
+            )
+
 
 # ── Pipeline artifact existence ───────────────────────────────────────────────
 
 
 class TestPipelineArtifacts:
-    """11 tests verifying that the full pipeline emits all expected artifacts."""
+    """14 tests verifying that the full pipeline emits all expected artifacts."""
 
     def test_all_6_figure_stems_have_png_and_svg(self, pipeline_outputs):
         """Manuscript claim: Figures 1–6 emitted as PNG and SVG."""
@@ -147,16 +193,17 @@ class TestPipelineArtifacts:
                 p = figs_dir / f"{stem}.{ext}"
                 assert p.exists(), f"Missing figure: {p.name}"
 
-    def test_all_7_table_files_exist(self, pipeline_outputs):
-        """Manuscript claim: Tables 1–7 generated by csalite all."""
+    def test_all_8_table_files_exist(self, pipeline_outputs):
+        """Manuscript claim: Tables 1–8 generated by csalite all."""
         tables = [
             "table_1_csalite_dimensions.csv",
-            "table_2_corpus_composition_by_annex_area.csv",
-            "table_3_within_category_variance.csv",
-            "table_4_dimension_level_patterns.csv",
-            "table_5_evidence_confidence_by_dimension.csv",
-            "table_6_sensitivity_summary.csv",
-            "table_7_matched_case_contrasts.csv",
+            "table_2_source_quality_scale.csv",
+            "table_3_corpus_composition_by_annex_area.csv",
+            "table_4_within_category_variance.csv",
+            "table_5_dimension_level_patterns.csv",
+            "table_6_evidence_confidence_by_dimension.csv",
+            "table_7_sensitivity_summary.csv",
+            "table_8_matched_case_contrasts.csv",
         ]
         tables_dir = pipeline_outputs / "tables"
         for t in tables:
@@ -222,7 +269,7 @@ class TestPipelineArtifacts:
         assert p.exists(), "manuscript_artifact_manifest.json not found"
         manifest = json.loads(p.read_text())
         assert "artifacts" in manifest
-        # 7 tables + 7 supp tables + 12 figure files (6x2) + 9 reports = 35 artifacts
+        # 8 tables + 7 supp tables + 12 figure files (6x2) + 7 reports = 34 artifacts
         assert len(manifest["artifacts"]) >= 30
         missing = [a["path"] for a in manifest["artifacts"] if not a.get("exists")]
         assert not missing, f"Manifest lists missing artifacts: {missing}"
@@ -245,6 +292,14 @@ class TestPipelineArtifacts:
             "README still contains placeholder URL"
         )
 
+    def test_citation_cff_version_and_doi(self):
+        """CITATION.cff must use version v0.2.1 and DOI 10.5281/zenodo.20404302."""
+        text = _CITATION_CFF.read_text(encoding="utf-8")
+        assert "0.2.1" in text, "CITATION.cff must contain version 0.2.1"
+        assert "10.5281/zenodo.20404302" in text, (
+            "CITATION.cff must contain DOI 10.5281/zenodo.20404302"
+        )
+
     def test_citation_does_not_claim_publication(self):
         """CITATION.cff preferred-citation must not be type: article before acceptance."""
         text = _CITATION_CFF.read_text(encoding="utf-8")
@@ -261,3 +316,23 @@ class TestPipelineArtifacts:
             "CITATION.cff preferred-citation type is 'article', implying the manuscript "
             "is already published. Change to 'software' until acceptance."
         )
+
+    def test_no_metadata_claims_article_published(self):
+        """No repository metadata (README, CITATION.cff, .zenodo.json) claims article is published."""
+        import json
+        # README
+        readme_text = _README.read_text(encoding="utf-8")
+        assert "published" not in readme_text.lower() or "under review" in readme_text.lower() or \
+               "submitted" in readme_text.lower() or \
+               "not yet accepted" in readme_text.lower() or \
+               "not yet published" in readme_text.lower(), \
+               "README appears to claim the article is published without qualification"
+        # .zenodo.json
+        zenodo_path = _REPO_ROOT / ".zenodo.json"
+        if zenodo_path.exists():
+            zenodo = json.loads(zenodo_path.read_text())
+            # Should not claim journal publication
+            description = zenodo.get("description", "")
+            notes = zenodo.get("notes", "")
+            journal = zenodo.get("journal", {})
+            assert not journal, f".zenodo.json should not have a 'journal' key before acceptance: {journal}"
