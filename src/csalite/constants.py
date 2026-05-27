@@ -11,7 +11,7 @@ from typing import Final
 
 # ── Project identity ──────────────────────────────────────────────────────────
 PROJECT_NAME: Final[str] = "CSA-Lite"
-PROJECT_VERSION: Final[str] = "0.2.0"
+PROJECT_VERSION: Final[str] = "0.2.1"
 PAPER_TITLE: Final[str] = (
     "Context-Sliced AI Assurance Lite: A Reproducible Public-Records Framework "
     "for Deployment-Conditioned Risk Analysis of AI Systems"
@@ -90,7 +90,7 @@ FIGURE_DPI: Final[int] = 300
 FIGURE_FORMATS: Final[tuple[str, ...]] = ("png", "svg")
 
 # ── Dataset version ───────────────────────────────────────────────────────────
-DATASET_VERSION: Final[str] = "0.2.0"
+DATASET_VERSION: Final[str] = "0.2.1"
 
 # ── Dimension descriptions (for Table 1) ──────────────────────────────────────
 DIMENSION_DESCRIPTIONS: Final[dict[str, dict[str, str]]] = {

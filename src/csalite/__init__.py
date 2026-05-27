@@ -17,7 +17,7 @@ structured-coding output derived from public-record evidence. It is not a legal
 risk class. Public records may be incomplete, biased, contested, or outdated.
 """
 
-__version__ = "0.2.0"
+__version__ = "0.2.1"
 __all__ = [
     "constants",
     "enums",
